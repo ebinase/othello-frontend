@@ -6,5 +6,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode", // デフォルトフォーマッターをPrettierに指定
   "editor.codeActionsOnSave": {
     "source.fixAll": true
-  }
+  },
+  "prettier.singleQuote": true
 }
