@@ -1,9 +1,12 @@
 import { type } from "os";
 import type * as React from "react";
 import Field from "./field";
+import Stone from "./stone";
+
+type ColorCode = "01" | "02";
 
 type Stone = {
-  color: string;
+  color: ColorCode;
 };
 
 type FieldParams = {
@@ -11,14 +14,14 @@ type FieldParams = {
   flipped: boolean; // ひっくり返されたコマのあるマスかどうか
   set: boolean; // 前のターンに置かれたコマのあるマスかどうか
   setable: boolean; // 置くことができるマスかどうか
-  stone: Stone;
+  stone: Stone | null;
 };
 
 const fieldList: FieldParams[] = [
-  { id: 0, flipped: false, set: false, setable: false, stone: { color: "●" } },
-  { id: 1, flipped: false, set: false, setable: false, stone: { color: "◯" } },
-  { id: 2, flipped: false, set: false, setable: false, stone: { color: "◯" } },
-  { id: 3, flipped: false, set: false, setable: false, stone: { color: "●" } },
+  { id: 0, flipped: false, set: false, setable: false, stone: { color: "02" } },
+  { id: 1, flipped: false, set: false, setable: false, stone: { color: "01" } },
+  { id: 2, flipped: false, set: false, setable: false, stone: { color: "01" } },
+  { id: 3, flipped: false, set: false, setable: false, stone: null },
 ];
 
 const Board: React.FC = () => {
@@ -27,10 +30,9 @@ const Board: React.FC = () => {
       {/* コンポジションを使って実装する */}
       {fieldList.map((field: FieldParams) => {
         return (
-          <Field key={field.id}>
-            {" "}
+          <Field key={field.id} {...field} >
             {/*flipped set setable */}
-            {field.stone.color}
+            {field.stone !== null ? <Stone color={field.stone.color}></Stone> : null}
           </Field>
         );
       })}
