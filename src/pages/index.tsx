@@ -1,7 +1,7 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (
@@ -13,24 +13,22 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to Othello
-        </h1>
+        <h1 className={styles.title}>Welcome to Othello</h1>
         <p>on</p>
-        <h2 className={styles.title}><a href="https://nextjs.org">Next.js</a></h2>
-        <h2 className='font-bold text-cyan-600'>with Tailwind</h2>
+        <h2 className={styles.title}>
+          <a href="https://nextjs.org">Next.js</a>
+        </h2>
+        <h2 className="font-bold text-cyan-600">with Tailwind</h2>
 
         <div>
-          <p className={styles.description}>
-            🔧 Now Under Development 🔧 
-          </p>
+          <p className={styles.description}>🔧 Now Under Development 🔧</p>
           <p className="text-center">
             今すぐプレイしたい方は
             <a
               href="http://54.150.81.152/"
               target="_blank"
               rel="noopener noreferrer"
-              className='font-bold text-cyan-600'
+              className="font-bold text-cyan-600"
             >
               こちら
             </a>
@@ -44,14 +42,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
