@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 type Props = {
   flipped: boolean; // ひっくり返されたコマのあるマスかどうか
@@ -9,7 +9,7 @@ type Props = {
 
 const Field: FC<Props> = (props) => {
   return (
-    <div className="bg-slate-200 rounded-sm shadow-x2s p-5">
+    <div className="bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center">
       {props.children}
     </div>
   );

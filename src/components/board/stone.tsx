@@ -12,7 +12,7 @@ const Stone: FC<Props> = (props) => {
   return (
     <div
       className={
-        "rounded-full h-full w-full shadow-[5px_5px_3px_#bebebe] " + color
+        "rounded-full h-5/6 w-5/6 shadow-[2px_2px_1px_#bebebe] " + color
       }
     ></div>
   );
