@@ -1,9 +1,9 @@
 import { FC, ReactNode } from "react";
 
 type Props = {
-  flipped: boolean; // ひっくり返されたコマのあるマスかどうか
-  set: boolean; // 前のターンに置かれたコマのあるマスかどうか
-  setable: boolean; // 置くことができるマスかどうか
+  // flipped: boolean; // ひっくり返されたコマのあるマスかどうか
+  // set: boolean; // 前のターンに置かれたコマのあるマスかどうか
+  // setable: boolean; // 置くことができるマスかどうか
   children?: ReactNode;
 };
 
