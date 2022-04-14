@@ -3,19 +3,19 @@ import useBoard from "../../hooks/use-board";
 import Field from "./field";
 import Stone from "./stone";
 
-type ColorCode = "01" | "02";
+// type ColorCode = "01" | "02";
 
-type Stone = {
-  color: ColorCode;
-};
+// type Stone = {
+//   color: ColorCode;
+// };
 
-type FieldParams = {
-  id: number;
-  flipped: boolean; // ひっくり返されたコマのあるマスかどうか
-  set: boolean; // 前のターンに置かれたコマのあるマスかどうか
-  setable: boolean; // 置くことができるマスかどうか
-  stone: Stone | null;
-};
+// type FieldParams = {
+//   id: number;
+//   flipped: boolean; // ひっくり返されたコマのあるマスかどうか
+//   set: boolean; // 前のターンに置かれたコマのあるマスかどうか
+//   setable: boolean; // 置くことができるマスかどうか
+//   stone: Stone | null;
+// };
 
 // const emptyRow = [
 //   { id: 3, flipped: false, set: false, setable: false, stone: null },
@@ -69,10 +69,10 @@ const Board: React.FC = () => {
   return (
     <div className="h-96 w-96 bg-slate-200 grid grid-cols-8 gap-1 p-2 rounded-lg shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff]">
       {/* TODO: fieldの型と仕様をしっかり決める */}
-      {board.map((field: string | number, index: number) => {
+      {board.map((field: string, index: number) => {
         return (
           <Field key={index}>
-            {field !== 0 ? (
+            {field === "01" || field === "02" ? (
               <Stone color={field}></Stone>
             ) : null}
           </Field>
