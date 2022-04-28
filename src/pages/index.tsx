@@ -25,7 +25,7 @@ const Home: NextPage = () => {
           <p className="text-center">
             今すぐプレイしたい方は
             <a
-              href="http://54.150.81.152/"
+              href="https://ddd-othello.ebinas.dev"
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-cyan-600"
