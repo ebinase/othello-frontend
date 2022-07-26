@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -21,7 +22,11 @@ const Home: NextPage = () => {
         <h2 className="font-bold text-cyan-600">with Tailwind</h2>
 
         <div>
-          <p className={styles.description}>🔧 Now Under Development 🔧</p>
+          <Link href="/play">
+            <a>
+              <p className={styles.description}>🔧 Now Under Development 🔧</p>
+            </a>
+          </Link>
           <p className="text-center">
             今すぐプレイしたい方は
             <a
