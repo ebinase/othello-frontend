@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
+import Board from "../components/board/board";
+import useBoard from "../hooks/use-board";
+
 const Home: NextPage = () => {
+  const [board, dispatch] = useBoard();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,31 +19,23 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Othello</h1>
-        <p>on</p>
+        <h1 className={styles.title}>
+          Othello
+          <span className=" font-thin text-slate-500"> on </span>
+          <span><a href="https://nextjs.org">Next.js</a></span>
+        </h1>
+        
         <h2 className={styles.title}>
-          <a href="https://nextjs.org">Next.js</a>
+          
         </h2>
         <h2 className="font-bold text-cyan-600">with Tailwind</h2>
 
-        <div>
-          <Link href="/play">
-            <a>
-              <p className={styles.description}>🔧 Now Under Development 🔧</p>
-            </a>
-          </Link>
-          <p className="text-center">
-            今すぐプレイしたい方は
-            <a
-              href="https://ddd-othello.ebinas.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-cyan-600"
-            >
-              こちら
-            </a>
-          </p>
+        <div className="m-10">
+          <Board board={board} dispatch={dispatch} />
         </div>
+        <Link href="/play" passHref>  
+          <button className="text-slate-500 hover:text-slate-300">🎮 Play(beta)</button>
+        </Link>
       </main>
 
       <footer className={styles.footer}>
