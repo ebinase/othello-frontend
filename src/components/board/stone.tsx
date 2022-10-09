@@ -1,13 +1,13 @@
 import type { FC, ReactNode } from "react";
 
-type ColorCode = "01" | "02";
+export type ColorCode = 1 | 2;
 
 type Props = {
   color: ColorCode;
 };
 
 const Stone: FC<Props> = (props) => {
-  const color: string = props.color === "01" ? "bg-slate-50" : "bg-slate-900";
+  const color: string = props.color === 1 ? "bg-slate-50" : "bg-slate-900";
 
   return (
     <div

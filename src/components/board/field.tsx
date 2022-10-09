@@ -1,16 +1,16 @@
-import { FC, ReactNode } from "react";
+import { VFC } from "react";
+import Stone from "./stone";
 
-type Props = {
-  // flipped: boolean; // ひっくり返されたコマのあるマスかどうか
-  // set: boolean; // 前のターンに置かれたコマのあるマスかどうか
-  // setable: boolean; // 置くことができるマスかどうか
-  children?: ReactNode;
-};
 
-const Field: FC<Props> = (props) => {
+
+const Field: VFC<any> = (props: any) => {
   return (
-    <div className="bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center">
-      {props.children}
+    <div className="bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center"
+      onClick={() => {
+        props.dispatcher({ type: "update", fieldId: props.fieldId, color: 1 })
+      }}
+    >
+      {props.content ? <Stone color={props.content} /> : null}
     </div>
   );
 };

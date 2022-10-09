@@ -1,18 +1,39 @@
-import useSWR from "swr";
+import { type } from 'os';
+import { useReducer } from 'react';
 
-const url = process.env.NEXT_PUBLIC_HOST_OTHELLO_BACKEND + "/api/board";
+type updateAction = {
+  type: "update",
+  fieldId: number,
+  color: 1|2
+}
 
-const fetcher = (): Promise<any> => fetch(url).then((res) => res.json());
+type skipAction = {
+  type: "skip",
+  fieldId?: number,
+  color?: 1|2
+}
 
-const emptyBoard = [...Array(64)];
+type action = updateAction | skipAction;
 
-const useBoard = () => {
-  const { data, error } = useSWR(`/api/board`, fetcher);
-  return {
-    board: data?.board ?? emptyBoard,
-    isLoading: !error && !data,
-    isError: error,
-  };
+// 盤面の初期値
+const initialBoard: Array<number | undefined> = [...Array(64)];
+
+// 盤面の更新関数
+const boardReducer = (board: Array<number | undefined>, action: action) => {
+  switch (action.type) {
+    case 'update':
+      return [...board].map((value, index) =>
+        index === action.fieldId ? action.color : value
+      );
+
+    default:
+      return board;
+  }
 };
+
+// reducerの戻り値ををそのまま帰す
+const useBoard = () => {
+  return useReducer(boardReducer, initialBoard);
+}
 
 export default useBoard;

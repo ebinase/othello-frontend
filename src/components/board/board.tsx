@@ -1,7 +1,6 @@
 import type * as React from "react";
 import useBoard from "../../hooks/use-board";
 import Field from "./field";
-import Stone from "./stone";
 
 const Spinner: React.FC = () => {
   return (
@@ -14,22 +13,14 @@ const Spinner: React.FC = () => {
 };
 
 const Board: React.FC = () => {
-  const { board, isLoading, isError } = useBoard();
+  const [board, dispatch] = useBoard();
 
   return (
     <>
-      <div className="mb-10">
-        {isLoading || isError ? <Spinner /> : null}
-      </div>
-
       <div className="h-96 w-96 bg-slate-200 grid grid-cols-8 gap-1 p-2 rounded-lg shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff]">
-        {board.map((field: string, index: number) => {
+        {board.map((content: any, index: number) => {
           return (
-            <Field key={index}>
-              {field === "01" || field === "02" ? (
-                <Stone color={field}></Stone>
-              ) : null}
-            </Field>
+            <Field key={index} fieldId={index} content={content} dispatcher={dispatch} />
           );
         })}
       </div>
