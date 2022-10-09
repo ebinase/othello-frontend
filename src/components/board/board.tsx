@@ -1,5 +1,4 @@
-import type * as React from "react";
-import useBoard from "../../hooks/use-board";
+import { VFC } from "react";
 import Field from "./field";
 
 const Spinner: React.FC = () => {
@@ -12,15 +11,13 @@ const Spinner: React.FC = () => {
   );
 };
 
-const Board: React.FC = () => {
-  const [board, dispatch] = useBoard();
-
+const Board: VFC = (props) => {
   return (
     <>
       <div className="h-96 w-96 bg-slate-200 grid grid-cols-8 gap-1 p-2 rounded-lg shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff]">
-        {board.map((content: any, index: number) => {
+        {props.board.map((content: any, index: number) => {
           return (
-            <Field key={index} fieldId={index} content={content} dispatcher={dispatch} />
+            <Field key={index} fieldId={index} content={content} dispatcher={props.dispatch} />
           );
         })}
       </div>

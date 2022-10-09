@@ -9,11 +9,13 @@ type updateAction = {
 
 type skipAction = {
   type: "skip",
-  fieldId?: number,
-  color?: 1|2
 }
 
-type action = updateAction | skipAction;
+type clearAction = {
+  type: 'clear';
+};
+
+type action = updateAction | skipAction | clearAction;
 
 // 盤面の初期値
 const initialBoard: Array<number | undefined> = [...Array(64)];
@@ -25,7 +27,8 @@ const boardReducer = (board: Array<number | undefined>, action: action) => {
       return [...board].map((value, index) =>
         index === action.fieldId ? action.color : value
       );
-
+    case 'clear':
+      return initialBoard;
     default:
       return board;
   }
