@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { useReducer } from 'react';
 
 type updateAction = {
@@ -15,7 +14,13 @@ type clearAction = {
   type: 'clear';
 };
 
-type action = updateAction | skipAction | clearAction;
+type drawAction = {
+  type: 'draw',
+  fieldId: number,
+  color: 1 | 2,
+};
+
+type action = updateAction | skipAction | clearAction | drawAction;
 
 // 盤面の初期値
 const initialBoard: Array<number | undefined> = [...Array(64)];
@@ -29,14 +34,18 @@ const boardReducer = (board: Array<number | undefined>, action: action) => {
       );
     case 'clear':
       return initialBoard;
+    case 'draw':
+      return [...board].map((value, index) =>
+        index === action.fieldId ? action.color : value
+      );
     default:
       return board;
   }
 };
 
 // reducerの戻り値ををそのまま帰す
-const useBoard = () => {
+const useOthello = () => {
   return useReducer(boardReducer, initialBoard);
-}
+};
 
-export default useBoard;
+export default useOthello;
