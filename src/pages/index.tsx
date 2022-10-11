@@ -8,7 +8,7 @@ import Board from "../components/board/board";
 import useOthello from "../hooks/use-othello";
 
 const Home: NextPage = () => {
-  const [board, dispatch] = useOthello();
+  const [othello, dispatch] = useOthello();
 
   return (
     <div className={styles.container}>
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
         <h2 className="font-bold text-cyan-600">with Tailwind</h2>
 
         <div className="m-10">
-          <Board board={board} dispatch={dispatch} />
+          <Board board={othello.board} dispatch={dispatch} />
         </div>
         <Link href="/play" passHref>  
           <button className="text-slate-500 hover:text-slate-300">🎮 Play(beta)</button>

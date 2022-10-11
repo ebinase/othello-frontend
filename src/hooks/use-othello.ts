@@ -1,4 +1,5 @@
 import { useReducer } from 'react';
+import { COLOR_CODES, flip } from '../components/board/stone';
 
 type updateAction = {
   type: "update",
@@ -14,38 +15,48 @@ type clearAction = {
   type: 'clear';
 };
 
-type drawAction = {
-  type: 'draw',
-  fieldId: number,
-  color: 1 | 2,
-};
-
-type action = updateAction | skipAction | clearAction | drawAction;
+type Action = updateAction | skipAction | clearAction;
 
 // 盤面の初期値
+const initialTurn = 1;
 const initialBoard: Array<number | undefined> = [...Array(64)];
+const initialColor = COLOR_CODES.WHITE;
 
-// 盤面の更新関数
-const boardReducer = (board: Array<number | undefined>, action: action) => {
+const initialState = {
+  turn: initialTurn,
+  board: initialBoard,
+  color: initialColor,
+}
+
+type State = typeof initialState
+
+// オセロゲームの更新関数
+const othelloReducer = (state: State, action: Action) => {
+  console.log(state, flip(state.color));
+  
   switch (action.type) {
     case 'update':
-      return [...board].map((value, index) =>
-        index === action.fieldId ? action.color : value
-      );
+      return {
+        turn: state.turn++,
+        board: [...state.board].map((value, index) =>
+          index === action.fieldId ? state.color : value
+        ),
+        color: flip(state.color),
+      };
     case 'clear':
-      return initialBoard;
-    case 'draw':
-      return [...board].map((value, index) =>
-        index === action.fieldId ? action.color : value
-      );
+      return {
+        turn:  initialTurn,
+        board: initialBoard,
+        color: initialColor,
+      };
     default:
-      return board;
+      return state;
   }
 };
 
 // reducerの戻り値ををそのまま帰す
 const useOthello = () => {
-  return useReducer(boardReducer, initialBoard);
+  return useReducer(othelloReducer, initialState);
 };
 
 export default useOthello;

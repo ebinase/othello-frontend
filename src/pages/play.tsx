@@ -4,7 +4,7 @@ import Board from "../components/board/board";
 import useOthello from "../hooks/use-othello";
 
 const Home: NextPage = () => {
-  const [board, dispatch] = useOthello();
+  const [othello, dispatch] = useOthello();
 
   return (
     <>
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="h-screen w-screen bg-slate-200">
         <div className="h-full w-full p-10 flex flex-1 justify-center flex-col items-center">
-          <Board board={board} dispatch={dispatch} />
+          <Board board={othello.board} dispatch={dispatch} />
             {/* https://heroicons.com/ */}
             <button className="hover:shadow-[4px_4px_3px_#bebebe,-4px_-4px_3px_#ffffff] m-4 px-5 py-1 text-slate-400 rounded-lg shadow-[2px_2px_1px_#bebebe,-2px_-2px_1px_#ffffff]" onClick={() => dispatch({type: 'clear'})}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
