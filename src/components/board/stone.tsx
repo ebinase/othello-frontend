@@ -1,6 +1,16 @@
 import type { FC, ReactNode } from "react";
 
-export type ColorCode = 1 | 2;
+
+export const COLOR_CODES = {
+  WHITE: 1,
+  BLACK: 2,
+} as const;
+
+export type ColorCode = typeof COLOR_CODES[keyof typeof COLOR_CODES]
+
+export const flip: any = (color: any) => {
+  return color === COLOR_CODES.WHITE ? COLOR_CODES.BLACK : COLOR_CODES.WHITE;
+}
 
 type Props = {
   color: ColorCode;
