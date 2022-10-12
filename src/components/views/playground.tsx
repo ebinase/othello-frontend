@@ -1,8 +1,7 @@
-import { VFC } from "react";
 import useOthello from "../../hooks/use-othello";
 import Board from "../parts/board";
 
-const PlayGround: VFC = () => {
+const PlayGround: React.FC = () => {
     const [state, dispatch] = useOthello();
 
     return (

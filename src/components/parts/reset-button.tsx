@@ -1,8 +1,8 @@
-import { VFC } from "react";
+import { OthelloDispatcher } from "../../hooks/use-othello";
 
-type Props = {dispatch: React.Dispatch<{type: string}>}
+type Props = {dispatch: OthelloDispatcher}
 
-const ResetButton: VFC<Props> = (props) => {
+const ResetButton: React.FC<Props> = (props) => {
     return (
         <>
             {/* https://heroicons.com/ */}
