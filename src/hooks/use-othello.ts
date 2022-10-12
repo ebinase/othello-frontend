@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { COLOR_CODES, flip } from '../components/board/stone';
+import { COLOR_CODES, flip } from '../components/parts/stone';
 
 type updateAction = {
   type: "update",
@@ -19,7 +19,13 @@ type Action = updateAction | skipAction | clearAction;
 
 // 盤面の初期値
 const initialTurn = 1;
-const initialBoard: Array<number | undefined> = [...Array(64)];
+const initialBoard: Array<number | undefined> = [...Array(64)].map(
+  (_, index) => {
+    if ([27, 36].includes(index)) return COLOR_CODES.WHITE
+    if ([28, 35].includes(index)) return COLOR_CODES.BLACK;
+    return undefined;
+  }
+);
 const initialColor = COLOR_CODES.WHITE;
 
 const initialState = {
