@@ -1,15 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-
-import Board from "../components/board/board";
-import useOthello from "../hooks/use-othello";
+import PlayGround from "../components/views/playground";
 
 const Home: NextPage = () => {
-  const [othello, dispatch] = useOthello();
-
   return (
     <div className={styles.container}>
       <Head>
@@ -31,7 +26,7 @@ const Home: NextPage = () => {
         <h2 className="font-bold text-cyan-600">with Tailwind</h2>
 
         <div className="m-10">
-          <Board board={othello.board} dispatch={dispatch} />
+          <PlayGround/>
         </div>
         <Link href="/play" passHref>  
           <button className="text-slate-500 hover:text-slate-300">🎮 Play(beta)</button>
