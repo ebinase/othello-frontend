@@ -1,7 +1,9 @@
 import { OthelloDispatcher } from "../../hooks/use-othello";
 import Field, { FieldObject } from "./field";
 
-type Props = {board: Array<FieldObject>, dispatch:OthelloDispatcher}
+export type BoardData = Array<FieldObject>
+
+type Props = { board: BoardData, dispatch: OthelloDispatcher }
 
 const Board: React.FC<Props> = (props) => {
   return (
