@@ -8,4 +8,4 @@ const Spinner: React.FC = () => {
   );
 };
 
-export default Spinner
+export default Spinner;

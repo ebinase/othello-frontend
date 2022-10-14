@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen w-screen bg-slate-200">
-        <PlayGround/>
+        <PlayGround mode="play" />
       </main>
     </>
   );

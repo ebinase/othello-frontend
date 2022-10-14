@@ -3,11 +3,11 @@ export const COLOR_CODES = {
   BLACK: 2,
 } as const;
 
-export type ColorCode = typeof COLOR_CODES[keyof typeof COLOR_CODES]
+export type ColorCode = typeof COLOR_CODES[keyof typeof COLOR_CODES];
 
 export const flip: any = (color: any) => {
   return color === COLOR_CODES.WHITE ? COLOR_CODES.BLACK : COLOR_CODES.WHITE;
-}
+};
 
 type Props = {
   color: ColorCode;
@@ -21,7 +21,7 @@ const Stone: React.FC<Props> = (props) => {
       className={
         "rounded-full h-5/6 w-5/6 shadow-[2px_2px_1px_#bebebe] " + color
       }
-    ></div>
+    />
   );
 };
 
