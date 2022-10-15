@@ -13,10 +13,8 @@ const PlayGround: React.FC<Props> = (props) => {
   return (
     <div className="h-full w-full p-10 flex flex-1 justify-center flex-col items-center">
       {props.mode === "play" ? (
-        <div className="h-10 w-96 m-6 flex justify-center">
-          <div className="text-slate-500  h-9 w-full bg-slate-200 rounded-lg shadow-[4px_4px_3px_#eee,-3px_-3px_5px_#bebebe] flex justify-center items-center">
+        <div className="h-10 w-96 m-6 flex justify-center text-slate-500">
             {state.error?.message}
-          </div>
         </div>
       ) : null}
       <Board board={state.board} dispatch={dispatch} />
@@ -39,7 +37,7 @@ const PlayGround: React.FC<Props> = (props) => {
             </Link>
           </div>
 
-          <div className="text-slate-500 mx-3 h-9 w-full bg-slate-200 rounded-lg shadow-[4px_4px_3px_#eee,-3px_-3px_5px_#bebebe] flex justify-center items-center">
+          <div className="text-slate-500 mx-3 h-9 w-full bg-slate-200 rounded-lg  flex justify-center items-center">
             <div className="rounded-full h-10 w-10 bg-slate-200 shadow-[4px_4px_3px_#eee,-3px_-3px_5px_#bebebe] flex justify-center items-center">
               <Stone color={state.color} />
             </div>
