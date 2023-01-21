@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import PlayGround from "../components/views/playground";
 
@@ -15,23 +14,10 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Othello
-          <span className=" font-thin text-slate-500"> on </span>
-          <span>
-            <a href="https://nextjs.org">Next.js</a>
-          </span>
+          <span className="font-thin text-slate-500">Othello</span>
         </h1>
 
-        <h2 className={styles.title}></h2>
-        <h2 className="font-bold text-cyan-600">with Tailwind</h2>
-
-        <PlayGround mode="display" />
-
-        <Link href="/play" passHref>
-          <button className="text-slate-500 hover:text-slate-300">
-            🎮 Play(beta)
-          </button>
-        </Link>
+        <PlayGround/>
       </main>
 
       <footer className={styles.footer}>

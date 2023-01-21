@@ -51,7 +51,6 @@ const othelloReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "update":
       try {
-        console.log(action);
         return {
           turn: state.turn++,
           board: move(state.board, action.fieldId, state.color),
@@ -179,7 +178,7 @@ const countFlipableStoneInLine = (line: BoardData, color: ColorCode) => {
   return 0;
 };
 
-// reducerの戻り値ををそのまま帰す
+// reducerの戻り値ををそのまま返す
 const useOthello = (): [State, OthelloDispatcher] => {
   return useReducer(othelloReducer, initialState);
 };
