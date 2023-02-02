@@ -19,7 +19,7 @@ const Field: React.FC<Props> = (props) => {
     <div
       className="bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center"
       onClick={() => {
-        props.dispatcher({ type: "update", fieldId: props.fieldId });
+        props.dispatcher({ type: "draw", position: props.fieldId });
       }}
     >
       {props.content ? <Stone color={props.content} /> : null}

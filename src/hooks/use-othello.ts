@@ -16,9 +16,33 @@ type clearAction = {
   type: "clear";
 };
 
-type Action = updateAction | skipAction | clearAction;
+type slideAction = {
+  type: 'slide';
+  sequence: number;
+};
+type drawAction = {
+  type: 'draw';
+  position: number;
+};
+
+type Action =
+  | updateAction
+  | skipAction
+  | clearAction
+  | slideAction
+  | drawAction;
 
 export type OthelloDispatcher = React.Dispatch<Action>;
+
+const slide:BoardData[] = [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0],
+[0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0],
+]
 
 // 盤面の初期値
 const initialTurn = 1;
@@ -49,7 +73,7 @@ type State = {
 // オセロゲームの更新関数
 const othelloReducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "update":
+    case 'update':
       try {
         return {
           turn: state.turn++,
@@ -59,20 +83,36 @@ const othelloReducer = (state: State, action: Action): State => {
       } catch (e) {
         return {
           ...state,
-          error: { hasError: true, message: "置けませんでした！" },
+          error: { hasError: true, message: '置けませんでした！' },
         };
       }
-    case "skip":
+    case 'skip':
       return {
         turn: state.turn++,
         board: state.board,
         color: flip(state.color),
       };
-    case "clear":
+    case 'clear':
       return {
         turn: initialTurn,
         board: initialBoard,
         color: initialColor,
+      };
+    case 'slide':
+      return {
+        turn: state.turn++,
+        board: slide[action.sequence],
+        color: flip(state.color),
+      };
+    case 'draw':
+      let board: BoardData = state.board;
+      // board[action.sequence] = action.sequence % 2 === 0 ? COLOR_CODES.WHITE : COLOR_CODES.BLACK;
+      board[action.position] = COLOR_CODES.WHITE;
+      console.log(board.join(','));
+      return {
+        turn: state.turn++,
+        board: board,
+        color: flip(state.color),
       };
     default:
       return state;
@@ -166,7 +206,6 @@ const getCurrentCoord = (origin: any, direction: any, offset: number) => {
 };
 
 const countFlipableStoneInLine = (line: BoardData, color: ColorCode) => {
-  console.log(line);
   if (line.length === 0) return 0;
 
   let score = 0;
