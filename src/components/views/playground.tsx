@@ -8,10 +8,10 @@ const PlayGround: React.FC = () => {
   useEffect(() => {
     let callIndex = 0;
     const intervalId = setInterval(() => {
-      if (callIndex === 7) callIndex = 0;
-      dispatch({ type: "slide", sequence: callIndex })
+      if (callIndex === 70) callIndex = 0;
+      dispatch({ type: "smoothSlide", sequence: callIndex })
       console.log(`index:${callIndex++}`);
-    }, 1000);
+    }, 100);
     return () => {
       clearInterval(intervalId);
     };
