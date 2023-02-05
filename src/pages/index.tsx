@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import PlayGround from "../components/views/playground";
-import { useEffect } from "react";
 
 const Home: NextPage = () => {
   return (
