@@ -16,9 +16,26 @@ type clearAction = {
   type: "clear";
 };
 
-type Action = updateAction | skipAction | clearAction;
+type drawAction = {
+  type: 'draw';
+  position: number;
+};
+
+type Action =
+  | updateAction
+  | skipAction
+  | clearAction
+  | drawAction;
 
 export type OthelloDispatcher = React.Dispatch<Action>;
+
+const toMatrix = (board: BoardData, rowLength: number): FieldObject[][] => {
+  let matrix = [];
+  for (var i = 0; i < board.length; i += rowLength) {
+    matrix.push(board.slice(i, i + rowLength));
+  }
+  return matrix;
+};
 
 // 盤面の初期値
 const initialTurn = 1;
@@ -49,7 +66,7 @@ type State = {
 // オセロゲームの更新関数
 const othelloReducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "update":
+    case 'update':
       try {
         return {
           turn: state.turn++,
@@ -59,20 +76,29 @@ const othelloReducer = (state: State, action: Action): State => {
       } catch (e) {
         return {
           ...state,
-          error: { hasError: true, message: "置けませんでした！" },
+          error: { hasError: true, message: '置けませんでした！' },
         };
       }
-    case "skip":
+    case 'skip':
       return {
         turn: state.turn++,
         board: state.board,
         color: flip(state.color),
       };
-    case "clear":
+    case 'clear':
       return {
         turn: initialTurn,
         board: initialBoard,
         color: initialColor,
+      };
+    case 'draw':
+      let board: BoardData = state.board;
+      board[action.position] = COLOR_CODES.WHITE;
+      console.log(board.join(','));
+      return {
+        turn: state.turn++,
+        board: board,
+        color: flip(state.color),
       };
     default:
       return state;
@@ -125,13 +151,6 @@ const flipStone = (
   return matrix.flat();
 };
 
-const toMatrix = (board: BoardData, rowLength: number): FieldObject[][] => {
-  let matrix = [];
-  for (var i = 0; i < board.length; i += rowLength) {
-    matrix.push(board.slice(i, i + rowLength));
-  }
-  return matrix;
-};
 
 // FIXME: 迷走したやっつけ実装なのでリファクタリング
 const getLines = (board: BoardData, fieldId: number) => {
@@ -166,7 +185,6 @@ const getCurrentCoord = (origin: any, direction: any, offset: number) => {
 };
 
 const countFlipableStoneInLine = (line: BoardData, color: ColorCode) => {
-  console.log(line);
   if (line.length === 0) return 0;
 
   let score = 0;
