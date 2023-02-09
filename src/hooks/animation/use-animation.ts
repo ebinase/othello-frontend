@@ -1,15 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import { BoardData } from '../../components/parts/board';
-import { EMPTY_CODE, FieldObject } from '../../components/parts/field';
-import slide from './slides/default';
-
-const toMatrix = (board: BoardData, rowLength: number): FieldObject[][] => {
-  let matrix = [];
-  for (var i = 0; i < board.length; i += rowLength) {
-    matrix.push(board.slice(i, i + rowLength));
-  }
-  return matrix;
-};
+import { useCallback, useEffect, useState } from "react";
+import { BoardData } from "../../components/parts/board";
+import { EMPTY_CODE, FieldObject } from "../../components/parts/field";
+import slide from "./slides/default";
+import { toMatrix } from "../othello/logic/matrix";
 
 const slideMatrix = slide.map((flatSlide: BoardData) => toMatrix(flatSlide, 8));
 const combined = slideMatrix.reduce((prev, current) => prev.concat(current));
