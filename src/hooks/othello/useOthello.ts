@@ -3,6 +3,7 @@ import { BoardData } from "../../components/parts/board";
 import { EMPTY_CODE } from "../../components/parts/field";
 import { ColorCode, COLOR_CODES, flip } from "../../components/parts/stone";
 import { move } from "./logic/core";
+import { rest } from "./logic/analyze";
 
 type updateAction = {
   type: "update";
@@ -25,18 +26,22 @@ export type OthelloDispatcher = React.Dispatch<Action>;
 const initialTurn = 1;
 const initialBoard: BoardData = [...Array(64)].map((_, index) => {
   if ([27, 36].includes(index)) return COLOR_CODES.WHITE;
-  if ([28, 35].includes(index)) return COLOR_CODES.WHITE;
+  if ([28, 35].includes(index)) return COLOR_CODES.BLACK;
   return EMPTY_CODE;
 });
 const initialColor = COLOR_CODES.WHITE;
 
-const initialState = {
+const initialState: GameState = {
+  isOver: false,
+  isSkipped: false,
   turn: initialTurn,
   board: initialBoard,
   color: initialColor,
 };
 
 export type GameState = {
+  isOver: boolean;
+  isSkipped: boolean;
   turn: number;
   board: BoardData;
   color: ColorCode;
@@ -52,9 +57,12 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
   switch (action.type) {
     case 'update':
       try {
+        const updated = move(state.board, action.fieldId, state.color);
         return {
+          isOver: rest(updated) === 0, // 置くところがなくなれば終了
+          isSkipped: false,
           turn: state.turn++,
-          board: move(state.board, action.fieldId, state.color),
+          board: updated,
           color: flip(state.color),
         };
       } catch (e) {
@@ -62,19 +70,17 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
           ...state,
           error: { hasError: true, message: '置けませんでした！' },
         };
-      }
+      } 
     case 'skip':
       return {
+        isOver: state.isSkipped, // 前のターンでもスキップされていたら強制終了
+        isSkipped: true,
         turn: state.turn++,
         board: state.board,
         color: flip(state.color),
       };
     case 'clear':
-      return {
-        turn: initialTurn,
-        board: initialBoard,
-        color: initialColor,
-      };
+      return initialState;
     default:
       return state;
   }
