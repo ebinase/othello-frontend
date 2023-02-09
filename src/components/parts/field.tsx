@@ -1,5 +1,5 @@
 import React from "react";
-import { OthelloDispatcher } from "../../hooks/use-othello";
+import { OthelloDispatcher } from "../../hooks/othello/useOthello";
 import Stone, { ColorCode } from "./stone";
 
 export const EMPTY_CODE = 0;
@@ -10,7 +10,7 @@ export type FieldObject = ColorCode | EmptyCode;
 type Props = {
   fieldId: number;
   content: ColorCode;
-  dispatcher: OthelloDispatcher|undefined;
+  dispatcher?: OthelloDispatcher;
 };
 
 // TODO: メモ化
