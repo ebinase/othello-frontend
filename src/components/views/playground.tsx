@@ -9,9 +9,7 @@ const PlayGround: React.FC = () => {
   return (
     <div className="h-full w-full flex flex-1 justify-center flex-col items-center">
       <TopPanel state={state} />
-      <div className="p-10">
-        <Board board={state.board} dispatch={dispatch} />
-      </div>
+      <Board board={state.board} dispatch={dispatch} />
       <BottomPanel state={state} dispatch={dispatch}/>
     </div>
   );
