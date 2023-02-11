@@ -4,9 +4,7 @@ import { ColorCode } from "../../../components/parts/stone";
 import { getLines } from "./matrix";
 
 export const shoudSkip = (board: BoardData, color: ColorCode): boolean => {
-  return (
-    scoreMap(board, color).filter((score) => score > 0).length === 0
-  );
+  return scoreMap(board, color).filter((score) => score > 0).length === 0;
 };
 
 export const scoreMap = (board: BoardData, color: ColorCode) => {
@@ -15,6 +13,7 @@ export const scoreMap = (board: BoardData, color: ColorCode) => {
 
 const getScore = (board: BoardData, color: ColorCode) => {
   return (fieldId: number) => {
+    if (board[fieldId] !== EMPTY_CODE) return 0;
     return getLines(board, fieldId)
       .map((line) => countFlipableStoneInLine(line, color))
       .reduce((sum, score) => sum + score, 0);
