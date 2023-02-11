@@ -4,7 +4,6 @@ import { ColorCode } from "../../../components/parts/stone";
 import { countFlipableStoneInLine } from "./analyze";
 import { directions, getCurrentCoord, getLines, toMatrix } from "./matrix";
 
-
 export const move = (board: BoardData, fieldId: number, color: ColorCode) => {
   if (board[fieldId] !== EMPTY_CODE) throw Error("置けないよ！");
 
