@@ -11,16 +11,16 @@ module.exports = {
         xs: "1px 1px 5px 0 #bebebe,-2px -2px 10px #ffffff",
       },
       animation: {
-        "flip-in": "flip-in 1s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+        "flip-in": "flip-in 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
       },
       keyframes: {
         "flip-in": {
           "0%": {
-            transform: "rotateY(-80deg);scale(0.2);",
+            transform: "rotateY(-80deg);",
             opacity: "0",
           },
           "50%": {
-            transform: "rotateY(-20deg);scale(1);",
+            transform: "rotateY(-20deg);",
             opacity: "1",
           },
           to: {
