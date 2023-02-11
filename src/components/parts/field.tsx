@@ -6,9 +6,10 @@ export const EMPTY_CODE = 0;
 export type EmptyCode = typeof EMPTY_CODE;
 
 export type FieldObject = ColorCode | EmptyCode;
+export type FieldId = number;
 
 type Props = {
-  fieldId: number;
+  fieldId: FieldId;
   content: ColorCode;
   dispatcher?: OthelloDispatcher;
 };

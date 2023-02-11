@@ -48,7 +48,11 @@ export const getLines = (board: BoardData, fieldId: number) => {
   });
 };
 
-export const getCurrentCoord = (origin: any, direction: any, offset: number) => {
+export const getCurrentCoord = (
+  origin: any,
+  direction: any,
+  offset: number
+) => {
   return {
     row: origin.row + direction.row * offset,
     col: origin.col + direction.col * offset,

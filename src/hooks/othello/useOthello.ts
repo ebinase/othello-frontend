@@ -55,7 +55,7 @@ export type GameState = {
 // オセロゲームの更新関数
 const othelloReducer = (state: GameState, action: Action): GameState => {
   switch (action.type) {
-    case 'update':
+    case "update":
       try {
         const updated = move(state.board, action.fieldId, state.color);
         return {
@@ -68,10 +68,10 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
       } catch (e) {
         return {
           ...state,
-          error: { hasError: true, message: '置けませんでした！' },
+          error: { hasError: true, message: "置けませんでした！" },
         };
-      } 
-    case 'skip':
+      }
+    case "skip":
       return {
         isOver: state.isSkipped, // 前のターンでもスキップされていたら強制終了
         isSkipped: true,
@@ -79,7 +79,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         board: state.board,
         color: flip(state.color),
       };
-    case 'clear':
+    case "clear":
       return initialState;
     default:
       return state;
