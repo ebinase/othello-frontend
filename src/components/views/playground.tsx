@@ -12,7 +12,7 @@ const PlayGround: React.FC = () => {
   const [calculate, changeBot] = useBot();
 
   useEffect(() => {
-    if (state.isOver) return;
+    if (state.color === COLOR_CODES.WHITE || state.isOver) return;
     const timeoutId = setTimeout(() => {
       if (shoudSkip(state.board, state.color)) {
         dispatch({ type: "skip" });
