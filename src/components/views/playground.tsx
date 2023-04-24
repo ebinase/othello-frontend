@@ -6,6 +6,7 @@ import BottomPanel from "./BottomPanel";
 import TopPanel from "./TopPanel";
 import { useEffect } from "react";
 import { shoudSkip } from "../../hooks/othello/logic/analyze";
+import { MCTS } from "../../hooks/bot/methods/MCTS";
 
 const PlayGround: React.FC = () => {
   const [state, dispatch] = useOthello();
@@ -18,8 +19,10 @@ const PlayGround: React.FC = () => {
         dispatch({ type: "skip" });
       }
 
-      const result = calculate(state.board, state.color);
-      dispatch({ type: "update", fieldId: result });
+      const result = MCTS(state.board, state.color);
+      result
+        ? dispatch({ type: "update", fieldId: result })
+        : dispatch({ type: "skip" });
 
       return () => {
         clearTimeout(timeoutId);
