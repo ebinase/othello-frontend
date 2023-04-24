@@ -1,7 +1,7 @@
 import { BoardData } from "../../components/parts/board";
 import { FieldId } from "../../components/parts/field";
 import { ColorCode } from "../../components/parts/stone";
-import { randomBot } from "./bots/RandomBot";
+import { randomBot } from "./methods/Random";
 
 export const BOT_TYPES = {
   RANDOM: "RANDOM",
@@ -15,4 +15,4 @@ export const resolve: Resolver = (botType) => {
   return randomBot;
 };
 
-export type Calculator = (board: BoardData, color: ColorCode) => FieldId;
+export type Calculator = (board: BoardData, color: ColorCode) => FieldId | null;
