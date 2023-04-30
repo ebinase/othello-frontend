@@ -1,34 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 💬 About this app
+Next.js製のオセロ（reversi）をプレイできるWebアプリです。
+<img width="1042" alt="スクリーンショット 2023-04-30 15 04 23" src="https://user-images.githubusercontent.com/54468945/235341390-7753d8a1-3ae6-4a41-9043-6af09d964478.png">
 
-## Getting Started
+## 📣 Status
+🔧 In progress
+開発状況はZennのスクラップにまとめています。
 
-First, run the development server:
+https://zenn.dev/ebiiina/scraps/6da46f891a9a7f
 
-```bash
-npm run dev
-# or
-yarn dev
+## 🚀 Getting started
+
+### Prerequisites / 必要条件
+* npm(最新版)
+
+
+### Installing / インストール
+以下の手順に従って、アプリをローカルにインストールしてください。
+
+1. このリポジトリをクローンするか、ZIPファイルとしてダウンロードしてください。
+```shell
+# https
+$ git clone https://github.com/ebinase/othello-frontend.git
+# ssh
+$ git clone git@github.com:ebinase/othello-frontend.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. ディレクトリを移動
+```shell
+$ cd othello-frontend
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. 依存関係をインストール
+```shell
+$ npm install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. 開発サーバーを起動
+```shell
+$ npm run dev
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+以上で、ブラウザでアプリを開くことができます。
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## 🎮 機能一覧
+- Botと対戦機能
+  - 現在、モンテカルロ木探索を利用した強めのBotが起動するよう設定中
+  - 先行/後攻、対戦相手の変更は今はできません🙏
+- 初回ロード以降、オフラインでプレイ可能
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🖥️ 動作環境
+このアプリは、次の環境で動作を確認しています。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+* Google Chrome（最新版）
+* Safari（最新版）
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ライセンス情報
+ライセンスは未設定です
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 今後の開発方針
+エージェントアーキテクチャの導入や対戦設定機能の追加、Botの強さの調整などを予定しています
