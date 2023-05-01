@@ -1,17 +1,10 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import PlayGround from "../components/views/playground";
+import styles from "../src/styles/Home.module.css";
+import PlayGround from "../src/components/views/playground";
 
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Othello</title>
-        <meta name="description" content="Othello app developed with next.js" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className={styles.main}>
         <h1 className={styles.title}>
           <span className="font-thin text-slate-500">Othello</span>
