@@ -1,3 +1,5 @@
+import Footer from "../src/components/shared/elements/Footer";
+import Header from "../src/components/shared/elements/Header";
 import "../src/styles/globals.css";
 
 export const metadata = {
@@ -12,7 +14,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <div className="h-screen">
+          <Header />
+          {children}
+        </div>
+        <Footer />
+      </body>
     </html>
   );
 }
