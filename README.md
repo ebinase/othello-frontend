@@ -11,7 +11,10 @@ https://zenn.dev/ebiiina/scraps/6da46f891a9a7f
 ## 🚀 Getting started
 
 ### Prerequisites / 必要条件
-* npm(最新版)
+* npm 16.8 or later
+
+Next.jsの動作条件に準じます
+https://beta.nextjs.org/docs/upgrade-guide#nodejs-version
 
 
 ### Installing / インストール
