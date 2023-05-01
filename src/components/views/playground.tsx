@@ -1,3 +1,5 @@
+"use client";
+
 import { useBot } from "../../hooks/bot/UseBot";
 import useOthello from "../../hooks/othello/useOthello";
 import Board from "../parts/board";

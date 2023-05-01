@@ -10,7 +10,7 @@ const Home: NextPage = () => {
           <span className="font-thin text-slate-500">Othello</span>
         </h1>
 
-        {/* <PlayGround /> */}
+        <PlayGround />
       </main>
 
       <footer className={styles.footer}>
