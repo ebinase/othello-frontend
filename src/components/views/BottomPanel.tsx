@@ -15,7 +15,7 @@ const BottomPanel: React.FC<{
             className="block bg-sky-400 text-slate-50 p-1 w-20 rounded-md"
             onClick={() => props.dispatch({ type: "skip" })}
           >
-            OK
+            Skip
           </button>
         ) : undefined}
       </div>
