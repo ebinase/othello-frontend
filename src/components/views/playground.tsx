@@ -34,13 +34,13 @@ const PlayGround: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col">
-      <div className="sm:basis-1/3 basis-1/4">
+      <div className="sm:basis-1/3 basis-[30%]">
         <InfoPanel state={state} />
       </div>
       <div className="sm:basis-1/3 flex justify-center">
         <Board board={state.board} dispatch={dispatch} />
       </div>
-      <div className="sm:basis-1/3 basis-1/12">
+      <div className="sm:basis-1/3 flex-grow">
         <BottomPanel state={state} dispatch={dispatch} />
       </div>
     </div>
