@@ -5,10 +5,10 @@ import useOthello from "../../hooks/othello/useOthello";
 import Board from "../parts/board";
 import { COLOR_CODES } from "../parts/stone";
 import BottomPanel from "./BottomPanel";
-import TopPanel from "./TopPanel";
 import { useEffect } from "react";
 import { shoudSkip } from "../../hooks/othello/logic/analyze";
 import { MCTS } from "../../hooks/bot/methods/MCTS";
+import InfoPanel from "../InfoPanel";
 
 const PlayGround: React.FC = () => {
   const [state, dispatch] = useOthello();
@@ -33,10 +33,16 @@ const PlayGround: React.FC = () => {
   });
 
   return (
-    <div className="h-full w-full flex flex-1 justify-center flex-col items-center">
-      <TopPanel state={state} />
-      <Board board={state.board} dispatch={dispatch} />
-      <BottomPanel state={state} dispatch={dispatch} />
+    <div className="h-full w-full flex flex-col">
+      <div className="sm:basis-1/3 basis-[30%]">
+        <InfoPanel state={state} />
+      </div>
+      <div className="sm:basis-1/3 flex justify-center">
+        <Board board={state.board} dispatch={dispatch} />
+      </div>
+      <div className="sm:basis-1/3 flex-grow">
+        <BottomPanel state={state} dispatch={dispatch} />
+      </div>
     </div>
   );
 };
