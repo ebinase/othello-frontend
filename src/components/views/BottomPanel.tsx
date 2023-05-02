@@ -9,10 +9,13 @@ const BottomPanel: React.FC<{
   const state = props.state;
   return (
     <>
-      <div className="h-4 text-center p-3">
+      <div className="text-center h-full flex justify-center items-center">
         {shoudSkip(state.board, state.color) && rest(state.board) !== 0 ? (
-          <button onClick={() => props.dispatch({ type: "skip" })}>
-            スキップ
+          <button
+            className="block bg-sky-400 text-slate-50 p-1 w-20 rounded-md"
+            onClick={() => props.dispatch({ type: "skip" })}
+          >
+            OK
           </button>
         ) : undefined}
       </div>
