@@ -1,5 +1,5 @@
-import { OthelloDispatcher } from "../../hooks/othello/useOthello";
-import Field, { FieldObject } from "./field";
+import { OthelloDispatcher } from "../../hooks/useOthello";
+import Field, { FieldObject } from "./Field";
 
 export type BoardData = Array<FieldObject>;
 

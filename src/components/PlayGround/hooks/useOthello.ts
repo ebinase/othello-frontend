@@ -1,9 +1,9 @@
 import React, { useReducer } from "react";
-import { BoardData } from "../../components/parts/board";
-import { EMPTY_CODE } from "../../components/parts/field";
-import { ColorCode, COLOR_CODES, flip } from "../../components/parts/stone";
 import { move } from "./logic/core";
 import { rest } from "./logic/analyze";
+import { BoardData } from "../elements/Board/Board";
+import { EMPTY_CODE } from "../elements/Board/Field";
+import { COLOR_CODES, ColorCode, flip } from "../elements/Board/Stone";
 
 type updateAction = {
   type: "update";

@@ -1,11 +1,11 @@
-import { BoardData } from "../../../components/parts/board";
-import { ColorCode, flip } from "../../../components/parts/stone";
+import { BoardData } from "../../../../PlayGround/elements/Board/Board";
+import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
 import {
   countStone,
   rest,
   selectableFields,
-} from "../../othello/logic/analyze";
-import { move } from "../../othello/logic/core";
+} from "../../../../PlayGround/hooks/logic/analyze";
+import { move } from "../../../../PlayGround/hooks/logic/core";
 import { randomBot } from "./Random";
 
 type Options = {
@@ -16,7 +16,7 @@ export const MCTS = (board: BoardData, color: ColorCode) => {
   const options: Options = {
     maxPlayOut: 500,
   };
-  
+
   // 選択する候補となるフィールドのリスト
   const fields = selectableFields(board, color);
 
@@ -36,9 +36,8 @@ export const MCTS = (board: BoardData, color: ColorCode) => {
     { field: -1, score: -1 }
   );
 
-  console.log((new Date().getTime() - start.getTime()) + 'ms');
+  console.log(new Date().getTime() - start.getTime() + "ms");
   console.log(playOutResults);
-  
 
   return playOutResults.field;
 };
@@ -54,7 +53,7 @@ const evaluateMove = (
   for (let i = 0; i < playOutCount; i++) {
     winCount += playOut(board, color, field) ? 1 : 0;
   }
-  
+
   return winCount / playOutCount;
 };
 
@@ -79,7 +78,7 @@ const playOut = (
       }
       color = flip(color);
       if (skipCount > 1) {
-        throw new Error('パスが連続しています');
+        throw new Error("パスが連続しています");
       }
     }
     return countStone(board, myColor) > countStone(board, flip(myColor));

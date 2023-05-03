@@ -1,5 +1,5 @@
-import { BoardData } from "../../../components/parts/board";
-import { FieldObject } from "../../../components/parts/field";
+import { BoardData } from "../../elements/Board/Board";
+import { FieldObject } from "../../elements/Board/Field";
 
 type Line = FieldObject[];
 type Matrix = Line[];

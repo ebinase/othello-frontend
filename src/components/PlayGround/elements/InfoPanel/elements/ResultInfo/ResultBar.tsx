@@ -1,5 +1,3 @@
-import { Children } from "react";
-
 type Props = {
   counts: { white: number; black: number };
 };

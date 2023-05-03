@@ -1,4 +1,4 @@
-import { GameState } from "../../hooks/othello/useOthello";
+import { GameState } from "../../hooks/useOthello";
 import PlayerInfo from "./elements/PlayerInfo/PlayerInfo";
 import ResultInfo from "./elements/ResultInfo/ResultInfo";
 

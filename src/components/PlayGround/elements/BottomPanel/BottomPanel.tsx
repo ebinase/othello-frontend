@@ -1,6 +1,6 @@
 import React from "react";
-import { rest, shoudSkip } from "../../hooks/othello/logic/analyze";
-import { GameState, OthelloDispatcher } from "../../hooks/othello/useOthello";
+import { rest, shoudSkip } from "../../hooks/logic/analyze";
+import { GameState, OthelloDispatcher } from "../../hooks/useOthello";
 
 const BottomPanel: React.FC<{
   state: GameState;

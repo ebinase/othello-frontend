@@ -1,6 +1,5 @@
-import React from "react";
-import { OthelloDispatcher } from "../../hooks/othello/useOthello";
-import Stone, { ColorCode } from "./stone";
+import { OthelloDispatcher } from "../../hooks/useOthello";
+import Stone, { ColorCode } from "./Stone";
 
 export const EMPTY_CODE = 0;
 export type EmptyCode = typeof EMPTY_CODE;
@@ -20,7 +19,11 @@ const Field: React.FC<Props> = (props) => {
   return (
     <div
       className="bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center"
-      onClick={!props.content && !!dispatch ? () => dispatch({ type: "update", fieldId: props.fieldId }) : undefined}
+      onClick={
+        !props.content && !!dispatch
+          ? () => dispatch({ type: "update", fieldId: props.fieldId })
+          : undefined
+      }
     >
       {props.content ? <Stone color={props.content} /> : null}
     </div>
