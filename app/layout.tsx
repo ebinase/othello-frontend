@@ -1,5 +1,5 @@
-import Footer from "../src/components/shared/elements/Footer";
-import Header from "../src/components/shared/elements/Header";
+import Footer from "../src/components/shared/elements/Footer/Footer";
+import Header from "../src/components/shared/elements/Header/Header";
 import "../src/styles/globals.css";
 
 export const metadata = {
