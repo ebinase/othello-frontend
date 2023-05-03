@@ -1,6 +1,6 @@
-import { BoardData } from "../../../components/parts/board";
-import { ColorCode } from "../../../components/parts/stone";
-import { selectableFields } from "../../othello/logic/analyze";
+import { BoardData } from "../../../../PlayGround/elements/Board/Board";
+import { ColorCode } from "../../../../PlayGround/elements/Board/Stone";
+import { selectableFields } from "../../../../PlayGround/hooks/logic/analyze";
 import { Calculator } from "../BotTypes";
 
 export const randomBot: Calculator = (board: BoardData, color: ColorCode) => {

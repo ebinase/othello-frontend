@@ -1,13 +1,16 @@
-import { BoardData } from "../../../components/parts/board";
-import { EMPTY_CODE } from "../../../components/parts/field";
-import { ColorCode } from "../../../components/parts/stone";
+import { BoardData } from "../../elements/Board/Board";
+import { EMPTY_CODE } from "../../elements/Board/Field";
+import { ColorCode } from "../../elements/Board/Stone";
 import { getLines } from "./matrix";
 
 export const shoudSkip = (board: BoardData, color: ColorCode): boolean => {
   return scoreMap(board, color).filter((score) => score > 0).length === 0;
 };
 
-export const selectableFields = (board: BoardData, color: ColorCode): number[] => {
+export const selectableFields = (
+  board: BoardData,
+  color: ColorCode
+): number[] => {
   return scoreMap(board, color)
     .map((value, index) => (value > 0 ? index : undefined))
     .filter(

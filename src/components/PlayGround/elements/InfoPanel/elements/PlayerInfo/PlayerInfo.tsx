@@ -1,7 +1,7 @@
 "use client";
 
-import { GameState } from "../../../../hooks/othello/useOthello";
-import { COLOR_CODES } from "../../../parts/stone";
+import { GameState } from "../../../../hooks/useOthello";
+import { COLOR_CODES } from "../../../Board/Stone";
 import PlayerBar from "./PlayerBar";
 
 const PlayerInfo: React.FC<{ state: GameState }> = (props) => {

@@ -1,6 +1,6 @@
-import { BoardData } from "../../components/parts/board";
-import { FieldId } from "../../components/parts/field";
-import { ColorCode } from "../../components/parts/stone";
+import { BoardData } from "../../../PlayGround/elements/Board/Board";
+import { FieldId } from "../../../PlayGround/elements/Board/Field";
+import { ColorCode } from "../../../PlayGround/elements/Board/Stone";
 import { randomBot } from "./methods/Random";
 
 export const BOT_TYPES = {

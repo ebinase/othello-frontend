@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import PlayGround from "../src/components/views/playground";
+import PlayGround from "../src/components/PlayGround/PlayGround";
 
 const Home: NextPage = () => {
   return (

@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { BoardData } from "../../components/parts/board";
-import { EMPTY_CODE, FieldObject } from "../../components/parts/field";
+import { BoardData } from "../../../PlayGround/elements/Board/Board";
 import slide from "./slides/default";
-import { toMatrix } from "../othello/logic/matrix";
+import { toMatrix } from "../../../PlayGround/hooks/logic/matrix";
+import {
+  FieldObject,
+  EMPTY_CODE,
+} from "../../../PlayGround/elements/Board/Field";
 
 const slideMatrix = slide.map((flatSlide: BoardData) => toMatrix(flatSlide, 8));
 const combined = slideMatrix.reduce((prev, current) => prev.concat(current));

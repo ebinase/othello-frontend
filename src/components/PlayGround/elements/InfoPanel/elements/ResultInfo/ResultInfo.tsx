@@ -1,8 +1,8 @@
 "use client";
 
-import { countStone } from "../../../../hooks/othello/logic/analyze";
-import { GameState } from "../../../../hooks/othello/useOthello";
-import { COLOR_CODES } from "../../../parts/stone";
+import { countStone } from "../../../../hooks/logic/analyze";
+import { GameState } from "../../../../hooks/useOthello";
+import { COLOR_CODES } from "../../../Board/Stone";
 import ResultBar from "./ResultBar";
 
 const TOTAL_STONES = 64;

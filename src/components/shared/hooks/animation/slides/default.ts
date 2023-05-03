@@ -1,6 +1,6 @@
-import { BoardData } from "../../../components/parts/board";
-import { EMPTY_CODE } from "../../../components/parts/field";
-import { COLOR_CODES } from "../../../components/parts/stone";
+import { BoardData } from "../../../../PlayGround/elements/Board/Board";
+import { EMPTY_CODE } from "../../../../PlayGround/elements/Board/Field";
+import { COLOR_CODES } from "../../../../PlayGround/elements/Board/Stone";
 
 const slide: BoardData[] = [
   [...Array(64)].map((_, index) => {

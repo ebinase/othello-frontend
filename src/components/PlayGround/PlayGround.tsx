@@ -1,14 +1,13 @@
 "use client";
 
-import { useBot } from "../../hooks/bot/UseBot";
-import useOthello from "../../hooks/othello/useOthello";
-import Board from "../parts/board";
-import { COLOR_CODES } from "../parts/stone";
-import BottomPanel from "./BottomPanel";
+import Board from "./elements/Board/Board";
+import BottomPanel from "./elements/BottomPanel/BottomPanel";
 import { useEffect } from "react";
-import { shoudSkip } from "../../hooks/othello/logic/analyze";
-import { MCTS } from "../../hooks/bot/methods/MCTS";
-import InfoPanel from "../InfoPanel/InfoPanel";
+import { shoudSkip } from "./hooks/logic/analyze";
+import { MCTS } from "../shared/hooks/bot/methods/MCTS";
+import InfoPanel from "./elements/InfoPanel/InfoPanel";
+import { COLOR_CODES } from "./elements/Board/Stone";
+import useOthello from "./hooks/useOthello";
 
 const PlayGround: React.FC = () => {
   const [state, dispatch] = useOthello();

@@ -1,6 +1,6 @@
-import { BoardData } from "../../../components/parts/board";
-import { EMPTY_CODE } from "../../../components/parts/field";
-import { ColorCode } from "../../../components/parts/stone";
+import { BoardData } from "../../elements/Board/Board";
+import { EMPTY_CODE } from "../../elements/Board/Field";
+import { ColorCode } from "../../elements/Board/Stone";
 import { countFlipableStoneInLine } from "./analyze";
 import { directions, getCurrentCoord, getLines, toMatrix } from "./matrix";
 
