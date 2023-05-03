@@ -12,7 +12,6 @@ import InfoPanel from "../InfoPanel";
 
 const PlayGround: React.FC = () => {
   const [state, dispatch] = useOthello();
-  const [calculate, changeBot] = useBot();
 
   useEffect(() => {
     if (state.color === COLOR_CODES.WHITE || state.isOver) return;
@@ -22,7 +21,7 @@ const PlayGround: React.FC = () => {
       }
 
       const result = MCTS(state.board, state.color);
-      result
+      result !== null
         ? dispatch({ type: "update", fieldId: result })
         : dispatch({ type: "skip" });
 
