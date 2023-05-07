@@ -3,7 +3,6 @@
 import Board from "./elements/Board/Board";
 import BottomPanel from "./elements/BottomPanel/BottomPanel";
 import { useEffect } from "react";
-import { shoudSkip } from "../../dataflow/othello/logic/analyze";
 import { MCTS } from "../shared/hooks/bot/methods/MCTS";
 import InfoPanel from "./elements/InfoPanel/InfoPanel";
 import { COLOR_CODES } from "./elements/Board/Stone";
@@ -15,10 +14,6 @@ const PlayGround: React.FC = () => {
   useEffect(() => {
     if (state.color === COLOR_CODES.WHITE || state.isOver) return;
     const timeoutId = setTimeout(() => {
-      if (shoudSkip(state.board, state.color)) {
-        skip();
-      }
-
       const result = MCTS(state.board, state.color);
       result !== null ? update(result) : skip();
 

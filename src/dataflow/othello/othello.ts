@@ -78,7 +78,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
       return {
         isOver: state.isSkipped, // 前のターンでもスキップされていたら強制終了
         isSkipped: true,
-        turn: state.turn++,
+        turn: state.turn + 1,
         board: state.board,
         color: flip(state.color),
       };
