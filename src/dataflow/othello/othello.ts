@@ -1,9 +1,26 @@
-import React, { useReducer } from "react";
-import { move } from "./logic/core";
+import { atom, useRecoilState } from "recoil";
+import { BoardData } from "../../components/PlayGround/elements/Board/Board";
+import { EMPTY_CODE } from "../../components/PlayGround/elements/Board/Field";
+import {
+  ColorCode,
+  COLOR_CODES,
+  flip,
+} from "../../components/PlayGround/elements/Board/Stone";
 import { rest } from "./logic/analyze";
-import { BoardData } from "../elements/Board/Board";
-import { EMPTY_CODE } from "../elements/Board/Field";
-import { COLOR_CODES, ColorCode, flip } from "../elements/Board/Stone";
+import { move } from "./logic/core";
+
+type GameState = {
+  isOver: boolean;
+  isSkipped: boolean;
+  turn: number;
+  board: BoardData;
+  color: ColorCode;
+  error?: {
+    hasError: boolean;
+    message?: any;
+    data?: any;
+  };
+};
 
 type updateAction = {
   type: "update";
@@ -22,7 +39,7 @@ type Action = updateAction | skipAction | clearAction;
 
 export type OthelloDispatcher = React.Dispatch<Action>;
 
-// 盤面の初期値
+// 初期値
 const initialTurn = 1;
 const initialBoard: BoardData = [...Array(64)].map((_, index) => {
   if ([27, 36].includes(index)) return COLOR_CODES.WHITE;
@@ -39,20 +56,6 @@ const initialState: GameState = {
   color: initialColor,
 };
 
-export type GameState = {
-  isOver: boolean;
-  isSkipped: boolean;
-  turn: number;
-  board: BoardData;
-  color: ColorCode;
-  error?: {
-    hasError: boolean;
-    message?: any;
-    data?: any;
-  };
-};
-
-// オセロゲームの更新関数
 const othelloReducer = (state: GameState, action: Action): GameState => {
   switch (action.type) {
     case "update":
@@ -61,7 +64,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         return {
           isOver: rest(updated) === 0, // 置くところがなくなれば終了
           isSkipped: false,
-          turn: state.turn++,
+          turn: state.turn + 1,
           board: updated,
           color: flip(state.color),
         };
@@ -86,9 +89,27 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
   }
 };
 
-// reducerの戻り値ををそのまま返す
-const useOthello = (): [GameState, OthelloDispatcher] => {
-  return useReducer(othelloReducer, initialState);
+const othelloState = atom<GameState>({
+  key: "dataflow/othello",
+  default: initialState,
+});
+
+const useOthello = () => {
+  const [state, setState] = useRecoilState(othelloState);
+
+  const update = (fieldId: number) => {
+    setState(othelloReducer(state, { type: "update", fieldId }));
+  };
+
+  const skip = () => {
+    setState(othelloReducer(state, { type: "skip" }));
+  };
+
+  const reset = () => {
+    setState(initialState);
+  };
+
+  return { state, update, skip, reset };
 };
 
 export default useOthello;

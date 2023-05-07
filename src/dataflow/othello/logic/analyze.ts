@@ -1,6 +1,6 @@
-import { BoardData } from "../../elements/Board/Board";
-import { EMPTY_CODE } from "../../elements/Board/Field";
-import { ColorCode } from "../../elements/Board/Stone";
+import { BoardData } from "../../../components/PlayGround/elements/Board/Board";
+import { EMPTY_CODE } from "../../../components/PlayGround/elements/Board/Field";
+import { ColorCode } from "../../../components/PlayGround/elements/Board/Stone";
 import { getLines } from "./matrix";
 
 export const shoudSkip = (board: BoardData, color: ColorCode): boolean => {
