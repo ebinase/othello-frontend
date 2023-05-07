@@ -1,5 +1,3 @@
-import { Children } from "react";
-
 type Props = {
   theme: "light" | "dark";
   children: React.ReactNode;
