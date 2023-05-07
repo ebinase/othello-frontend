@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BoardData } from "../../../PlayGround/elements/Board/Board";
 import slide from "./slides/default";
-import { toMatrix } from "../../../PlayGround/hooks/logic/matrix";
+import { toMatrix } from "../../../../dataflow/othello/logic/matrix";
 import {
   FieldObject,
   EMPTY_CODE,
