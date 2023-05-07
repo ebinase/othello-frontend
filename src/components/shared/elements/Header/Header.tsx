@@ -1,12 +1,18 @@
 "use client";
 
+import { useStone } from "../../../../dataflow/test/test";
+import Stone from "../../../PlayGround/elements/Board/Stone";
+
 const Header: React.FC = () => {
+  const [stone] = useStone();
+  
   const handleNewGame = () => {
     if (confirm("プレイ中のゲームの情報が失われます。よろしいですか？")) {
       // FIXME: リロードではなく、ゲームの状態をリセットする
       window.location.reload();
     }
   };
+  
 
   return (
     <header>
@@ -14,6 +20,9 @@ const Header: React.FC = () => {
         <h1 className="font-bold text-slate-500 tracking-wide text-xl">
           Othello
         </h1>
+        <div className=" w-8 h-8">
+          <Stone color={stone}></Stone>
+        </div>
         <div className="flex justify-end gap-5">
           <button
             onClick={handleNewGame}
