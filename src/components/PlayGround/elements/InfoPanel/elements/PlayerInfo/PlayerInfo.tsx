@@ -1,5 +1,6 @@
 "use client";
 
+import { shoudSkip } from "../../../../../../dataflow/othello/logic/analyze";
 import useOthello from "../../../../../../dataflow/othello/othello";
 import { COLOR_CODES } from "../../../Board/Stone";
 import PlayerBar from "./PlayerBar";
@@ -12,7 +13,7 @@ const PlayerInfo: React.FC = (props) => {
           message: "あなたのターンです",
           name: "You",
           theme: "light",
-          status: "",
+          status: shoudSkip(state.board, state.color) ? "置ける場所がありません" : "",
         }
       : {
           message: "相手のターンです",

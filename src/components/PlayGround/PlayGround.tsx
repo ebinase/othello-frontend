@@ -1,7 +1,7 @@
 "use client";
 
 import Board from "./elements/Board/Board";
-import BottomPanel from "./elements/BottomPanel/BottomPanel";
+import BottomPanel from "./elements/ActionPanel/BottomPanel";
 import { useEffect } from "react";
 import { MCTS } from "../shared/hooks/bot/methods/MCTS";
 import InfoPanel from "./elements/InfoPanel/InfoPanel";
