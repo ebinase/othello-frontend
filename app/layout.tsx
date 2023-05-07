@@ -1,3 +1,4 @@
+import { RecoilRoot } from "recoil";
 import Footer from "../src/components/shared/elements/Footer/Footer";
 import Header from "../src/components/shared/elements/Header/Header";
 import "../src/styles/globals.css";
@@ -15,10 +16,12 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <div className="h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow">{children}</main>
-        </div>
+        <RecoilRoot>
+          <div className="h-screen flex flex-col">
+            <Header />
+            <main className="flex-grow">{children}</main>
+          </div>
+        </RecoilRoot>
         <Footer />
       </body>
     </html>
