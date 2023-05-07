@@ -1,10 +1,13 @@
 "use client";
 
+import useOthello from "../../../../dataflow/othello/othello";
+
 const Header: React.FC = () => {
+  const { reset } = useOthello();
+
   const handleNewGame = () => {
-    if (confirm("プレイ中のゲームの情報が失われます。よろしいですか？")) {
-      // FIXME: リロードではなく、ゲームの状態をリセットする
-      window.location.reload();
+    if (confirm("プレイ中のゲーム情報が失われます。よろしいですか？")) {
+      reset();
     }
   };
 

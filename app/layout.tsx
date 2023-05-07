@@ -1,5 +1,3 @@
-import Footer from "../src/components/shared/elements/Footer/Footer";
-import Header from "../src/components/shared/elements/Header/Header";
 import "../src/styles/globals.css";
 
 export const metadata = {
@@ -14,13 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>
-        <div className="h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow">{children}</main>
-        </div>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

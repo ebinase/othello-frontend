@@ -4,8 +4,8 @@ import {
   countStone,
   rest,
   selectableFields,
-} from "../../../../PlayGround/hooks/logic/analyze";
-import { move } from "../../../../PlayGround/hooks/logic/core";
+} from "../../../../../dataflow/othello/logic/analyze";
+import { move } from "../../../../../dataflow/othello/logic/core";
 import { randomBot } from "./Random";
 
 type Options = {

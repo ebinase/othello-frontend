@@ -1,14 +1,14 @@
 "use client";
 
-import { countStone } from "../../../../hooks/logic/analyze";
-import { GameState } from "../../../../hooks/useOthello";
+import { countStone } from "../../../../../../dataflow/othello/logic/analyze";
+import useOthello from "../../../../../../dataflow/othello/othello";
 import { COLOR_CODES } from "../../../Board/Stone";
 import ResultBar from "./ResultBar";
 
 const TOTAL_STONES = 64;
 
-const ResultInfo: React.FC<{ state: GameState }> = (props) => {
-  const state = props.state;
+const ResultInfo: React.FC = (props) => {
+  const { state } = useOthello();
   const counts = {
     white: countStone(state.board, COLOR_CODES.WHITE),
     black: countStone(state.board, COLOR_CODES.BLACK),

@@ -1,11 +1,11 @@
 "use client";
 
-import { GameState } from "../../../../hooks/useOthello";
+import useOthello from "../../../../../../dataflow/othello/othello";
 import { COLOR_CODES } from "../../../Board/Stone";
 import PlayerBar from "./PlayerBar";
 
-const PlayerInfo: React.FC<{ state: GameState }> = (props) => {
-  const state = props.state;
+const PlayerInfo: React.FC = (props) => {
+  const { state } = useOthello();
   const data =
     state.color === COLOR_CODES.WHITE
       ? {
