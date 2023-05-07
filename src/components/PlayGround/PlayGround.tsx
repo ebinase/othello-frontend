@@ -3,28 +3,24 @@
 import Board from "./elements/Board/Board";
 import BottomPanel from "./elements/BottomPanel/BottomPanel";
 import { useEffect } from "react";
-import { shoudSkip } from "./hooks/logic/analyze";
+import { shoudSkip } from "../../dataflow/othello/logic/analyze";
 import { MCTS } from "../shared/hooks/bot/methods/MCTS";
 import InfoPanel from "./elements/InfoPanel/InfoPanel";
-import Stone, { COLOR_CODES } from "./elements/Board/Stone";
-import useOthello from "./hooks/useOthello";
-import { useStone } from "../../dataflow/test/test";
+import { COLOR_CODES } from "./elements/Board/Stone";
+import useOthello from "../../dataflow/othello/othello";
 
 const PlayGround: React.FC = () => {
-  const [state, dispatch] = useOthello();
-  const [stone, flip] = useStone();
+  const { state, update, skip } = useOthello();
 
   useEffect(() => {
     if (state.color === COLOR_CODES.WHITE || state.isOver) return;
     const timeoutId = setTimeout(() => {
       if (shoudSkip(state.board, state.color)) {
-        dispatch({ type: "skip" });
+        skip();
       }
 
       const result = MCTS(state.board, state.color);
-      result !== null
-        ? dispatch({ type: "update", fieldId: result })
-        : dispatch({ type: "skip" });
+      result !== null ? update(result) : skip();
 
       return () => {
         clearTimeout(timeoutId);
@@ -35,18 +31,14 @@ const PlayGround: React.FC = () => {
   return (
     <div className="h-full w-full flex flex-col">
       <div className="sm:basis-1/3 basis-[30%]">
-        <InfoPanel state={state} />
+        <InfoPanel />
       </div>
-      
+
       <div className="sm:basis-1/3 flex justify-center">
-         <div className="w-8 h-8">
-          <Stone color={stone}></Stone>
-          <button onClick={() => flip()}>Flip</button>
-        </div>
-        <Board board={state.board} dispatch={dispatch} />
+        <Board />
       </div>
       <div className="sm:basis-1/3 flex-grow">
-        <BottomPanel state={state} dispatch={dispatch} />
+        <BottomPanel />
       </div>
     </div>
   );
