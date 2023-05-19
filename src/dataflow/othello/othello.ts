@@ -1,4 +1,3 @@
-import { atom, useRecoilState } from "recoil";
 import { BoardData } from "../../components/PlayGround/elements/Board/Board";
 import { EMPTY_CODE } from "../../components/PlayGround/elements/Board/Field";
 import {
@@ -8,6 +7,7 @@ import {
 } from "../../components/PlayGround/elements/Board/Stone";
 import { rest } from "./logic/analyze";
 import { move } from "./logic/core";
+import { create } from "zustand";
 
 type GameState = {
   isOver: boolean;
@@ -89,27 +89,28 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
   }
 };
 
-const othelloState = atom<GameState>({
-  key: "dataflow/othello",
-  default: initialState,
-});
-
-const useOthello = () => {
-  const [state, setState] = useRecoilState(othelloState);
-
-  const update = (fieldId: number) => {
-    setState(othelloReducer(state, { type: "update", fieldId }));
-  };
-
-  const skip = () => {
-    setState(othelloReducer(state, { type: "skip" }));
-  };
-
-  const reset = () => {
-    setState(initialState);
-  };
-
-  return { state, update, skip, reset };
+type State = {
+  state: GameState;
 };
+
+type Actions = {
+  update: (fieldId: number) => void;
+  skip: () => void;
+  reset: () => void;
+};
+
+const useOthello = create<State & Actions>((set) => ({
+  state: initialState,
+  update: (fieldId: number) => {
+    set((state) => ({
+      state: othelloReducer(state.state, { type: "update", fieldId }),
+    }));
+  },
+  skip: () =>
+    set((state) => ({
+      state: othelloReducer(state.state, { type: "skip" }),
+    })),
+  reset: () => set({ state: initialState }),
+}));
 
 export default useOthello;
