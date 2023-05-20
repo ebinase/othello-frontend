@@ -1,5 +1,8 @@
 import { BoardData } from "../../components/PlayGround/elements/Board/Board";
-import { EMPTY_CODE } from "../../components/PlayGround/elements/Board/Field";
+import {
+  EMPTY_CODE,
+  FieldId,
+} from "../../components/PlayGround/elements/Board/Field";
 import {
   ColorCode,
   COLOR_CODES,
@@ -8,6 +11,30 @@ import {
 import { rest } from "./logic/analyze";
 import { move } from "./logic/core";
 import { create } from "zustand";
+import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
+
+type Player = {
+  name: string;
+  type: "human" | "bot";
+  think:
+    | undefined
+    | ((board: BoardData, color: ColorCode) => Promise<FieldId | null>);
+};
+
+type Players = Record<ColorCode, Player>;
+
+const defaultPlayers = {
+  [COLOR_CODES.WHITE]: {
+    name: "白プレイヤー",
+    type: "human" as Player["type"],
+    think: undefined,
+  },
+  [COLOR_CODES.BLACK]: {
+    name: "Bot",
+    type: "bot" as Player["type"],
+    think: async (board: BoardData, color: ColorCode) => MCTS(board, color),
+  },
+};
 
 type GameState = {
   isOver: boolean;
@@ -20,6 +47,7 @@ type GameState = {
     message?: any;
     data?: any;
   };
+  players: Players;
 };
 
 type updateAction = {
@@ -54,6 +82,7 @@ const initialState: GameState = {
   turn: initialTurn,
   board: initialBoard,
   color: initialColor,
+  players: defaultPlayers,
 };
 
 const othelloReducer = (state: GameState, action: Action): GameState => {
@@ -67,6 +96,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
           turn: state.turn + 1,
           board: updated,
           color: flip(state.color),
+          players: state.players,
         };
       } catch (e) {
         return {
@@ -81,6 +111,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         turn: state.turn + 1,
         board: state.board,
         color: flip(state.color),
+        players: state.players,
       };
     case "clear":
       return initialState;
@@ -97,9 +128,10 @@ type Actions = {
   update: (fieldId: number) => void;
   skip: () => void;
   reset: () => void;
+  activateBot: () => void;
 };
 
-const useOthello = create<State & Actions>((set) => ({
+const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
   update: (fieldId: number) => {
     set((state) => ({
@@ -111,6 +143,30 @@ const useOthello = create<State & Actions>((set) => ({
       state: othelloReducer(state.state, { type: "skip" }),
     })),
   reset: () => set({ state: initialState }),
+  activateBot: async () => {
+    console.log(
+      "activateBot====================================================="
+    );
+
+    const state = get().state;
+    const isBotTurn = state.players[state.color].type === "bot";
+    const update = get().update;
+
+    if (state.isOver || !isBotTurn) {
+      console.log("not bot turn");
+      return;
+    }
+
+    const think = state.players[state.color].think;
+    if (think === undefined) throw new Error("Botが登録されていません");
+    console.log("計算開始！！！！！！！！");
+
+    const move = await think(state.board, state.color);
+    console.log("move", move);
+    if (move === null) return get().skip();
+
+    update(move);
+  },
 }));
 
 export default useOthello;
