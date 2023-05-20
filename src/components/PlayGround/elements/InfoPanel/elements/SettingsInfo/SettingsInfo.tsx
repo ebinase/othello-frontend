@@ -12,13 +12,13 @@ const SettingsInfo: React.FC = (props) => {
   const [isPvE, setIsPvE] = useState(false);
 
   const handlePvP = () => {
-    initialize({ gameMode: GAME_MODE.PVP, players: ["player1", "player2"] });
+    initialize({ gameMode: GAME_MODE.PVP, players: ["Player1", "Player2"] });
   };
 
   const handlePvE = (name: string, playerColor: ColorCode) => {
     initialize({
       gameMode: GAME_MODE.PVE,
-      players: name,
+      player: name,
       playerColor: playerColor,
     });
   };
@@ -52,13 +52,13 @@ const SettingsInfo: React.FC = (props) => {
             <div className="flex justify-center gap-5">
               <div
                 className="flex gap-2 items-center"
-                onClick={() => handlePvE("プレイヤー", COLOR_CODES.WHITE)}
+                onClick={() => handlePvE("Player1", COLOR_CODES.WHITE)}
               >
                 <button className="text-sm text-slate-700">先攻</button>
               </div>
               <div
                 className="flex gap-2 items-center"
-                onClick={() => handlePvE("プレイヤー", COLOR_CODES.BLACK)}
+                onClick={() => handlePvE("Player1", COLOR_CODES.BLACK)}
               >
                 <button className="text-sm text-slate-700">後攻</button>
               </div>

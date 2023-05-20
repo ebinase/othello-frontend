@@ -33,7 +33,7 @@ const initPlayer = (name: string): Player => {
 
 const initBot = (): Player => {
   return {
-    name: "Bot",
+    name: "Bot Lv.5",
     type: "bot",
     think: async (board: BoardData, color: ColorCode) => MCTS(board, color),
   };
@@ -142,7 +142,7 @@ export type PvPSettings = {
 
 export type PvESettings = {
   gameMode: GAME_MODE.PVE;
-  players: string;
+  player: string;
   playerColor: ColorCode;
 };
 
@@ -199,11 +199,11 @@ const useOthello = create<State & Actions>((set, get) => ({
         : {
             [COLOR_CODES.WHITE]:
               settings.playerColor === COLOR_CODES.WHITE
-                ? initPlayer(settings.players)
+                ? initPlayer(settings.player)
                 : initBot(),
             [COLOR_CODES.BLACK]:
               settings.playerColor === COLOR_CODES.BLACK
-                ? initPlayer(settings.players)
+                ? initPlayer(settings.player)
                 : initBot(),
           };
 
