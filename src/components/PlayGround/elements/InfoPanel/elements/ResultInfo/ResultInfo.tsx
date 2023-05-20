@@ -18,8 +18,8 @@ const ResultInfo: React.FC = (props) => {
       <h2 className="text-slate-600 font-bold text-xl mb-6">
         {counts.white + counts.black === TOTAL_STONES
           ? counts.white > counts.black
-            ? "You Win!!"
-            : "You Lose..."
+            ? state.players[COLOR_CODES.WHITE].name + " Win!"
+            : state.players[COLOR_CODES.BLACK].name + " Win!"
           : "Draw Game"}
       </h2>
       <div className="mb-1">
