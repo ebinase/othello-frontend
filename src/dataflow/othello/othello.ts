@@ -23,17 +23,20 @@ type Player = {
 
 type Players = Record<ColorCode, Player>;
 
-const defaultPlayers = {
-  [COLOR_CODES.WHITE]: {
-    name: "白プレイヤー",
-    type: "human" as Player["type"],
+const initPlayer = (name: string): Player => {
+  return {
+    name,
+    type: "human",
     think: undefined,
-  },
-  [COLOR_CODES.BLACK]: {
+  };
+};
+
+const initBot = (): Player => {
+  return {
     name: "Bot",
-    type: "bot" as Player["type"],
+    type: "bot",
     think: async (board: BoardData, color: ColorCode) => MCTS(board, color),
-  },
+  };
 };
 
 type GameState = {
@@ -48,6 +51,7 @@ type GameState = {
     data?: any;
   };
   players: Players;
+  isInitialized: boolean;
 };
 
 type updateAction = {
@@ -82,7 +86,11 @@ const initialState: GameState = {
   turn: initialTurn,
   board: initialBoard,
   color: initialColor,
-  players: defaultPlayers,
+  players: {
+    [COLOR_CODES.WHITE]: initPlayer("Player2"),
+    [COLOR_CODES.BLACK]: initPlayer("Player1"),
+  },
+  isInitialized: false,
 };
 
 const othelloReducer = (state: GameState, action: Action): GameState => {
@@ -97,6 +105,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
           board: updated,
           color: flip(state.color),
           players: state.players,
+          isInitialized: true, // プレーを開始したら初期化済みとする
         };
       } catch (e) {
         return {
@@ -112,6 +121,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         board: state.board,
         color: flip(state.color),
         players: state.players,
+        isInitialized: state.isInitialized,
       };
     case "clear":
       return initialState;
@@ -119,6 +129,24 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
       return state;
   }
 };
+
+export enum GAME_MODE {
+  PVP = "PVP",
+  PVE = "PVE",
+}
+
+export type PvPSettings = {
+  gameMode: GAME_MODE.PVP;
+  players: string[];
+};
+
+export type PvESettings = {
+  gameMode: GAME_MODE.PVE;
+  players: string;
+  playerColor: ColorCode;
+};
+
+type GameSettings = PvPSettings | PvESettings;
 
 type State = {
   state: GameState;
@@ -129,6 +157,7 @@ type Actions = {
   skip: () => void;
   reset: () => void;
   activateBot: () => void;
+  initialize: (settings: GameSettings) => void;
 };
 
 const useOthello = create<State & Actions>((set, get) => ({
@@ -144,28 +173,47 @@ const useOthello = create<State & Actions>((set, get) => ({
     })),
   reset: () => set({ state: initialState }),
   activateBot: async () => {
-    console.log(
-      "activateBot====================================================="
-    );
-
     const state = get().state;
     const isBotTurn = state.players[state.color].type === "bot";
     const update = get().update;
 
     if (state.isOver || !isBotTurn) {
-      console.log("not bot turn");
       return;
     }
 
     const think = state.players[state.color].think;
     if (think === undefined) throw new Error("Botが登録されていません");
-    console.log("計算開始！！！！！！！！");
 
     const move = await think(state.board, state.color);
-    console.log("move", move);
     if (move === null) return get().skip();
 
     update(move);
+  },
+  initialize: (settings) => {
+    const players: Players =
+      settings.gameMode === GAME_MODE.PVP
+        ? {
+            [COLOR_CODES.WHITE]: initPlayer(settings.players[0]),
+            [COLOR_CODES.BLACK]: initPlayer(settings.players[1]),
+          }
+        : {
+            [COLOR_CODES.WHITE]:
+              settings.playerColor === COLOR_CODES.WHITE
+                ? initPlayer(settings.players)
+                : initBot(),
+            [COLOR_CODES.BLACK]:
+              settings.playerColor === COLOR_CODES.BLACK
+                ? initPlayer(settings.players)
+                : initBot(),
+          };
+
+    set({
+      state: {
+        ...initialState,
+        players,
+        isInitialized: true,
+      },
+    });
   },
 }));
 
