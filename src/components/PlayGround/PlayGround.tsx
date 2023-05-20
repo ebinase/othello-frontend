@@ -10,7 +10,12 @@ const PlayGround: React.FC = () => {
   const { activateBot } = useOthello();
 
   useEffect(() => {
-    activateBot();
+    const timeoutId = setTimeout(() => {
+      activateBot();
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, 500);
   });
 
   return (
