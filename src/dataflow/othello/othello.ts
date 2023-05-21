@@ -1,5 +1,8 @@
 import { BoardData } from "../../components/PlayGround/elements/Board/Board";
-import { EMPTY_CODE } from "../../components/PlayGround/elements/Board/Field";
+import {
+  EMPTY_CODE,
+  FieldId,
+} from "../../components/PlayGround/elements/Board/Field";
 import {
   ColorCode,
   COLOR_CODES,
@@ -8,6 +11,33 @@ import {
 import { rest } from "./logic/analyze";
 import { move } from "./logic/core";
 import { create } from "zustand";
+import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
+
+type Player = {
+  name: string;
+  type: "human" | "bot";
+  think:
+    | undefined
+    | ((board: BoardData, color: ColorCode) => Promise<FieldId | null>);
+};
+
+type Players = Record<ColorCode, Player>;
+
+const initPlayer = (name: string): Player => {
+  return {
+    name,
+    type: "human",
+    think: undefined,
+  };
+};
+
+const initBot = (): Player => {
+  return {
+    name: "Bot Lv.5",
+    type: "bot",
+    think: async (board: BoardData, color: ColorCode) => MCTS(board, color),
+  };
+};
 
 type GameState = {
   isOver: boolean;
@@ -20,6 +50,8 @@ type GameState = {
     message?: any;
     data?: any;
   };
+  players: Players;
+  isInitialized: boolean;
 };
 
 type updateAction = {
@@ -54,6 +86,11 @@ const initialState: GameState = {
   turn: initialTurn,
   board: initialBoard,
   color: initialColor,
+  players: {
+    [COLOR_CODES.WHITE]: initPlayer("Player2"),
+    [COLOR_CODES.BLACK]: initPlayer("Player1"),
+  },
+  isInitialized: false,
 };
 
 const othelloReducer = (state: GameState, action: Action): GameState => {
@@ -67,6 +104,8 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
           turn: state.turn + 1,
           board: updated,
           color: flip(state.color),
+          players: state.players,
+          isInitialized: true, // プレーを開始したら初期化済みとする
         };
       } catch (e) {
         return {
@@ -81,6 +120,8 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         turn: state.turn + 1,
         board: state.board,
         color: flip(state.color),
+        players: state.players,
+        isInitialized: state.isInitialized,
       };
     case "clear":
       return initialState;
@@ -88,6 +129,24 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
       return state;
   }
 };
+
+export enum GAME_MODE {
+  PVP = "PVP",
+  PVE = "PVE",
+}
+
+export type PvPSettings = {
+  gameMode: GAME_MODE.PVP;
+  players: string[];
+};
+
+export type PvESettings = {
+  gameMode: GAME_MODE.PVE;
+  player: string;
+  playerColor: ColorCode;
+};
+
+type GameSettings = PvPSettings | PvESettings;
 
 type State = {
   state: GameState;
@@ -97,9 +156,11 @@ type Actions = {
   update: (fieldId: number) => void;
   skip: () => void;
   reset: () => void;
+  activateBot: () => void;
+  initialize: (settings: GameSettings) => void;
 };
 
-const useOthello = create<State & Actions>((set) => ({
+const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
   update: (fieldId: number) => {
     set((state) => ({
@@ -111,6 +172,49 @@ const useOthello = create<State & Actions>((set) => ({
       state: othelloReducer(state.state, { type: "skip" }),
     })),
   reset: () => set({ state: initialState }),
+  activateBot: async () => {
+    const state = get().state;
+    const isBotTurn = state.players[state.color].type === "bot";
+    const update = get().update;
+
+    if (state.isOver || !isBotTurn) {
+      return;
+    }
+
+    const think = state.players[state.color].think;
+    if (think === undefined) throw new Error("Botが登録されていません");
+
+    const move = await think(state.board, state.color);
+    if (move === null) return get().skip();
+
+    update(move);
+  },
+  initialize: (settings) => {
+    const players: Players =
+      settings.gameMode === GAME_MODE.PVP
+        ? {
+            [COLOR_CODES.WHITE]: initPlayer(settings.players[0]),
+            [COLOR_CODES.BLACK]: initPlayer(settings.players[1]),
+          }
+        : {
+            [COLOR_CODES.WHITE]:
+              settings.playerColor === COLOR_CODES.WHITE
+                ? initPlayer(settings.player)
+                : initBot(),
+            [COLOR_CODES.BLACK]:
+              settings.playerColor === COLOR_CODES.BLACK
+                ? initPlayer(settings.player)
+                : initBot(),
+          };
+
+    set({
+      state: {
+        ...initialState,
+        players,
+        isInitialized: true,
+      },
+    });
+  },
 }));
 
 export default useOthello;

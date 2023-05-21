@@ -3,20 +3,15 @@
 import Board from "./elements/Board/Board";
 import BottomPanel from "./elements/ActionPanel/BottomPanel";
 import { useEffect } from "react";
-import { MCTS } from "../shared/hooks/bot/methods/MCTS";
 import InfoPanel from "./elements/InfoPanel/InfoPanel";
-import { COLOR_CODES } from "./elements/Board/Stone";
 import useOthello from "../../dataflow/othello/othello";
 
 const PlayGround: React.FC = () => {
-  const { state, update, skip } = useOthello();
+  const { activateBot } = useOthello();
 
   useEffect(() => {
-    if (state.color === COLOR_CODES.WHITE || state.isOver) return;
     const timeoutId = setTimeout(() => {
-      const result = MCTS(state.board, state.color);
-      result !== null ? update(result) : skip();
-
+      activateBot();
       return () => {
         clearTimeout(timeoutId);
       };
