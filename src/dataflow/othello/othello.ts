@@ -150,13 +150,13 @@ type GameSettings = PvPSettings | PvESettings;
 
 // == Move History =======================
 type UpdateMove = {
-  type: 'update';
+  type: "update";
   putAt: FieldId;
   flipped: FieldId[];
 };
 
 type SkipMove = {
-  type: 'skip';
+  type: "skip";
 };
 
 type Move = UpdateMove | SkipMove;
@@ -177,44 +177,46 @@ type Actions = {
   reset: () => void;
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
-  push: (color: ColorCode, move: Move) => void;
+  pushHistory: (color: ColorCode, move: Move) => void;
 };
 
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
   update: (fieldId: number) => {
     const stateBefore = get().state;
-  
+
     set((state) => ({
-      state: othelloReducer(state.state, { type: 'update', fieldId }),
+      state: othelloReducer(state.state, { type: "update", fieldId }),
     }));
     const stateAfter = get().state;
-    
+
     const initialValue = [] as number[];
-    const flipped = stateBefore.board.reduce(
-      (indexes, element, index) => {
-        return element !== stateAfter.board[index] && index !== fieldId
-          ? [...indexes, index]
-          : indexes;
-      },
-      initialValue
-    );
+    const flipped = stateBefore.board.reduce((indexes, element, index) => {
+      return element !== stateAfter.board[index] && index !== fieldId
+        ? [...indexes, index]
+        : indexes;
+    }, initialValue);
     if (flipped.length === 0) {
-      return
+      return;
     }
 
-    get().push(stateBefore.color, { type: "update", putAt: fieldId, flipped })
-    console.log(get().moveHistory);
-    
+    get().pushHistory(stateBefore.color, {
+      type: "update",
+      putAt: fieldId,
+      flipped,
+    });
   },
-  skip: () =>
+  skip: () => {
     set((state) => ({
-      state: othelloReducer(state.state, { type: 'skip' }),
-    })),
+      state: othelloReducer(state.state, { type: "skip" }),
+    }));
+    const stateBefore = get().state;
+    get().pushHistory(stateBefore.color, { type: "skip" });
+  },
   reset: () => set({ state: initialState, moveHistory: [], index: -1 }),
   activateBot: async () => {
     const state = get().state;
-    const isBotTurn = state.players[state.color].type === 'bot';
+    const isBotTurn = state.players[state.color].type === "bot";
     const update = get().update;
 
     if (state.isOver || !isBotTurn) {
@@ -222,7 +224,7 @@ const useOthello = create<State & Actions>((set, get) => ({
     }
 
     const think = state.players[state.color].think;
-    if (think === undefined) throw new Error('Botが登録されていません');
+    if (think === undefined) throw new Error("Botが登録されていません");
 
     const move = await think(state.board, state.color);
     if (move === null) return get().skip();
@@ -257,11 +259,11 @@ const useOthello = create<State & Actions>((set, get) => ({
   },
   moveHistory: initialHistory,
   index: -1,
-  push: (color, move) =>
+  pushHistory: (color, move) =>
     set((state) => {
       const newHistory = state.moveHistory
-        .slice(0, state.index + 1 )  // 未来の要素を削除
-        .concat({ color, move });  // 今回の追加要素を記録
+        .slice(0, state.index + 1) // 未来の要素を削除
+        .concat({ color, move }); // 今回の追加要素を記録
       return {
         moveHistory: newHistory,
         index: newHistory.length - 1,
