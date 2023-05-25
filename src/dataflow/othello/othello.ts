@@ -161,13 +161,26 @@ type SkipMove = {
 
 type Move = UpdateMove | SkipMove;
 
-type MoveHistory = Array<{ color: ColorCode; move: Move }>;
+type MoveHistory = { color: ColorCode; move: Move };
 
-const initialHistory: MoveHistory = [];
+const initialHistory: MoveHistory[] = [];
+
+const apply = (board: BoardData, moveHistory: MoveHistory) => {
+  console.log(moveHistory);
+  const { color, move } = moveHistory;
+  const oppositeColor = flip(color);
+  return move.type === "update"
+    ? board
+        .map((value, index) => (index === move.putAt ? EMPTY_CODE : value))
+        .map((value, index) =>
+          move.flipped.includes(index) ? oppositeColor : value
+        )
+    : board;
+};
 
 type State = {
   state: GameState;
-  moveHistory: MoveHistory;
+  moveHistory: MoveHistory[];
   index: number;
 };
 
@@ -178,6 +191,8 @@ type Actions = {
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
   pushHistory: (color: ColorCode, move: Move) => void;
+  undo: () => void;
+  redo: () => void;
 };
 
 const useOthello = create<State & Actions>((set, get) => ({
@@ -268,6 +283,43 @@ const useOthello = create<State & Actions>((set, get) => ({
         moveHistory: newHistory,
         index: newHistory.length - 1,
       };
+    }),
+  undo: () =>
+    set((state) => {
+      if (state.index < 0) {
+        return state;
+      }
+      const newIndex = state.index - 1;
+      return {
+        ...state,
+        state: {
+          ...state.state,
+          turn: state.state.turn - 1,
+          board: apply(state.state.board, state.moveHistory[state.index]),
+          color: flip(state.state.color),
+        },
+        index: newIndex,
+      };
+    }),
+  redo: () =>
+    set((state) => {
+      return state;
+      // if (state.index >= state.moveHistory.length - 1) {
+      //   return state;
+      // }
+      
+      // const newIndex = state.index+1;
+      // console.log(state.index, state.moveHistory);
+      //  return {
+      //    ...state,
+      //    state: {
+      //      ...state.state,
+      //      turn: state.state.turn + 1,
+      //      board: apply(state.state.board, state.moveHistory[newIndex]),
+      //      color: flip(state.state.color),
+      //    },
+      //    index: newIndex,
+      //  };
     }),
 }));
 
