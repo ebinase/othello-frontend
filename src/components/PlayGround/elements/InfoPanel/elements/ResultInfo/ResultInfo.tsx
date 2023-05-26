@@ -2,25 +2,59 @@
 
 import { countStone } from "../../../../../../dataflow/othello/logic/analyze";
 import useOthello from "../../../../../../dataflow/othello/othello";
-import { COLOR_CODES } from "../../../Board/Stone";
+import { BoardData } from "../../../Board/Board";
+import { ColorCode, COLOR_CODES } from "../../../Board/Stone";
 import ResultBar from "./ResultBar";
 
 const TOTAL_STONES = 64;
 
-const ResultInfo: React.FC = (props) => {
-  const { state } = useOthello();
+const ResultInfo: React.FC = () => {
+  const { state, gameMode } = useOthello();
+
   const counts = {
     white: countStone(state.board, COLOR_CODES.WHITE),
     black: countStone(state.board, COLOR_CODES.BLACK),
   };
+
+  const getWinner = (board: BoardData): ColorCode | undefined => {
+    const counts = {
+      white: countStone(state.board, COLOR_CODES.WHITE),
+      black: countStone(state.board, COLOR_CODES.BLACK),
+    };
+
+    const isFinished = counts.white + counts.black === TOTAL_STONES;
+    const isDraw = counts.white === counts.black;
+    const isDominated = counts.white === 0 || counts.black === 0;
+
+    if (isFinished) {
+      // 全てのマスが埋まっている場合
+      return isDraw
+        ? undefined
+        : counts.white > counts.black
+        ? COLOR_CODES.WHITE
+        : COLOR_CODES.BLACK;
+    } else {
+      // 途中で終了した場合
+      return isDominated
+        ? counts.white > counts.black
+          ? COLOR_CODES.WHITE
+          : COLOR_CODES.BLACK
+        : undefined;
+    }
+  };
+
+  const winner = getWinner(state.board);
+
   return (
     <div className=" h-full text-center flex flex-col items-center sm:justify-center pb-6 sm:pt-6 pt-10">
       <h2 className="text-slate-600 font-bold text-xl mb-6">
-        {counts.white + counts.black === TOTAL_STONES
-          ? counts.white > counts.black
-            ? state.players[COLOR_CODES.WHITE].name + " Win!"
-            : state.players[COLOR_CODES.BLACK].name + " Win!"
-          : "Draw Game"}
+        {winner === undefined
+          ? "DRAW"
+          : gameMode === "PVP"
+          ? state.players[winner].name + " WIN!"
+          : state.players[winner].type === "human"
+          ? "YOU WIN!"
+          : "YOU LOSE..."}
       </h2>
       <div className="mb-1">
         <ResultBar counts={counts} />
