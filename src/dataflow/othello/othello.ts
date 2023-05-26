@@ -148,8 +148,51 @@ export type PvESettings = {
 
 type GameSettings = PvPSettings | PvESettings;
 
+// == Move History =======================
+type UpdateMove = {
+  type: "update";
+  putAt: FieldId;
+  flipped: FieldId[];
+};
+
+type SkipMove = {
+  type: "skip";
+};
+
+type Move = UpdateMove | SkipMove;
+
+type MoveHistory = { color: ColorCode; move: Move };
+
+const initialHistory: MoveHistory[] = [];
+
+const apply =
+  (direction: "back" | "forward") =>
+  (board: BoardData, moveHistory: MoveHistory) => {
+    const { color, move } = moveHistory;
+    const oppositeColor = flip(color);
+    return move.type === "update"
+      ? board
+          .map((value, index) =>
+            index === move.putAt
+              ? direction === "back"
+                ? EMPTY_CODE
+                : color
+              : value
+          )
+          .map((value, index) =>
+            move.flipped.includes(index)
+              ? direction === "back"
+                ? oppositeColor
+                : color
+              : value
+          )
+      : board;
+  };
+
 type State = {
   state: GameState;
+  moveHistory: MoveHistory[];
+  index: number;
 };
 
 type Actions = {
@@ -158,20 +201,47 @@ type Actions = {
   reset: () => void;
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
+  pushHistory: (color: ColorCode, move: Move) => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
 };
 
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
   update: (fieldId: number) => {
+    const stateBefore = get().state;
+
     set((state) => ({
       state: othelloReducer(state.state, { type: "update", fieldId }),
     }));
+    const stateAfter = get().state;
+
+    const initialValue = [] as number[];
+    const flipped = stateBefore.board.reduce((indexes, element, index) => {
+      return element !== stateAfter.board[index] && index !== fieldId
+        ? [...indexes, index]
+        : indexes;
+    }, initialValue);
+    if (flipped.length === 0) {
+      return;
+    }
+
+    get().pushHistory(stateBefore.color, {
+      type: "update",
+      putAt: fieldId,
+      flipped,
+    });
   },
-  skip: () =>
+  skip: () => {
     set((state) => ({
       state: othelloReducer(state.state, { type: "skip" }),
-    })),
-  reset: () => set({ state: initialState }),
+    }));
+    const stateBefore = get().state;
+    get().pushHistory(stateBefore.color, { type: "skip" });
+  },
+  reset: () => set({ state: initialState, moveHistory: [], index: -1 }),
   activateBot: async () => {
     const state = get().state;
     const isBotTurn = state.players[state.color].type === "bot";
@@ -214,6 +284,68 @@ const useOthello = create<State & Actions>((set, get) => ({
         isInitialized: true,
       },
     });
+  },
+  moveHistory: initialHistory,
+  index: -1,
+  pushHistory: (color, move) =>
+    set((state) => {
+      const newHistory = state.moveHistory
+        .slice(0, state.index + 1) // 未来の要素を削除
+        .concat({ color, move }); // 今回の追加要素を記録
+      return {
+        moveHistory: newHistory,
+        index: newHistory.length - 1,
+      };
+    }),
+  undo: () =>
+    set((state) => {
+      if (!get().canUndo()) {
+        return state;
+      }
+
+      const prevIndex = state.index - 1;
+      return {
+        ...state,
+        state: {
+          ...state.state,
+          turn: state.state.turn - 1,
+          board: apply('back')(
+            state.state.board,
+            state.moveHistory[state.index]
+          ),
+          color: flip(state.state.color),
+        },
+        index: prevIndex,
+      };
+    }),
+  redo: () =>
+    set((state) => {
+      if (!get().canRedo()) {
+        return state;
+      }
+
+      const nextIndex = state.index + 1;
+      return {
+        ...state,
+        state: {
+          ...state.state,
+          turn: state.state.turn + 1,
+          board: apply("forward")(
+            state.state.board,
+            state.moveHistory[nextIndex]
+          ),
+          color: flip(state.state.color),
+        },
+        index: nextIndex,
+      };
+    }),
+  canUndo: () => {
+    return !get().state.isOver && get().index > -1;
+  },
+  canRedo: () => {
+    const nextIndex = get().index + 1;
+    const lastIndex = get().moveHistory.length - 1;
+    return !get().state.isOver && nextIndex <= lastIndex;
   },
 }));
 
