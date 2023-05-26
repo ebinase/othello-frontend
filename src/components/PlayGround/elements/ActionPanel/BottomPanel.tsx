@@ -4,11 +4,26 @@ import useOthello from "../../../../dataflow/othello/othello";
 
 const BottomPanel: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const { state, skip, undo, redo, index, moveHistory } = useOthello();
+  const { state, skip, undo, redo, canUndo, canRedo } = useOthello();
   return (
-    <div className="text-center h-full flex flex-col justify-start items-center" onDoubleClick={() => {setIsVisible(!isVisible)}}>
-      <div className={"mt-3 flex justify-between gap-36 " + (isVisible ?"" : "hidden")}>
-        <button className={"w-10 h-10 bg-slate-100 rounded-full p-2 " + (index === -1 ? 'text-slate-400': '')} onClick={undo}>
+    <div
+      className="text-center h-full flex flex-col justify-start items-center"
+      onDoubleClick={() => {
+        setIsVisible(!isVisible);
+      }}
+    >
+      <div
+        className={
+          "mt-3 flex justify-between gap-36 " + (isVisible ? "" : "hidden")
+        }
+      >
+        <button
+          className={
+            "w-10 h-10 bg-slate-100 rounded-full p-2 " +
+            (canUndo() ? "" : "text-slate-400")
+          }
+          onClick={undo}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -24,7 +39,10 @@ const BottomPanel: React.FC = () => {
           </svg>
         </button>
         <button
-          className={"w-10 h-10 bg-slate-100 rounded-full p-2 " + (index < moveHistory.length ? 'text-slate-400': '')}
+          className={
+            "w-10 h-10 bg-slate-100 rounded-full p-2 " +
+            (canRedo() ? "" : "text-slate-400")
+          }
           onClick={redo}
         >
           <svg
