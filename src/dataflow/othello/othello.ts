@@ -168,7 +168,6 @@ const initialHistory: MoveHistory[] = [];
 const apply =
   (direction: "back" | "forward") =>
   (board: BoardData, moveHistory: MoveHistory) => {
-    console.log(moveHistory);
     const { color, move } = moveHistory;
     const oppositeColor = flip(color);
     return move.type === "update"
@@ -300,32 +299,32 @@ const useOthello = create<State & Actions>((set, get) => ({
     }),
   undo: () =>
     set((state) => {
-      if (state.index < 0) {
+      if (!get().canUndo()) {
         return state;
       }
-      const newIndex = state.index - 1;
+
+      const prevIndex = state.index - 1;
       return {
         ...state,
         state: {
           ...state.state,
           turn: state.state.turn - 1,
-          board: apply("back")(
+          board: apply('back')(
             state.state.board,
             state.moveHistory[state.index]
           ),
           color: flip(state.state.color),
         },
-        index: newIndex,
+        index: prevIndex,
       };
     }),
   redo: () =>
     set((state) => {
-      const nextIndex = state.index + 1;
-      const lastIndex = state.moveHistory.length - 1;
-      if (nextIndex > lastIndex) {
+      if (!get().canRedo()) {
         return state;
       }
 
+      const nextIndex = state.index + 1;
       return {
         ...state,
         state: {
@@ -341,13 +340,12 @@ const useOthello = create<State & Actions>((set, get) => ({
       };
     }),
   canUndo: () => {
-    return get().index > -1;
+    return !get().state.isOver && get().index > -1;
   },
   canRedo: () => {
     const nextIndex = get().index + 1;
     const lastIndex = get().moveHistory.length - 1;
-    console.log(nextIndex, lastIndex);
-    return nextIndex <= lastIndex;
+    return !get().state.isOver && nextIndex <= lastIndex;
   },
 }));
 
