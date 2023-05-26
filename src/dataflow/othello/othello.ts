@@ -194,6 +194,7 @@ const apply =
 
 type State = {
   state: GameState;
+  gameMode: GAME_MODE;
   moveHistory: MoveHistory[];
   index: number;
 };
@@ -213,6 +214,7 @@ type Actions = {
 
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
+  gameMode: GAME_MODE.PVP,
   update: (fieldId: number) => {
     const stateBefore = get().state;
 
@@ -286,6 +288,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         players,
         isInitialized: true,
       },
+      gameMode: settings.gameMode,
     });
   },
   moveHistory: initialHistory,
@@ -312,7 +315,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         state: {
           ...state.state,
           turn: state.state.turn - 1,
-          board: apply("back")(
+          board: apply('back')(
             state.state.board,
             state.moveHistory[state.index]
           ),
