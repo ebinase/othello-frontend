@@ -8,7 +8,7 @@ import {
   COLOR_CODES,
   flip,
 } from "../../components/PlayGround/elements/Board/Stone";
-import { rest } from "./logic/analyze";
+import { countStone, rest } from "./logic/analyze";
 import { move } from "./logic/core";
 import { create } from "zustand";
 import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
@@ -87,8 +87,8 @@ const initialState: GameState = {
   board: initialBoard,
   color: initialColor,
   players: {
-    [COLOR_CODES.WHITE]: initPlayer("Player2"),
-    [COLOR_CODES.BLACK]: initPlayer("Player1"),
+    [COLOR_CODES.WHITE]: initPlayer("WHITE"),
+    [COLOR_CODES.BLACK]: initPlayer("BLACK"),
   },
   isInitialized: false,
 };
@@ -99,7 +99,10 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
       try {
         const updated = move(state.board, action.fieldId, state.color);
         return {
-          isOver: rest(updated) === 0, // 置くところがなくなれば終了
+          isOver:
+            rest(updated) === 0 || // 置くところがなくなれば終了
+            countStone(updated, COLOR_CODES.WHITE) === 0 ||
+            countStone(updated, COLOR_CODES.WHITE) === 0,
           isSkipped: false,
           turn: state.turn + 1,
           board: updated,
@@ -191,6 +194,7 @@ const apply =
 
 type State = {
   state: GameState;
+  gameMode: GAME_MODE;
   moveHistory: MoveHistory[];
   index: number;
 };
@@ -210,6 +214,7 @@ type Actions = {
 
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
+  gameMode: GAME_MODE.PVP,
   update: (fieldId: number) => {
     const stateBefore = get().state;
 
@@ -283,6 +288,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         players,
         isInitialized: true,
       },
+      gameMode: settings.gameMode,
     });
   },
   moveHistory: initialHistory,
