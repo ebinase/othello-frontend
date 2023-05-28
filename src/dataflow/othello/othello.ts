@@ -194,7 +194,7 @@ const apply =
 
 type State = {
   state: GameState;
-  gameMode: GAME_MODE;
+  gameMode: GAME_MODE | undefined;
   moveHistory: MoveHistory[];
   index: number;
 };
@@ -214,7 +214,7 @@ type Actions = {
 
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
-  gameMode: GAME_MODE.PVP,
+  gameMode: undefined,
   update: (fieldId: number) => {
     const stateBefore = get().state;
 
@@ -238,6 +238,10 @@ const useOthello = create<State & Actions>((set, get) => ({
       putAt: fieldId,
       flipped,
     });
+
+    set((state) => ({
+      gameMode: state.gameMode ?? GAME_MODE.PVP,
+    }));
   },
   skip: () => {
     set((state) => ({
@@ -246,7 +250,13 @@ const useOthello = create<State & Actions>((set, get) => ({
     const stateBefore = get().state;
     get().pushHistory(stateBefore.color, { type: "skip" });
   },
-  reset: () => set({ state: initialState, moveHistory: [], index: -1 }),
+  reset: () =>
+    set({
+      state: initialState,
+      gameMode: undefined,
+      moveHistory: [],
+      index: -1,
+    }),
   activateBot: async () => {
     const state = get().state;
     const isBotTurn = state.players[state.color].type === "bot";
@@ -315,7 +325,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         state: {
           ...state.state,
           turn: state.state.turn - 1,
-          board: apply('back')(
+          board: apply("back")(
             state.state.board,
             state.moveHistory[state.index]
           ),
