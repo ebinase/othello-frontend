@@ -29,7 +29,13 @@ const OpenedEntrance: React.FC<Props> = ({ enterDanceFloor }) => {
       }, Math.random() * 1500);
     }, 1500);
 
-    return () => clearInterval(timerId);
+    return () => {
+      clearInterval(timerId);
+      if (canvas) {
+        canvas.style.filter = '';
+        canvas.style.transform = '';
+      }
+    };
   }, [confetti]);
 
   return (
