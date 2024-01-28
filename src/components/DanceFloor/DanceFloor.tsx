@@ -23,11 +23,11 @@ const DanceFloor: React.FC = () => {
 
   return (
     <div className='h-screen flex justify-start flex-col items-center'>
-      <div className='flex justify-center'>
+      <div className='flex justify-center mb-32'>
         <MirrorBall />
       </div>
-      <div className='w-full'>
-        <BackScreen content='🎉🎉🎉ヨシダハピバ２０２４🎉🎉🎉' rows={1}/>
+      <div className='w-full h-1/5 absolute top-1/4'>
+        <BackScreen content='ヨシダハピバ２０２４！！！' />
       </div>
       <AnimatePresence>
         <motion.img
@@ -44,11 +44,14 @@ const DanceFloor: React.FC = () => {
             repeatType: 'loop', // 繰り返しのタイプ（"loop"、"mirror"、または"reverse"）
           }}
         />
-        <motion.img key='/dj_table.png' src='/dj_table.png' className='h-1/4 z-10' />
-        <motion.img
-          key='/audience.png'
-          src='/audience.png'
-          className='h-1/4 z-10'
+        <motion.img key='/dj_table.png' src='/dj_table.png' className='h-1/4 z-10 -mb-32' />
+        <motion.div
+          className='z-10 w-full h-2/6 -mb-16'
+          style={{
+            backgroundImage: `url('/audience.png')`,
+            backgroundRepeat: 'repeat-x',
+            backgroundSize: 'contain',
+          }}
           animate={{
             y: ['15%', '5%', '15%'], // この配列で上下の動きを定義します。
           }}
