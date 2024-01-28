@@ -1,22 +1,17 @@
-"use client";
+'use client';
 
-import type { NextPage } from "next";
-import PlayGround from "../src/components/PlayGround/PlayGround";
-import Footer from "../src/components/shared/elements/Footer/Footer";
-import Header from "../src/components/shared/elements/Header/Header";
-
+import type { NextPage } from 'next';
+import MainContent from '../src/components/MainContent';
 const Home: NextPage = () => {
   return (
     <>
-      <div className="h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow">
-          <div className="h-full flex justify-between items-center">
-            <PlayGround />
+      <div className='h-screen flex flex-col'>
+        <main className='flex-grow'>
+          <div className='h-full flex justify-between items-center'>
+            <MainContent />
           </div>
         </main>
       </div>
-      <Footer />
     </>
   );
 };
