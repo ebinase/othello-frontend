@@ -10,7 +10,11 @@ const MainContent: React.FC = () => {
   return (
     <div className='h-screen w-screen'>
       {current === 'danceFloor' ? (
-        <DanceFloor />
+        <DanceFloor
+          exit={() => {
+            setCurrent('entrance');
+          }}
+        />
       ) : (
         <Entrance
           enterDanceFloor={() => {

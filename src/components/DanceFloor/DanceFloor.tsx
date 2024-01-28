@@ -2,9 +2,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import useConfetti from '../../hooks/useConfetti';
 import BackScreen from './BackScreen';
+import ExitButton from './ExitButton';
 import MirrorBall from './MirrorBall';
 
-const DanceFloor: React.FC = () => {
+type Props = {
+  exit: () => void;
+};
+
+const DanceFloor: React.FC<Props> = ({ exit }) => {
   const confetti = useConfetti();
   useEffect(() => {
     confetti.showBoth();
@@ -63,6 +68,9 @@ const DanceFloor: React.FC = () => {
           }}
         />
       </AnimatePresence>
+      <div className='absolute left-0 bottom-0 z-[10000]'>
+        <ExitButton action={exit} />
+      </div>
     </div>
   );
 };
