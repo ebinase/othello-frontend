@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import ClosedEntrance from './ClosedEntrance';
+import OpenedEntrance from './OpenedEntrance';
 
-const Entrance: React.FC = () => {
+type Props = {
+  enterDanceFloor: () => void;
+};
+
+const Entrance: React.FC<Props> = ({enterDanceFloor}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className='h-full w-full'>
       {isOpen
-        ? "Open"
+        ? <OpenedEntrance enterDanceFloor={enterDanceFloor} />
         : <ClosedEntrance open={() => setIsOpen(true)} />
       }
     </div>
