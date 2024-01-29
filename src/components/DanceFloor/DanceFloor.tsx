@@ -7,11 +7,13 @@ import MirrorBall from './MirrorBall';
 
 type Props = {
   exit: () => void;
+  withConfetti?: boolean;
 };
 
-const DanceFloor: React.FC<Props> = ({ exit }) => {
+const DanceFloor: React.FC<Props> = ({ exit, withConfetti = true }) => {
   const confetti = useConfetti();
   useEffect(() => {
+    if (!withConfetti) return;
     confetti.showBoth();
 
     const timerId = setInterval(() => {
@@ -24,7 +26,7 @@ const DanceFloor: React.FC<Props> = ({ exit }) => {
     }, 1500);
 
     return () => clearInterval(timerId);
-  }, [confetti]);
+  }, [confetti, withConfetti]);
 
   return (
     <div className='h-screen flex justify-start flex-col items-center'>

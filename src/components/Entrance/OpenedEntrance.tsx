@@ -1,47 +1,15 @@
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
-import useConfetti from '../../hooks/useConfetti';
-import MirrorBall from '../DanceFloor/MirrorBall';
+import DanceFloor from '../DanceFloor/DanceFloor';
 
 type Props = {
   enterDanceFloor: () => void;
 };
 
 const OpenedEntrance: React.FC<Props> = ({ enterDanceFloor }) => {
-  const confetti = useConfetti();
-
-  useEffect(() => {
-    // canvasに対してcssのfilterをかける
-    // z-indexを調整する
-    const canvas = document.querySelector('canvas');
-    if (canvas) {
-      canvas.style.filter = 'brightness(0.5) contrast(0.5)';
-      canvas.style.transform = 'scale(.6)';
-    }
-    confetti.showBoth();
-
-    const timerId = setInterval(() => {
-      setTimeout(() => {
-        confetti.showLeft();
-      }, Math.random() * 1500);
-      setTimeout(() => {
-        confetti.showRight();
-      }, Math.random() * 1500);
-    }, 1500);
-
-    return () => {
-      clearInterval(timerId);
-      if (canvas) {
-        canvas.style.filter = '';
-        canvas.style.transform = '';
-      }
-    };
-  }, [confetti]);
-
   return (
-    <div className='pt-[20vh] pb-[10vh] bg-white/10 h-full w-full flex flex-col items-center'>
-      <div className='w-full flex flex-col items-center brightness-[.5] scale-[.6] sm:scale-[.2] blur-[2px] '>
-        <MirrorBall />
+    <div className='bg-white/10 h-full w-full flex flex-col items-center justify-center'>
+      <div className='w-full flex flex-col items-center brightness-[.9] scale-[.03] sm:scale-[.05] blur-lg animate-pulse'>
+        <DanceFloor exit={() => { }} withConfetti={false} />
       </div>
       <motion.img
         key='gate_opened'
