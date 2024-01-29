@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import { useEffect } from 'react';
 import useConfetti from '../../hooks/useConfetti';
 import BackScreen from './BackScreen';
@@ -52,6 +53,36 @@ const DanceFloor: React.FC<Props> = ({ exit, withConfetti = true }) => {
           }}
         />
         <motion.img key='/dj_table.png' src='/dj_table.png' className='h-1/4 z-10 -mb-32' />
+        <motion.img
+          key='/dragon_left.png'
+          src='/dragon_left.png'
+          className='h-1/4 absolute top-1/2 left-2'
+          animate={{
+            y: ['15%', '5%', '15%'], // この配列で上下の動きを定義します。
+            x: ['5%', '15%', '5%'],
+          }}
+          transition={{
+            duration: 0.5, // 1サイクルの時間（秒）
+            ease: 'easeInOut', // アニメーションのイージングタイプ
+            repeat: Infinity, // 無限に繰り返し
+            repeatType: 'loop', // 繰り返しのタイプ（"loop"、"mirror"、または"reverse"）
+          }}
+        />
+        <motion.img
+          key='/dragon_right.png'
+          src='/dragon_right.png'
+          className='h-1/4 absolute top-1/2 right-2'
+          animate={{
+            y: ['15%', '5%', '15%'], // この配列で上下の動きを定義します。
+            x: ['-5%', '-15%', '-5%'],
+          }}
+          transition={{
+            duration: 0.5, // 1サイクルの時間（秒）
+            ease: 'easeInOut', // アニメーションのイージングタイプ
+            repeat: Infinity, // 無限に繰り返し
+            repeatType: 'loop', // 繰り返しのタイプ（"loop"、"mirror"、または"reverse"）
+          }}
+        />
         <motion.div
           className='z-10 w-full h-2/6 -mb-16'
           style={{
