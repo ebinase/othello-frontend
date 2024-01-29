@@ -19,7 +19,7 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
         <ClosedEntrance open={() => setIsOpen(true)} />
       )}
       <motion.div
-        className='h-24 w-24 absolute bottom-6 sm:bottom-[-10px] right-2 z-[10000]'
+        className='h-24 w-24 sm:h-40 sm:w-40 absolute bottom-6 sm:bottom-[-10px] right-2 z-[10000]'
         animate={{
           x: ['0%', '-15%', '-15%', '-30%', '-30%', '-15%', '-15%', '0%'],
           y: [
