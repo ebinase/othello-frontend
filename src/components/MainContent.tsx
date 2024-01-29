@@ -59,6 +59,7 @@ const MainContent: React.FC = () => {
               enterDanceFloor={() => {
                 setCurrent('danceFloor');
               }}
+              isFirstTime={isFirstTime}
             />
           </motion.div>
         </AnimatePresence>
