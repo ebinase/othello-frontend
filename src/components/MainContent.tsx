@@ -14,15 +14,15 @@ const MainContent: React.FC = () => {
         <AnimatePresence mode='wait'>
           <motion.div
             key='danceFloor'
-            initial={{ opacity: .7, scale: 0.1 }}
+            initial={{ opacity: 0.7, scale: 0.1 }}
             animate={{
               opacity: 1,
               scale: 1,
               filter: 'blur(0px)',
             }}
-            exit={{ opacity: .7, scale: 0.1 }}
+            exit={{ opacity: 0.7, scale: 0.1 }}
             transition={{
-              duration: .5,
+              duration: 0.5,
               ease: 'linear',
             }}
           >
@@ -37,14 +37,15 @@ const MainContent: React.FC = () => {
         <AnimatePresence mode='wait'>
           <motion.div
             key='entrance'
-            initial={{ opacity: .7, scale: 3 }}
+            initial={{ opacity: 0.7, scale: 3 }}
+            className='h-full w-full'
             animate={{
               opacity: 1,
               scale: 1,
             }}
-            exit={{ opacity: .7, scale: 3 }}
+            exit={{ opacity: 0.7, scale: 3 }}
             transition={{
-              duration: .5,
+              duration: 0.5,
               ease: 'linear',
             }}
           >
