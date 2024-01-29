@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import DanceFloor from './DanceFloor/DanceFloor';
@@ -7,6 +9,7 @@ type Place = 'entrance' | 'danceFloor';
 
 const MainContent: React.FC = () => {
   const [current, setCurrent] = useState<Place>('entrance');
+  const [isFirstTime, setIsFirstTime] = useState(true);
 
   return (
     <div className='h-screen w-screen'>
@@ -37,7 +40,7 @@ const MainContent: React.FC = () => {
         <AnimatePresence mode='wait'>
           <motion.div
             key='entrance'
-            initial={{ opacity: 0.7, scale: 3 }}
+            initial={isFirstTime ? {} : { opacity: 0.7, scale: 3 }} // 初回はアニメーションしない
             className='h-full w-full'
             animate={{
               opacity: 1,
@@ -47,6 +50,9 @@ const MainContent: React.FC = () => {
             transition={{
               duration: 0.5,
               ease: 'linear',
+            }}
+            onClick={() => {
+              setIsFirstTime(false);
             }}
           >
             <Entrance
