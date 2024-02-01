@@ -19,7 +19,7 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
         <ClosedEntrance open={() => setIsOpen(true)} />
       )}
       <motion.div
-        className='h-24 w-24 sm:h-40 sm:w-40 absolute bottom-6 sm:bottom-[-10px] right-2 z-[10000]'
+        className='w-[25vmin] absolute bottom-6 sm:bottom-[-10px] right-2 z-[10000]'
         animate={{
           x: ['0%', '-15%', '-15%', '-30%', '-30%', '-15%', '-15%', '0%'],
           y: [
@@ -48,11 +48,12 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
           repeatType: 'loop', // 繰り返しのタイプ（"loop"、"mirror"、または"reverse"）
         }}
       >
-        <div className='text-white font-bold text-center absolute -top-12'>
-          <p>{isOpen ? '？' : isFirstTime ? '扉をクリックすると開くよ' : 'おかえり〜'}</p>
+        {/* 画像のすぐ上に文字が配置されるようにしている(改行できるように高さは余分に確保している) */}
+        <div className='absolute -top-40 h-40  flex flex-col-reverse'>
+          <p className='text-white font-bold'>{isOpen ? '？？？' : isFirstTime ? '扉をクリックすると開くよ' : 'おかえり〜'}</p>
         </div>
-        <div className='aspect-square'>
-          <Image alt='dragon' src='/dragon_left.png' fill />
+        <div className=''>
+          <Image alt='dragon' src='/dragon_left.png' width={300} height={300} />
         </div>
       </motion.div>
     </div>
