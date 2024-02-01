@@ -50,14 +50,31 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
       >
         {/* 画像のすぐ上に文字が配置されるようにしている(改行できるように高さは余分に確保している) */}
         <div className='absolute -top-40 h-40  flex flex-col-reverse'>
-          <p className='text-white font-bold'>
-            {isFirstTime
-              ? isOpen
-                ? '？？？'
-                : '扉をクリックすると開くよ'
-              : isOpen
-              ? 'またいくの？'
-              : 'おかえり〜'}
+          {/* 改行してもきれいに単語が表示されるようにした */}
+          {/* See. https://qiita.com/tamanyan/items/e37e76b7743c59235995#%E8%A7%A3%E6%B1%BA%E7%AD%962-word-break-keep-all--overflow-wrap-break-word--wbr */}
+          <p
+            className='text-white font-bold'
+            style={{ wordBreak: 'keep-all', overflowWrap: 'anywhere' }}
+          >
+            {isFirstTime ? (
+              isOpen ? (
+                <>？？？</>
+              ) : (
+                <>
+                  扉を
+                  <wbr />
+                  クリック
+                  <wbr />
+                  すると
+                  <wbr />
+                  開くよ
+                </>
+              )
+            ) : isOpen ? (
+              <>またいくの？</>
+            ) : (
+              <>おかえり〜</>
+            )}
           </p>
         </div>
         <div>
