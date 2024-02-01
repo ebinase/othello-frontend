@@ -50,9 +50,17 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
       >
         {/* 画像のすぐ上に文字が配置されるようにしている(改行できるように高さは余分に確保している) */}
         <div className='absolute -top-40 h-40  flex flex-col-reverse'>
-          <p className='text-white font-bold'>{isOpen ? '？？？' : isFirstTime ? '扉をクリックすると開くよ' : 'おかえり〜'}</p>
+          <p className='text-white font-bold'>
+            {isFirstTime
+              ? isOpen
+                ? '？？？'
+                : '扉をクリックすると開くよ'
+              : isOpen
+              ? 'またいくの？'
+              : 'おかえり〜'}
+          </p>
         </div>
-        <div className=''>
+        <div>
           <Image alt='dragon' src='/dragon_left.png' width={300} height={300} />
         </div>
       </motion.div>

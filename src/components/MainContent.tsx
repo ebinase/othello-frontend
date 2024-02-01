@@ -51,13 +51,11 @@ const MainContent: React.FC = () => {
               duration: 0.5,
               ease: 'linear',
             }}
-            onClick={() => {
-              setIsFirstTime(false);
-            }}
           >
             <Entrance
               enterDanceFloor={() => {
                 setCurrent('danceFloor');
+                setIsFirstTime(false);
               }}
               isFirstTime={isFirstTime}
             />
