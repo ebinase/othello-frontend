@@ -1,8 +1,8 @@
 import '../src/styles/globals.css';
 
 export const metadata = {
-  title: 'ヨシダハピバ2024',
-  description: 'ヨシダハピバ2024',
+  title: 'タカフミハピバ2024',
+  description: 'タカフミハピバ2024',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
