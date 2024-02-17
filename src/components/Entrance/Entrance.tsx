@@ -13,6 +13,11 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className='h-full w-full'>
+      <div className='absolute w-full flex justify-center'>
+        <p className='text-center text-2xl bg-white mt-3 p-2 shadow-md'>
+          サカナクションLIVE会場
+        </p>
+      </div>
       {isOpen ? (
         <OpenedEntrance enterDanceFloor={enterDanceFloor} />
       ) : (
@@ -78,7 +83,7 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
           </p>
         </div>
         <div>
-          <Image alt='dragon' src='/dragon_left.png' width={300} height={300} />
+          <Image alt='sakana' src='/food_sakana_hone.png' width={300} height={300} />
         </div>
       </motion.div>
     </div>
