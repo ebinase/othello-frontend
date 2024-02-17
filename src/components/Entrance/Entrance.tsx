@@ -78,7 +78,7 @@ const Entrance: React.FC<Props> = ({ enterDanceFloor, isFirstTime }) => {
             ) : isOpen ? (
               <>またいくの？</>
             ) : (
-              <>おかえり〜</>
+              <>おめでと〜</>
             )}
           </p>
         </div>
