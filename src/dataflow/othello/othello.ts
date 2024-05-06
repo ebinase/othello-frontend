@@ -8,7 +8,7 @@ import {
   COLOR_CODES,
   flip,
 } from "../../components/PlayGround/elements/Board/Stone";
-import { countStone, rest } from "./logic/analyze";
+import { countStone, rest, selectableFields } from "./logic/analyze";
 import { move } from "./logic/core";
 import { create } from "zustand";
 import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
@@ -210,6 +210,11 @@ type Actions = {
   redo: () => void;
   canUndo: () => boolean;
   canRedo: () => boolean;
+  getAnalysis: () => {
+    white: number;
+    black: number;
+    selectableFields: number[];
+  };
 };
 
 const useOthello = create<State & Actions>((set, get) => ({
@@ -362,6 +367,14 @@ const useOthello = create<State & Actions>((set, get) => ({
     const nextIndex = get().index + 1;
     const lastIndex = get().moveHistory.length - 1;
     return !get().state.isOver && nextIndex <= lastIndex;
+  },
+  getAnalysis: () => {
+    const state = get().state;
+    return {
+      white: countStone(state.board, COLOR_CODES.WHITE),
+      black: countStone(state.board, COLOR_CODES.BLACK),
+      selectableFields: selectableFields(state.board, state.color),
+    };
   },
 }));
 

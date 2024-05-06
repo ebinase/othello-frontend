@@ -10,14 +10,25 @@ export type FieldId = number;
 type Props = {
   fieldId: FieldId;
   content: ColorCode;
+  isSelectable: boolean;
 };
+
+const style =
+  "bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center box-content";
 
 // TODO: メモ化
 const Field: React.FC<Props> = (props) => {
   const { update } = useOthello();
-  return (
+  return props.isSelectable ? (
+    <button
+      className={style}
+      onClick={!props.content ? () => update(props.fieldId) : undefined}
+    >
+      {props.content ? <Stone color={props.content} /> : null}
+    </button>
+  ) : (
     <div
-      className="bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center"
+      className={style}
       onClick={!props.content ? () => update(props.fieldId) : undefined}
     >
       {props.content ? <Stone color={props.content} /> : null}
