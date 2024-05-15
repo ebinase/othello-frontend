@@ -12,6 +12,8 @@ type Props = {
   fieldId: FieldId;
   content: ColorCode;
   isSelectable: boolean;
+  isFlipped: boolean;
+  isNewStone: boolean;
 };
 
 const style =
@@ -32,7 +34,13 @@ const Field: React.FC<Props> = (props) => {
       className={style}
       onClick={!props.content ? () => update(props.fieldId) : undefined}
     >
-      {props.content ? <AnimatedStone color={props.content} /> : null}
+      {props.content ? (
+        <AnimatedStone
+          color={props.content}
+          isFlipped={props.isFlipped}
+          isNewStone={props.isNewStone}
+        />
+      ) : null}
     </div>
   );
 };
