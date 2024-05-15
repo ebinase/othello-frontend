@@ -1,4 +1,5 @@
 import useOthello from "../../../../dataflow/othello/othello";
+import AnimatedStone from "./AnimatedStone";
 import Stone, { ColorCode } from "./Stone";
 
 export const EMPTY_CODE = 0;
@@ -31,7 +32,7 @@ const Field: React.FC<Props> = (props) => {
       className={style}
       onClick={!props.content ? () => update(props.fieldId) : undefined}
     >
-      {props.content ? <Stone color={props.content} /> : null}
+      {props.content ? <AnimatedStone color={props.content} /> : null}
     </div>
   );
 };
