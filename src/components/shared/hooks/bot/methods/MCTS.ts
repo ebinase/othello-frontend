@@ -1,9 +1,8 @@
-import { BoardData, EMPTY_CODE } from "@models/Board/Board";
+import { Board, BoardData, EMPTY_CODE } from "@models/Board/Board";
 import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
 import {
   countFlipableStoneInLine,
   countStone,
-  rest,
   selectableFields,
 } from "../../../../../dataflow/othello/logic/analyze";
 import { randomBot } from "./Random";
@@ -69,7 +68,7 @@ const playOut = (
   let color = flip(myColor);
   let skipCount = 0;
   try {
-    while (rest(board) !== 0) {
+    while (!Board.fromArray(board).isFulfilled()){
       const result = randomBot(board, color);
       if (result !== null) {
         board = move(board, result, color);
@@ -79,7 +78,7 @@ const playOut = (
       }
       color = flip(color);
       if (skipCount > 1) {
-        throw new Error("パスが連続しています");
+        throw new Error('パスが連続しています');
       }
     }
     return countStone(board, myColor) > countStone(board, flip(myColor));

@@ -87,4 +87,15 @@ export class Board {
     });
     return matrix.flat();
   }
+
+  // ========================================
+  // 分析用の関数郡
+  // ========================================
+
+  /**
+   * @returns boolean 盤面が完全に埋まっているかどうか
+   */
+  public isFulfilled(): boolean {
+    return this.board.filter((field) => field === EMPTY_CODE).length === 0;
+  }
 }

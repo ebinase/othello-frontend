@@ -1,6 +1,11 @@
+import { BoardData, EMPTY_CODE } from "@models/Board/Board";
 import React, { useState } from "react";
-import { rest, shoudSkip } from "../../../../dataflow/othello/logic/analyze";
+import { shoudSkip } from "../../../../dataflow/othello/logic/analyze";
 import useOthello from "../../../../dataflow/othello/othello";
+
+// TODO: 残りの空白のマスの数はメタデータに含めるようにして、この関数を削除する
+export const rest = (board: BoardData): number =>
+  board.filter((field) => field === EMPTY_CODE).length;
 
 const BottomPanel: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
