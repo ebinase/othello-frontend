@@ -1,12 +1,15 @@
 "use client";
 
-import { countStone } from "../../../../../../dataflow/othello/logic/analyze";
 import useOthello from "../../../../../../dataflow/othello/othello";
 import { BoardData } from "@models/Board/Board";
 import { ColorCode, COLOR_CODES } from "../../../Board/Stone";
 import ResultBar from "./ResultBar";
 
 const TOTAL_STONES = 64;
+
+// FIXME: 結果はメタデータに持たせて以下の処理はすべて削除する
+export const countStone = (board: BoardData, color: ColorCode): number =>
+  board.filter((field) => field === color).length;
 
 const ResultInfo: React.FC = () => {
   const { state, gameMode } = useOthello();

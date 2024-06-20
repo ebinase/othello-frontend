@@ -42,6 +42,3 @@ export const countFlipableStoneInLine = (line: BoardData, color: ColorCode) => {
   }
   return 0;
 };
-
-export const countStone = (board: BoardData, color: ColorCode): number =>
-  board.filter((field) => field === color).length;

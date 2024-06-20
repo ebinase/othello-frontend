@@ -8,7 +8,7 @@ import {
   COLOR_CODES,
   flip,
 } from "../../components/PlayGround/elements/Board/Stone";
-import { countStone, selectableFields } from "./logic/analyze";
+import { selectableFields } from "./logic/analyze";
 import { create } from "zustand";
 import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
 import { Board } from "../../models/Board/Board";
@@ -101,8 +101,8 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
           return {
             isOver:
               board.isFulfilled() || // 置くところがなくなれば終了
-              countStone(board.toArray(), COLOR_CODES.WHITE) === 0 ||
-              countStone(board.toArray(), COLOR_CODES.WHITE) === 0,
+              board.countStone(COLOR_CODES.WHITE) === 0 ||
+              board.countStone(COLOR_CODES.BLACK) === 0,
             isSkipped: false,
             turn: state.turn + 1,
             board: board.toArray(),
@@ -372,9 +372,10 @@ const useOthello = create<State & Actions>((set, get) => ({
   },
   getAnalysis: () => {
     const state = get().state;
+    const board = Board.fromArray(state.board);
     return {
-      white: countStone(state.board, COLOR_CODES.WHITE),
-      black: countStone(state.board, COLOR_CODES.BLACK),
+      white: board.countStone(COLOR_CODES.WHITE),
+      black: board.countStone(COLOR_CODES.BLACK),
       selectableFields: selectableFields(state.board, state.color),
     };
   },

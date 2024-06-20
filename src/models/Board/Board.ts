@@ -1,3 +1,5 @@
+import { flip } from "@components/PlayGround/elements/Board/Stone";
+import { COMPARISON_RESULT } from "@models/Shared/Comparison";
 import { countFlipableStoneInLine } from "../../dataflow/othello/logic/analyze";
 import { directions, getCurrentCoord, getLines, toMatrix } from "../../dataflow/othello/logic/matrix";
 import { Result } from "../Shared/Result";
@@ -93,9 +95,30 @@ export class Board {
   // ========================================
 
   /**
-   * @returns boolean 盤面が完全に埋まっているかどうか
+   * 盤面が完全に埋まっているかどうか
    */
   public isFulfilled(): boolean {
     return this.board.filter((field) => field === EMPTY_CODE).length === 0;
+  }
+
+  /**
+   * @returns number 指定された色の石の数
+   */
+  public countStone(color: ColorCode): number {
+    return this.board.filter((field) => field === color).length;
+  }
+
+  /**
+   * 指定された色の数ともう一方の色の数を比較する
+   */
+  public compareToOpponent(color: ColorCode): COMPARISON_RESULT {
+    const myCount = this.countStone(color);
+    const opponentCount = this.countStone(
+      flip(color) as ColorCode
+    );
+
+    if (myCount < opponentCount) return COMPARISON_RESULT.LESS;
+    if (myCount === opponentCount) return COMPARISON_RESULT.EQUAL;
+    return COMPARISON_RESULT.GREATER;
   }
 }

@@ -2,11 +2,11 @@ import { Board, BoardData, EMPTY_CODE } from "@models/Board/Board";
 import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
 import {
   countFlipableStoneInLine,
-  countStone,
   selectableFields,
 } from "../../../../../dataflow/othello/logic/analyze";
 import { randomBot } from "./Random";
 import { directions, getCurrentCoord, getLines, toMatrix } from "@dataflow/othello/logic/matrix";
+import { COMPARISON_RESULT } from "@models/Shared/Comparison";
 
 type Options = {
   maxPlayOut: number;
@@ -81,7 +81,12 @@ const playOut = (
         throw new Error('パスが連続しています');
       }
     }
-    return countStone(board, myColor) > countStone(board, flip(myColor));
+  
+    
+    return (
+      Board.fromArray(board).compareToOpponent(myColor) ===
+      COMPARISON_RESULT.GREATER
+    );
   } catch (e) {
     // 勝敗がつかない場合は負け扱いにする
     return false;
