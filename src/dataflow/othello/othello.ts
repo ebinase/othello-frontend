@@ -9,9 +9,9 @@ import {
   flip,
 } from "../../components/PlayGround/elements/Board/Stone";
 import { countStone, rest, selectableFields } from "./logic/analyze";
-import { move } from "./logic/core";
 import { create } from "zustand";
 import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
+import { Board } from "../../models/Board/Board";
 
 type Player = {
   name: string;
@@ -73,11 +73,7 @@ export type OthelloDispatcher = React.Dispatch<Action>;
 
 // 初期値
 const initialTurn = 1;
-const initialBoard: BoardData = [...Array(64)].map((_, index) => {
-  if ([27, 36].includes(index)) return COLOR_CODES.WHITE;
-  if ([28, 35].includes(index)) return COLOR_CODES.BLACK;
-  return EMPTY_CODE;
-});
+const initialBoard: BoardData = Board.initialize().toArray();
 const initialColor = COLOR_CODES.WHITE;
 
 const initialState: GameState = {
@@ -96,26 +92,32 @@ const initialState: GameState = {
 const othelloReducer = (state: GameState, action: Action): GameState => {
   switch (action.type) {
     case "update":
-      try {
-        const updated = move(state.board, action.fieldId, state.color);
-        return {
-          isOver:
-            rest(updated) === 0 || // 置くところがなくなれば終了
-            countStone(updated, COLOR_CODES.WHITE) === 0 ||
-            countStone(updated, COLOR_CODES.WHITE) === 0,
-          isSkipped: false,
-          turn: state.turn + 1,
-          board: updated,
-          color: flip(state.color),
-          players: state.players,
-          isInitialized: true, // プレーを開始したら初期化済みとする
-        };
-      } catch (e) {
-        return {
-          ...state,
-          error: { hasError: true, message: "置けませんでした！" },
-        };
-      }
+      const result = Board.fromArray(state.board).update(
+        action.fieldId,
+        state.color
+      );
+      return result.when({
+        success: (board) => {
+          return {
+            isOver:
+              rest(board.toArray()) === 0 || // 置くところがなくなれば終了
+              countStone(board.toArray(), COLOR_CODES.WHITE) === 0 ||
+              countStone(board.toArray(), COLOR_CODES.WHITE) === 0,
+            isSkipped: false,
+            turn: state.turn + 1,
+            board: board.toArray(),
+            color: flip(state.color),
+            players: state.players,
+            isInitialized: true, // プレーを開始したら初期化済みとする
+          };
+        },
+        failure: (_) => {
+          return {
+            ...state,
+            error: { hasError: true, message: "置けませんでした！" },
+          };
+        }
+      });
     case "skip":
       return {
         isOver: state.isSkipped, // 前のターンでもスキップされていたら強制終了
