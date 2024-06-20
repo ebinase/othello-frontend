@@ -1,4 +1,4 @@
-import { BoardData } from "../../components/PlayGround/elements/Board/Board";
+import { BoardData } from "@models/Board/Board";
 import {
   EMPTY_CODE,
   FieldId,
@@ -116,7 +116,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
             ...state,
             error: { hasError: true, message: "置けませんでした！" },
           };
-        }
+        },
       });
     case "skip":
       return {

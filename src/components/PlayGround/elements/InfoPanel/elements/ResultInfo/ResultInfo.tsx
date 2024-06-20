@@ -2,7 +2,7 @@
 
 import { countStone } from "../../../../../../dataflow/othello/logic/analyze";
 import useOthello from "../../../../../../dataflow/othello/othello";
-import { BoardData } from "../../../Board/Board";
+import { BoardData } from "@models/Board/Board";
 import { ColorCode, COLOR_CODES } from "../../../Board/Stone";
 import ResultBar from "./ResultBar";
 

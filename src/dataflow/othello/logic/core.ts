@@ -1,4 +1,4 @@
-import { BoardData } from "../../../components/PlayGround/elements/Board/Board";
+import { BoardData } from "@models/Board/Board";
 import { EMPTY_CODE } from "../../../components/PlayGround/elements/Board/Field";
 import { ColorCode } from "../../../components/PlayGround/elements/Board/Stone";
 import { countFlipableStoneInLine } from "./analyze";

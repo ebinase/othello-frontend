@@ -1,4 +1,4 @@
-import { BoardData } from "../../../../PlayGround/elements/Board/Board";
+import { BoardData } from "@models/Board/Board";
 import { ColorCode } from "../../../../PlayGround/elements/Board/Stone";
 import { selectableFields } from "../../../../../dataflow/othello/logic/analyze";
 

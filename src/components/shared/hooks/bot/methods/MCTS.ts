@@ -1,4 +1,4 @@
-import { BoardData } from "../../../../PlayGround/elements/Board/Board";
+import { BoardData } from "@models/Board/Board";
 import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
 import {
   countStone,

@@ -1,7 +1,5 @@
 import useOthello from "../../../../dataflow/othello/othello";
-import Field, { FieldObject } from "./Field";
-
-export type BoardData = Array<FieldObject>;
+import Field from "./Field";
 
 const Board: React.FC = () => {
   const { state, getAnalysis } = useOthello();
