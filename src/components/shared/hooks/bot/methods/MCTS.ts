@@ -1,12 +1,13 @@
-import { BoardData } from "@models/Board/Board";
+import { BoardData, EMPTY_CODE } from "@models/Board/Board";
 import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
 import {
+  countFlipableStoneInLine,
   countStone,
   rest,
   selectableFields,
 } from "../../../../../dataflow/othello/logic/analyze";
-import { move } from "../../../../../dataflow/othello/logic/core";
 import { randomBot } from "./Random";
+import { directions, getCurrentCoord, getLines, toMatrix } from "@dataflow/othello/logic/matrix";
 
 type Options = {
   maxPlayOut: number;
@@ -86,4 +87,40 @@ const playOut = (
     // 勝敗がつかない場合は負け扱いにする
     return false;
   }
+};
+
+// FIXME: 将来的にはBoardクラスで置き換えたいが、Botのロジックが複雑なため旧core.tsの内容を移植した
+const move = (board: BoardData, fieldId: number, color: ColorCode) => {
+  if (board[fieldId] !== EMPTY_CODE) throw Error('置けないよ！');
+
+  const scores = getLines(board, fieldId).map((line) => {
+    return countFlipableStoneInLine(line, color);
+  });
+  if (
+    scores.reduce((sum, score) => {
+      return sum + score;
+    }, 0) === 0
+  )
+    throw Error('ひとつも返せないよ！');
+  return flipStone(board, fieldId, scores, color);
+};
+
+const flipStone = (
+  board: BoardData,
+  fieldId: number,
+  scores: number[],
+  color: ColorCode
+) => {
+  let matrix = toMatrix(board, 8);
+  const origin = { row: Math.floor(fieldId / 8), col: fieldId % 8 };
+
+  matrix[origin.row][origin.col] = color;
+
+  directions.forEach((direction, index) => {
+    for (let offset = 1; offset <= scores[index]; offset++) {
+      let currentCoord = getCurrentCoord(origin, direction, offset);
+      matrix[currentCoord.row][currentCoord.col] = color;
+    }
+  });
+  return matrix.flat();
 };
