@@ -8,7 +8,6 @@ import {
   COLOR_CODES,
   flip,
 } from "../../components/PlayGround/elements/Board/Stone";
-import { selectableFields } from "./logic/analyze";
 import { create } from "zustand";
 import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
 import { Board } from "../../models/Board/Board";
@@ -376,7 +375,7 @@ const useOthello = create<State & Actions>((set, get) => ({
     return {
       white: board.countStone(COLOR_CODES.WHITE),
       black: board.countStone(COLOR_CODES.BLACK),
-      selectableFields: selectableFields(state.board, state.color),
+      selectableFields: board.selectableFields(state.color),
     };
   },
 }));

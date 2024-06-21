@@ -2,7 +2,6 @@ import { Board, BoardData, EMPTY_CODE } from "@models/Board/Board";
 import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
 import {
   countFlipableStoneInLine,
-  selectableFields,
 } from "../../../../../dataflow/othello/logic/analyze";
 import { randomBot } from "./Random";
 import { directions, getCurrentCoord, getLines, toMatrix } from "@dataflow/othello/logic/matrix";
@@ -18,7 +17,7 @@ export const MCTS = (board: BoardData, color: ColorCode) => {
   };
 
   // 選択する候補となるフィールドのリスト
-  const fields = selectableFields(board, color);
+  const fields = Board.fromArray(board).selectableFields(color);
 
   if (fields.length === 0) return null;
 

@@ -113,10 +113,33 @@ export class Board {
    */
   public compareToOpponent(color: ColorCode): COMPARISON_RESULT {
     const myCount = this.countStone(color);
-    const opponentCount = this.countStone(
-      flip(color) as ColorCode
-    );
+    const opponentCount = this.countStone(flip(color) as ColorCode);
 
     return compareNumbers(myCount, opponentCount);
   }
+
+  /**
+   * 石を置くことが可能な場所のリストを返す
+   */
+  public selectableFields = (color: ColorCode): number[] => {
+    return this.scoreMap(this.board, color)
+      .map((value, index) => (value > 0 ? index : undefined))
+      .filter(
+        (value): value is Exclude<typeof value, undefined> =>
+          value !== undefined
+      );
+  };
+
+  private scoreMap = (board: BoardData, color: ColorCode) => {
+    return board.map((_, fieldId) => this.getScore(board, color)(fieldId));
+  };
+
+  private getScore = (board: BoardData, color: ColorCode) => {
+    return (fieldId: number) => {
+      if (board[fieldId] !== EMPTY_CODE) return 0;
+      return getLines(board, fieldId)
+        .map((line) => countFlipableStoneInLine(line, color))
+        .reduce((sum, score) => sum + score, 0);
+    };
+  };
 }
