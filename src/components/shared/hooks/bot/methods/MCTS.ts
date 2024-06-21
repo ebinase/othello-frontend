@@ -1,8 +1,5 @@
 import { Board, BoardData, EMPTY_CODE } from "@models/Board/Board";
 import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
-import {
-  countFlipableStoneInLine,
-} from "../../../../../dataflow/othello/logic/analyze";
 import { randomBot } from "./Random";
 import { directions, getCurrentCoord, getLines, toMatrix } from "@dataflow/othello/logic/matrix";
 import { COMPARISON_RESULT } from "@models/Shared/Comparison";
@@ -126,4 +123,16 @@ const flipStone = (
     }
   });
   return matrix.flat();
+};
+
+const countFlipableStoneInLine = (line: BoardData, color: ColorCode) => {
+  if (line.length === 0) return 0;
+
+  let score = 0;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === EMPTY_CODE) return 0;
+    if (line[i] === color) return score;
+    score++;
+  }
+  return 0;
 };

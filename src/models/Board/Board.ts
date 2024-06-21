@@ -1,6 +1,5 @@
 import { flip } from "@components/PlayGround/elements/Board/Stone";
 import { compareNumbers, COMPARISON_RESULT } from "@models/Shared/Comparison";
-import { countFlipableStoneInLine } from "../../dataflow/othello/logic/analyze";
 import { directions, getCurrentCoord, getLines, toMatrix } from "../../dataflow/othello/logic/matrix";
 import { Result } from "../Shared/Result";
 
@@ -58,8 +57,9 @@ export class Board {
     }
 
     // 一つも返せる石がない場合は失敗
+    // TODO: scoreMapで置き換えられそう
     const scores = getLines(this.board, fieldId).map((line) => {
-      return countFlipableStoneInLine(line, color);
+      return this.countFlipableStoneInLine(line, color);
     });
     if (scores.reduce((sum, score) => sum + score, 0) === 0) {
       return Result.failure(new InvalidPositionError());
@@ -70,6 +70,7 @@ export class Board {
     return Result.success(Board.fromArray(flippedBoard));
   }
 
+  // TODO: わかりにくいのでリファクタリングしたい
   private static flipStone(
     board: BoardData,
     fieldId: number,
@@ -138,8 +139,22 @@ export class Board {
     return (fieldId: number) => {
       if (board[fieldId] !== EMPTY_CODE) return 0;
       return getLines(board, fieldId)
-        .map((line) => countFlipableStoneInLine(line, color))
+        .map((line) => this.countFlipableStoneInLine(line, color))
         .reduce((sum, score) => sum + score, 0);
     };
   };
+
+  // TODO: もう少し下のレイヤー寄りの処理なので別クラスに切り出したい
+  // TODO: 行を表すlineと盤面全体のデータ型が同じBoardDataなので、別の型にしたい
+  private countFlipableStoneInLine(line: BoardData, color: ColorCode): number {
+    if (line.length === 0) return 0;
+
+    let score = 0;
+    for (let i = 0; i < line.length; i++) {
+      if (line[i] === EMPTY_CODE) return 0;
+      if (line[i] === color) return score;
+      score++;
+    }
+    return 0;
+  }
 }
