@@ -1,5 +1,5 @@
 import { flip } from "@components/PlayGround/elements/Board/Stone";
-import { COMPARISON_RESULT } from "@models/Shared/Comparison";
+import { compareNumbers, COMPARISON_RESULT } from "@models/Shared/Comparison";
 import { countFlipableStoneInLine } from "../../dataflow/othello/logic/analyze";
 import { directions, getCurrentCoord, getLines, toMatrix } from "../../dataflow/othello/logic/matrix";
 import { Result } from "../Shared/Result";
@@ -117,8 +117,6 @@ export class Board {
       flip(color) as ColorCode
     );
 
-    if (myCount < opponentCount) return COMPARISON_RESULT.LESS;
-    if (myCount === opponentCount) return COMPARISON_RESULT.EQUAL;
-    return COMPARISON_RESULT.GREATER;
+    return compareNumbers(myCount, opponentCount);
   }
 }
