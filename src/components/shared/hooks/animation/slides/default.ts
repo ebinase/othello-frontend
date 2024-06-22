@@ -1,4 +1,4 @@
-import { BoardData } from "../../../../PlayGround/elements/Board/Board";
+import { BoardData } from "@models/Board/Board";
 import { EMPTY_CODE } from "../../../../PlayGround/elements/Board/Field";
 import { COLOR_CODES } from "../../../../PlayGround/elements/Board/Stone";
 

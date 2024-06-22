@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { BoardData } from "../../../PlayGround/elements/Board/Board";
+import { BoardData } from "@models/Board/Board";
 import slide from "./slides/default";
 import { toMatrix } from "../../../../dataflow/othello/logic/matrix";
 import {
