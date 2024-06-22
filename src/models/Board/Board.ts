@@ -1,21 +1,19 @@
-import { flip } from "@components/PlayGround/elements/Board/Stone";
-import { compareNumbers, COMPARISON_RESULT } from "@models/Shared/Comparison";
-import { directions, getCurrentCoord, getLines, toMatrix } from "../../dataflow/othello/logic/matrix";
-import { Result } from "../Shared/Result";
+import { flip } from '@models/Board/Color';
+import { compareNumbers, COMPARISON_RESULT } from '@models/Shared/Comparison';
+import {
+  directions,
+  getCurrentCoord,
+  getLines,
+  toMatrix,
+} from '../../dataflow/othello/logic/matrix';
+import { Result } from '../Shared/Result';
+import { COLOR_CODE } from './Color';
 
 // Types
-// TODO: ColorCodeやmatrixの処理を新たなクラスに切り出す
-export const COLOR_CODES = {
-  WHITE: 1,
-  BLACK: 2,
-} as const;
-
-export type ColorCode = typeof COLOR_CODES[keyof typeof COLOR_CODES];
-
 export const EMPTY_CODE = 0;
 export type EmptyCode = typeof EMPTY_CODE;
 
-export type FieldObject = ColorCode | EmptyCode;
+export type FieldObject = COLOR_CODE | EmptyCode;
 export type FieldId = number;
 
 export type BoardData = Array<FieldObject>;
@@ -32,8 +30,8 @@ export class Board {
 
   public static initialize(): Board {
     const boardData = [...Array(64)].map((_, index) => {
-      if ([27, 36].includes(index)) return COLOR_CODES.WHITE;
-      if ([28, 35].includes(index)) return COLOR_CODES.BLACK;
+      if ([27, 36].includes(index)) return COLOR_CODE.WHITE;
+      if ([28, 35].includes(index)) return COLOR_CODE.BLACK;
       return EMPTY_CODE;
     });
     return new Board(boardData);
@@ -49,7 +47,7 @@ export class Board {
 
   public update(
     fieldId: number,
-    color: ColorCode
+    color: COLOR_CODE
   ): Result<Board, InvalidPositionError> {
     // すでに石が置かれている場合は失敗
     if (this.board[fieldId] !== EMPTY_CODE) {
@@ -75,7 +73,7 @@ export class Board {
     board: BoardData,
     fieldId: number,
     scores: number[],
-    color: ColorCode
+    color: COLOR_CODE
   ): BoardData {
     let matrix = toMatrix(board, 8);
     const origin = { row: Math.floor(fieldId / 8), col: fieldId % 8 };
@@ -105,16 +103,16 @@ export class Board {
   /**
    * @returns number 指定された色の石の数
    */
-  public countStone(color: ColorCode): number {
+  public countStone(color: COLOR_CODE): number {
     return this.board.filter((field) => field === color).length;
   }
 
   /**
    * 指定された色の数ともう一方の色の数を比較する
    */
-  public compareToOpponent(color: ColorCode): COMPARISON_RESULT {
+  public compareToOpponent(color: COLOR_CODE): COMPARISON_RESULT {
     const myCount = this.countStone(color);
-    const opponentCount = this.countStone(flip(color) as ColorCode);
+    const opponentCount = this.countStone(flip(color) as COLOR_CODE);
 
     return compareNumbers(myCount, opponentCount);
   }
@@ -122,7 +120,7 @@ export class Board {
   /**
    * 石を置くことが可能な場所のリストを返す
    */
-  public selectableFields = (color: ColorCode): number[] => {
+  public selectableFields = (color: COLOR_CODE): number[] => {
     return this.scoreMap(this.board, color)
       .map((value, index) => (value > 0 ? index : undefined))
       .filter(
@@ -131,11 +129,11 @@ export class Board {
       );
   };
 
-  private scoreMap = (board: BoardData, color: ColorCode) => {
+  private scoreMap = (board: BoardData, color: COLOR_CODE) => {
     return board.map((_, fieldId) => this.getScore(board, color)(fieldId));
   };
 
-  private getScore = (board: BoardData, color: ColorCode) => {
+  private getScore = (board: BoardData, color: COLOR_CODE) => {
     return (fieldId: number) => {
       if (board[fieldId] !== EMPTY_CODE) return 0;
       return getLines(board, fieldId)
@@ -146,7 +144,7 @@ export class Board {
 
   // TODO: もう少し下のレイヤー寄りの処理なので別クラスに切り出したい
   // TODO: 行を表すlineと盤面全体のデータ型が同じBoardDataなので、別の型にしたい
-  private countFlipableStoneInLine(line: BoardData, color: ColorCode): number {
+  private countFlipableStoneInLine(line: BoardData, color: COLOR_CODE): number {
     if (line.length === 0) return 0;
 
     let score = 0;

@@ -1,13 +1,14 @@
-import { Board, BoardData } from "@models/Board/Board";
-import { ColorCode, flip } from "../../../../PlayGround/elements/Board/Stone";
-import { randomBot } from "./Random";
-import { COMPARISON_RESULT } from "@models/Shared/Comparison";
+import { Board, BoardData } from '@models/Board/Board';
+import { flip } from '@models/Board/Color';
+import { randomBot } from './Random';
+import { COMPARISON_RESULT } from '@models/Shared/Comparison';
+import { COLOR_CODE } from '@models/Board/Color';
 
 type Options = {
   maxPlayOut: number;
 };
 
-export const MCTS = (board: BoardData, color: ColorCode) => {
+export const MCTS = (board: BoardData, color: COLOR_CODE) => {
   const options: Options = {
     maxPlayOut: 500,
   };
@@ -35,7 +36,7 @@ export const MCTS = (board: BoardData, color: ColorCode) => {
     { field: -1, score: -1 }
   );
 
-  console.log(new Date().getTime() - start.getTime() + "ms");
+  console.log(new Date().getTime() - start.getTime() + 'ms');
   console.log(playOutResults);
 
   return playOutResults.field;
@@ -44,7 +45,7 @@ export const MCTS = (board: BoardData, color: ColorCode) => {
 // プレイアウトの結果を評価する
 const evaluateMove = (
   board: Board,
-  color: ColorCode,
+  color: COLOR_CODE,
   field: number,
   playOutCount: number
 ) => {
@@ -58,14 +59,14 @@ const evaluateMove = (
 
 /**
  * 交互にランダムに最後まで打ち合い、勝利したかどうかを返す
- * @param baseBoard 
- * @param myColor 
- * @param targetField 
- * @returns 
+ * @param baseBoard
+ * @param myColor
+ * @param targetField
+ * @returns
  */
 const playOut = (
   baseBoard: Board,
-  myColor: ColorCode,
+  myColor: COLOR_CODE,
   targetField: number
 ): boolean => {
   // まずは指定されたフィールドに石を置く
@@ -80,12 +81,16 @@ const playOut = (
 
 /**
  * ランダムに石を打ち続け、最終的に数が多かった色を返す
- * @param board 
- * @param color 
- * @param skipCount 
- * @returns 
+ * @param board
+ * @param color
+ * @param skipCount
+ * @returns
  */
-const randomWalk = (board: Board, color: ColorCode, skipCount: number): ColorCode | undefined => {
+const randomWalk = (
+  board: Board,
+  color: COLOR_CODE,
+  skipCount: number
+): COLOR_CODE | undefined => {
   // 盤面が埋まっている場合は勝敗を判定する
   if (board.isFulfilled()) {
     return judgeWinner(board, color);
@@ -100,14 +105,16 @@ const randomWalk = (board: Board, color: ColorCode, skipCount: number): ColorCod
   const randomMove = randomBot(board.toArray(), color);
 
   // 石を置く
-  return board.update(randomMove ?? -1, color)
-    .when({
-      success: (newBoard) => randomWalk(newBoard, flip(color), 0),  // 盤面の更新に成功したらスキップカウントをリセットして相手の手番へ
-      failure: () => randomWalk(board, flip(color), skipCount + 1), // 盤面の更新に失敗したらスキップカウントを増やして相手の手番へ
-    });
-}
+  return board.update(randomMove ?? -1, color).when({
+    success: (newBoard) => randomWalk(newBoard, flip(color), 0), // 盤面の更新に成功したらスキップカウントをリセットして相手の手番へ
+    failure: () => randomWalk(board, flip(color), skipCount + 1), // 盤面の更新に失敗したらスキップカウントを増やして相手の手番へ
+  });
+};
 
-const judgeWinner = (board: Board, color: ColorCode): ColorCode | undefined => {
+const judgeWinner = (
+  board: Board,
+  color: COLOR_CODE
+): COLOR_CODE | undefined => {
   switch (board.compareToOpponent(color)) {
     case COMPARISON_RESULT.EQUAL:
       return undefined;

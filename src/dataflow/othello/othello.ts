@@ -1,40 +1,37 @@
-import { BoardData } from "@models/Board/Board";
+import { BoardData } from '@models/Board/Board';
 import {
   EMPTY_CODE,
   FieldId,
-} from "../../components/PlayGround/elements/Board/Field";
-import {
-  ColorCode,
-  COLOR_CODES,
-  flip,
-} from "../../components/PlayGround/elements/Board/Stone";
-import { create } from "zustand";
-import { MCTS } from "../../components/shared/hooks/bot/methods/MCTS";
-import { Board } from "../../models/Board/Board";
+} from '../../components/PlayGround/elements/Board/Field';
+import { flip } from '@models/Board/Color';
+import { create } from 'zustand';
+import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
+import { Board } from '../../models/Board/Board';
+import { COLOR_CODE } from '@models/Board/Color';
 
 type Player = {
   name: string;
-  type: "human" | "bot";
+  type: 'human' | 'bot';
   think:
     | undefined
-    | ((board: BoardData, color: ColorCode) => Promise<FieldId | null>);
+    | ((board: BoardData, color: COLOR_CODE) => Promise<FieldId | null>);
 };
 
-type Players = Record<ColorCode, Player>;
+type Players = Record<COLOR_CODE, Player>;
 
 const initPlayer = (name: string): Player => {
   return {
     name,
-    type: "human",
+    type: 'human',
     think: undefined,
   };
 };
 
 const initBot = (): Player => {
   return {
-    name: "Bot Lv.5",
-    type: "bot",
-    think: async (board: BoardData, color: ColorCode) => MCTS(board, color),
+    name: 'Bot Lv.5',
+    type: 'bot',
+    think: async (board: BoardData, color: COLOR_CODE) => MCTS(board, color),
   };
 };
 
@@ -43,7 +40,7 @@ type GameState = {
   isSkipped: boolean;
   turn: number;
   board: BoardData;
-  color: ColorCode;
+  color: COLOR_CODE;
   error?: {
     hasError: boolean;
     message?: any;
@@ -54,16 +51,16 @@ type GameState = {
 };
 
 type updateAction = {
-  type: "update";
+  type: 'update';
   fieldId: number;
 };
 
 type skipAction = {
-  type: "skip";
+  type: 'skip';
 };
 
 type clearAction = {
-  type: "clear";
+  type: 'clear';
 };
 
 type Action = updateAction | skipAction | clearAction;
@@ -73,7 +70,7 @@ export type OthelloDispatcher = React.Dispatch<Action>;
 // 初期値
 const initialTurn = 1;
 const initialBoard: BoardData = Board.initialize().toArray();
-const initialColor = COLOR_CODES.WHITE;
+const initialColor = COLOR_CODE.WHITE;
 
 const initialState: GameState = {
   isOver: false,
@@ -82,15 +79,15 @@ const initialState: GameState = {
   board: initialBoard,
   color: initialColor,
   players: {
-    [COLOR_CODES.WHITE]: initPlayer("WHITE"),
-    [COLOR_CODES.BLACK]: initPlayer("BLACK"),
+    [COLOR_CODE.WHITE]: initPlayer('WHITE'),
+    [COLOR_CODE.BLACK]: initPlayer('BLACK'),
   },
   isInitialized: false,
 };
 
 const othelloReducer = (state: GameState, action: Action): GameState => {
   switch (action.type) {
-    case "update":
+    case 'update':
       const result = Board.fromArray(state.board).update(
         action.fieldId,
         state.color
@@ -100,8 +97,8 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
           return {
             isOver:
               board.isFulfilled() || // 置くところがなくなれば終了
-              board.countStone(COLOR_CODES.WHITE) === 0 ||
-              board.countStone(COLOR_CODES.BLACK) === 0,
+              board.countStone(COLOR_CODE.WHITE) === 0 ||
+              board.countStone(COLOR_CODE.BLACK) === 0,
             isSkipped: false,
             turn: state.turn + 1,
             board: board.toArray(),
@@ -113,11 +110,11 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         failure: (_) => {
           return {
             ...state,
-            error: { hasError: true, message: "置けませんでした！" },
+            error: { hasError: true, message: '置けませんでした！' },
           };
         },
       });
-    case "skip":
+    case 'skip':
       return {
         isOver: state.isSkipped, // 前のターンでもスキップされていたら強制終了
         isSkipped: true,
@@ -127,7 +124,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         players: state.players,
         isInitialized: state.isInitialized,
       };
-    case "clear":
+    case 'clear':
       return initialState;
     default:
       return state;
@@ -135,8 +132,8 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
 };
 
 export enum GAME_MODE {
-  PVP = "PVP",
-  PVE = "PVE",
+  PVP = 'PVP',
+  PVE = 'PVE',
 }
 
 export type PvPSettings = {
@@ -147,45 +144,45 @@ export type PvPSettings = {
 export type PvESettings = {
   gameMode: GAME_MODE.PVE;
   player: string;
-  playerColor: ColorCode;
+  playerColor: COLOR_CODE;
 };
 
 type GameSettings = PvPSettings | PvESettings;
 
 // == Move History =======================
 type UpdateMove = {
-  type: "update";
+  type: 'update';
   putAt: FieldId;
   flipped: FieldId[];
 };
 
 type SkipMove = {
-  type: "skip";
+  type: 'skip';
 };
 
 type Move = UpdateMove | SkipMove;
 
-type MoveHistory = { color: ColorCode; move: Move };
+type MoveHistory = { color: COLOR_CODE; move: Move };
 
 const initialHistory: MoveHistory[] = [];
 
 const apply =
-  (direction: "back" | "forward") =>
+  (direction: 'back' | 'forward') =>
   (board: BoardData, moveHistory: MoveHistory) => {
     const { color, move } = moveHistory;
     const oppositeColor = flip(color);
-    return move.type === "update"
+    return move.type === 'update'
       ? board
           .map((value, index) =>
             index === move.putAt
-              ? direction === "back"
+              ? direction === 'back'
                 ? EMPTY_CODE
                 : color
               : value
           )
           .map((value, index) =>
             move.flipped.includes(index)
-              ? direction === "back"
+              ? direction === 'back'
                 ? oppositeColor
                 : color
               : value
@@ -206,7 +203,7 @@ type Actions = {
   reset: () => void;
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
-  pushHistory: (color: ColorCode, move: Move) => void;
+  pushHistory: (color: COLOR_CODE, move: Move) => void;
   undo: () => void;
   redo: () => void;
   canUndo: () => boolean;
@@ -225,7 +222,7 @@ const useOthello = create<State & Actions>((set, get) => ({
     const stateBefore = get().state;
 
     set((state) => ({
-      state: othelloReducer(state.state, { type: "update", fieldId }),
+      state: othelloReducer(state.state, { type: 'update', fieldId }),
     }));
     const stateAfter = get().state;
 
@@ -240,7 +237,7 @@ const useOthello = create<State & Actions>((set, get) => ({
     }
 
     get().pushHistory(stateBefore.color, {
-      type: "update",
+      type: 'update',
       putAt: fieldId,
       flipped,
     });
@@ -251,10 +248,10 @@ const useOthello = create<State & Actions>((set, get) => ({
   },
   skip: () => {
     set((state) => ({
-      state: othelloReducer(state.state, { type: "skip" }),
+      state: othelloReducer(state.state, { type: 'skip' }),
     }));
     const stateBefore = get().state;
-    get().pushHistory(stateBefore.color, { type: "skip" });
+    get().pushHistory(stateBefore.color, { type: 'skip' });
   },
   reset: () =>
     set({
@@ -265,7 +262,7 @@ const useOthello = create<State & Actions>((set, get) => ({
     }),
   activateBot: async () => {
     const state = get().state;
-    const isBotTurn = state.players[state.color].type === "bot";
+    const isBotTurn = state.players[state.color].type === 'bot';
     const update = get().update;
 
     if (state.isOver || !isBotTurn) {
@@ -273,7 +270,7 @@ const useOthello = create<State & Actions>((set, get) => ({
     }
 
     const think = state.players[state.color].think;
-    if (think === undefined) throw new Error("Botが登録されていません");
+    if (think === undefined) throw new Error('Botが登録されていません');
 
     const move = await think(state.board, state.color);
     if (move === null) return get().skip();
@@ -284,16 +281,16 @@ const useOthello = create<State & Actions>((set, get) => ({
     const players: Players =
       settings.gameMode === GAME_MODE.PVP
         ? {
-            [COLOR_CODES.WHITE]: initPlayer(settings.players[0]),
-            [COLOR_CODES.BLACK]: initPlayer(settings.players[1]),
+            [COLOR_CODE.WHITE]: initPlayer(settings.players[0]),
+            [COLOR_CODE.BLACK]: initPlayer(settings.players[1]),
           }
         : {
-            [COLOR_CODES.WHITE]:
-              settings.playerColor === COLOR_CODES.WHITE
+            [COLOR_CODE.WHITE]:
+              settings.playerColor === COLOR_CODE.WHITE
                 ? initPlayer(settings.player)
                 : initBot(),
-            [COLOR_CODES.BLACK]:
-              settings.playerColor === COLOR_CODES.BLACK
+            [COLOR_CODE.BLACK]:
+              settings.playerColor === COLOR_CODE.BLACK
                 ? initPlayer(settings.player)
                 : initBot(),
           };
@@ -331,7 +328,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         state: {
           ...state.state,
           turn: state.state.turn - 1,
-          board: apply("back")(
+          board: apply('back')(
             state.state.board,
             state.moveHistory[state.index]
           ),
@@ -352,7 +349,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         state: {
           ...state.state,
           turn: state.state.turn + 1,
-          board: apply("forward")(
+          board: apply('forward')(
             state.state.board,
             state.moveHistory[nextIndex]
           ),
@@ -373,8 +370,8 @@ const useOthello = create<State & Actions>((set, get) => ({
     const state = get().state;
     const board = Board.fromArray(state.board);
     return {
-      white: board.countStone(COLOR_CODES.WHITE),
-      black: board.countStone(COLOR_CODES.BLACK),
+      white: board.countStone(COLOR_CODE.WHITE),
+      black: board.countStone(COLOR_CODE.BLACK),
       selectableFields: board.selectableFields(state.color),
     };
   },
