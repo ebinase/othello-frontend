@@ -4,7 +4,7 @@ import { useState } from "react";
 import useOthello, {
   GAME_MODE,
 } from "../../../../../../dataflow/othello/othello";
-import Stone, { ColorCode, COLOR_CODES } from "../../../Board/Stone";
+import { COLOR_CODE } from "@models/Board/Color"
 
 const SettingsInfo: React.FC = (props) => {
   const { initialize } = useOthello();
@@ -15,7 +15,7 @@ const SettingsInfo: React.FC = (props) => {
     initialize({ gameMode: GAME_MODE.PVP, players: ["Player1", "Player2"] });
   };
 
-  const handlePvE = (name: string, playerColor: ColorCode) => {
+  const handlePvE = (name: string, playerColor: COLOR_CODE) => {
     initialize({
       gameMode: GAME_MODE.PVE,
       player: name,
@@ -52,13 +52,13 @@ const SettingsInfo: React.FC = (props) => {
             <div className="flex justify-center gap-5">
               <div
                 className="flex gap-2 items-center"
-                onClick={() => handlePvE("Player1", COLOR_CODES.WHITE)}
+                onClick={() => handlePvE("Player1", COLOR_CODE.WHITE)}
               >
                 <button className="text-sm text-slate-700">先攻</button>
               </div>
               <div
                 className="flex gap-2 items-center"
-                onClick={() => handlePvE("Player1", COLOR_CODES.BLACK)}
+                onClick={() => handlePvE("Player1", COLOR_CODE.BLACK)}
               >
                 <button className="text-sm text-slate-700">後攻</button>
               </div>

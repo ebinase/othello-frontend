@@ -2,14 +2,14 @@
 
 import { shoudSkip } from "../../../../../../dataflow/othello/logic/analyze";
 import useOthello from "../../../../../../dataflow/othello/othello";
-import { COLOR_CODES } from "../../../Board/Stone";
+import { COLOR_CODE } from "@models/Board/Color"
 import PlayerBar from "./PlayerBar";
 
 const PlayerInfo: React.FC = (props) => {
   const { state } = useOthello();
 
-  const colorText = state.color === COLOR_CODES.WHITE ? "白" : "黒";
-  const theme = state.color === COLOR_CODES.WHITE ? "light" : "dark";
+  const colorText = state.color === COLOR_CODE.WHITE ? "白" : "黒";
+  const theme = state.color === COLOR_CODE.WHITE ? "light" : "dark";
   const name = state.players[state.color].name;
 
   const data =

@@ -1,9 +1,9 @@
-import { Board, BoardData } from "@models/Board/Board";
-import { ColorCode } from "../../../../PlayGround/elements/Board/Stone";
+import { Board, BoardData } from '@models/Board/Board';
+import { COLOR_CODE } from '@models/Board/Color';
 
 export const randomBot = (
   board: BoardData,
-  color: ColorCode
+  color: COLOR_CODE
 ): number | null => {
   const fields = Board.fromArray(board).selectableFields(color);
   if (fields.length === 0) return null;
