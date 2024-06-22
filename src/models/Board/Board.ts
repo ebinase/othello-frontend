@@ -1,4 +1,4 @@
-import { flip } from '@components/PlayGround/elements/Board/Stone';
+import { flip } from '@models/Board/Color';
 import { compareNumbers, COMPARISON_RESULT } from '@models/Shared/Comparison';
 import {
   directions,

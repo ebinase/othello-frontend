@@ -1,5 +1,5 @@
 import { Board, BoardData } from '@models/Board/Board';
-import { flip } from '../../../../PlayGround/elements/Board/Stone';
+import { flip } from '@models/Board/Color';
 import { randomBot } from './Random';
 import { COMPARISON_RESULT } from '@models/Shared/Comparison';
 import { COLOR_CODE } from '@models/Board/Color';

@@ -1,9 +1,5 @@
 import { COLOR_CODE } from "@models/Board/Color";
 
-export const flip: any = (color: any) => {
-  return color === COLOR_CODE.WHITE ? COLOR_CODE.BLACK : COLOR_CODE.WHITE;
-};
-
 type Props = {
   color: COLOR_CODE;
   size?: string;

@@ -3,7 +3,7 @@ import {
   EMPTY_CODE,
   FieldId,
 } from '../../components/PlayGround/elements/Board/Field';
-import { flip } from '../../components/PlayGround/elements/Board/Stone';
+import { flip } from '@models/Board/Color';
 import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
 import { Board } from '../../models/Board/Board';
