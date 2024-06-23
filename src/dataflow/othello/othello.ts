@@ -8,6 +8,7 @@ import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
 import { Board } from '../../models/Board/Board';
 import { COLOR_CODE } from '@models/Board/Color';
+import { Othello } from '@models/Game/Othello';
 
 type Player = {
   name: string;
@@ -68,16 +69,14 @@ type Action = updateAction | skipAction | clearAction;
 export type OthelloDispatcher = React.Dispatch<Action>;
 
 // 初期値
-const initialTurn = 1;
-const initialBoard: BoardData = Board.initialize().toArray();
-const initialColor = COLOR_CODE.WHITE;
+let initialGame = Othello.initialize();
 
 const initialState: GameState = {
   isOver: false,
   isSkipped: false,
-  turn: initialTurn,
-  board: initialBoard,
-  color: initialColor,
+  turn: initialGame.turnNumber,
+  board: initialGame.board.toArray(),
+  color: initialGame.color,
   players: {
     [COLOR_CODE.WHITE]: initPlayer('WHITE'),
     [COLOR_CODE.BLACK]: initPlayer('BLACK'),
@@ -86,23 +85,23 @@ const initialState: GameState = {
 };
 
 const othelloReducer = (state: GameState, action: Action): GameState => {
+  const othello = Othello.reconstruct(
+    state.turn,
+    state.board,
+    state.color,
+    state.isSkipped ? 1 : 0
+  );
   switch (action.type) {
     case 'update':
-      const result = Board.fromArray(state.board).update(
-        action.fieldId,
-        state.color
-      );
+      const result = othello.move(action.fieldId);
       return result.when({
-        success: (board) => {
+        success: (nextGame) => {
           return {
-            isOver:
-              board.isFulfilled() || // 置くところがなくなれば終了
-              board.countStone(COLOR_CODE.WHITE) === 0 ||
-              board.countStone(COLOR_CODE.BLACK) === 0,
+            isOver: nextGame.isOver(),
             isSkipped: false,
-            turn: state.turn + 1,
-            board: board.toArray(),
-            color: flip(state.color),
+            turn: nextGame.turnNumber,
+            board: nextGame.board.toArray(),
+            color: nextGame.color,
             players: state.players,
             isInitialized: true, // プレーを開始したら初期化済みとする
           };
@@ -115,12 +114,13 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
         },
       });
     case 'skip':
+      const nextGame = othello.skip();
       return {
-        isOver: state.isSkipped, // 前のターンでもスキップされていたら強制終了
+        isOver: nextGame.isOver(),
         isSkipped: true,
-        turn: state.turn + 1,
-        board: state.board,
-        color: flip(state.color),
+        turn: nextGame.turnNumber,
+        board: nextGame.board.toArray(),
+        color: nextGame.color,
         players: state.players,
         isInitialized: state.isInitialized,
       };
