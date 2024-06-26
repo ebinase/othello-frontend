@@ -1,15 +1,17 @@
+import { COLOR_CODE } from "@models/Board/Color";
 import useOthello from "../../../../dataflow/othello/othello";
-import Stone, { ColorCode } from "./Stone";
+import Stone from "./Stone";
+
 
 export const EMPTY_CODE = 0;
 export type EmptyCode = typeof EMPTY_CODE;
 
-export type FieldObject = ColorCode | EmptyCode;
+export type FieldObject = COLOR_CODE | EmptyCode;
 export type FieldId = number;
 
 type Props = {
   fieldId: FieldId;
-  content: ColorCode;
+  content: COLOR_CODE;
   isSelectable: boolean;
 };
 
