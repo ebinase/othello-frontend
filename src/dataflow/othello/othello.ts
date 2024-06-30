@@ -4,7 +4,11 @@ import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
 import { Board } from '../../models/Board/Board';
 import { COLOR_CODE } from '@models/Board/Color';
-import { Othello } from '@models/Game/Othello';
+import {
+  initialOthelloState,
+  othelloReducer,
+  OthelloState,
+} from './othelloReducer';
 
 type Player = {
   name: string;
@@ -32,12 +36,7 @@ const initBot = (): Player => {
   };
 };
 
-type GameState = {
-  isOver: boolean;
-  isSkipped: boolean;
-  turn: number;
-  board: BoardData;
-  color: COLOR_CODE;
+type GameState = OthelloState & {
   error?: {
     hasError: boolean;
     message?: any;
@@ -47,74 +46,13 @@ type GameState = {
   isInitialized: boolean;
 };
 
-type updateAction = {
-  type: 'update';
-  fieldId: number;
-};
-
-type skipAction = {
-  type: 'skip';
-};
-
-type clearAction = {
-  type: 'clear';
-};
-
-type Action = updateAction | skipAction | clearAction;
-
-// 初期値
-let initialGame = Othello.initialize();
-
 const initialState: GameState = {
-  isOver: false,
-  isSkipped: false,
-  turn: initialGame.turnNumber,
-  board: initialGame.board.toArray(),
-  color: initialGame.color,
+  ...initialOthelloState,
   players: {
     [COLOR_CODE.WHITE]: initPlayer('WHITE'),
     [COLOR_CODE.BLACK]: initPlayer('BLACK'),
   },
   isInitialized: false,
-};
-
-const othelloReducer = (state: GameState, action: Action): GameState => {
-  const othello = Othello.reconstruct(
-    state.turn,
-    state.board,
-    state.color,
-    state.isSkipped ? 1 : 0
-  );
-  switch (action.type) {
-    case 'update':
-      const result = othello.move(action.fieldId);
-      return result.when({
-        success: (nextGame) => {
-          return {
-            ...nextGame.toArray(),
-            players: state.players,
-            isInitialized: true, // プレーを開始したら初期化済みとする
-          };
-        },
-        failure: (_) => {
-          return {
-            ...state,
-            error: { hasError: true, message: '置けませんでした！' },
-          };
-        },
-      });
-    case 'skip':
-      const nextGame = othello.skip();
-      return {
-        ...nextGame.toArray(),
-        players: state.players,
-        isInitialized: state.isInitialized,
-      };
-    case 'clear':
-      return initialState;
-    default:
-      return state;
-  }
 };
 
 export enum GAME_MODE {
@@ -158,10 +96,20 @@ const useOthello = create<State & Actions>((set, get) => ({
   gameMode: undefined,
   update: (fieldId: number) => {
     const stateBefore = get().state;
-
-    set((state) => ({
-      state: othelloReducer(state.state, { type: 'update', fieldId }),
-    }));
+    set((state) => {
+      const updated = othelloReducer(state.state, { type: 'update', fieldId });
+      return {
+        state: {
+          ...updated,
+          isInitialized: true, // プレーを開始したら初期化済みとする
+          players: state.state.players,
+          error:
+            updated.updatedFieldIdList.length === 0  // 一つも返していない場合は失敗扱いする
+              ? { hasError: true, message: '置けませんでした！' }
+              : { hasError: false },
+        },
+      };
+    });
     const stateAfter = get().state;
 
     const initialValue = [] as number[];
@@ -180,7 +128,10 @@ const useOthello = create<State & Actions>((set, get) => ({
   },
   skip: () => {
     set((state) => ({
-      state: othelloReducer(state.state, { type: 'skip' }),
+      state: {
+        ...state.state,
+        ...othelloReducer(state.state, { type: 'skip' }),
+      },
     }));
   },
   reset: () =>
