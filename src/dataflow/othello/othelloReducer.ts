@@ -32,6 +32,13 @@ export const initialOthelloState: OthelloState = {
   updatedFieldIdList: [],
 };
 
+/**
+ * オセロの状態を更新するReducer
+ * ターンをまたいでオセロのルールを司る
+ * @param state
+ * @param action
+ * @returns
+ */
 export const othelloReducer = (
   state: OthelloState,
   action: Action

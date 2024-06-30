@@ -91,6 +91,10 @@ type Actions = {
   };
 };
 
+/**
+ * オセロのゲーム状態管理と更新関数を提供するhooks
+ * ゲームルールはothelloReducerに委譲し、状態管理や描画に必要な情報などを扱う
+ */
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
   gameMode: undefined,
@@ -109,7 +113,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         },
       };
     });
-
+    // ゲームモードが明示的に設定されなかった場合はPVPとして扱う
     set((state) => ({
       gameMode: state.gameMode ?? GAME_MODE.PVP,
     }));
