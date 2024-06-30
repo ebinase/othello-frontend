@@ -1,8 +1,5 @@
 import { BoardData } from '@models/Board/Board';
-import {
-  EMPTY_CODE,
-  FieldId,
-} from '../../components/PlayGround/elements/Board/Field';
+import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { flip } from '@models/Board/Color';
 import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
@@ -149,52 +146,9 @@ export type PvESettings = {
 
 type GameSettings = PvPSettings | PvESettings;
 
-// == Move History =======================
-type UpdateMove = {
-  type: 'update';
-  putAt: FieldId;
-  flipped: FieldId[];
-};
-
-type SkipMove = {
-  type: 'skip';
-};
-
-type Move = UpdateMove | SkipMove;
-
-type MoveHistory = { color: COLOR_CODE; move: Move };
-
-const initialHistory: MoveHistory[] = [];
-
-const apply =
-  (direction: 'back' | 'forward') =>
-  (board: BoardData, moveHistory: MoveHistory) => {
-    const { color, move } = moveHistory;
-    const oppositeColor = flip(color);
-    return move.type === 'update'
-      ? board
-          .map((value, index) =>
-            index === move.putAt
-              ? direction === 'back'
-                ? EMPTY_CODE
-                : color
-              : value
-          )
-          .map((value, index) =>
-            move.flipped.includes(index)
-              ? direction === 'back'
-                ? oppositeColor
-                : color
-              : value
-          )
-      : board;
-  };
-
 type State = {
   state: GameState;
   gameMode: GAME_MODE | undefined;
-  moveHistory: MoveHistory[];
-  index: number;
 };
 
 type Actions = {
@@ -203,11 +157,6 @@ type Actions = {
   reset: () => void;
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
-  pushHistory: (color: COLOR_CODE, move: Move) => void;
-  undo: () => void;
-  redo: () => void;
-  canUndo: () => boolean;
-  canRedo: () => boolean;
   getAnalysis: () => {
     white: number;
     black: number;
@@ -236,12 +185,6 @@ const useOthello = create<State & Actions>((set, get) => ({
       return;
     }
 
-    get().pushHistory(stateBefore.color, {
-      type: 'update',
-      putAt: fieldId,
-      flipped,
-    });
-
     set((state) => ({
       gameMode: state.gameMode ?? GAME_MODE.PVP,
     }));
@@ -250,15 +193,11 @@ const useOthello = create<State & Actions>((set, get) => ({
     set((state) => ({
       state: othelloReducer(state.state, { type: 'skip' }),
     }));
-    const stateBefore = get().state;
-    get().pushHistory(stateBefore.color, { type: 'skip' });
   },
   reset: () =>
     set({
       state: initialState,
       gameMode: undefined,
-      moveHistory: [],
-      index: -1,
     }),
   activateBot: async () => {
     const state = get().state;
@@ -303,68 +242,6 @@ const useOthello = create<State & Actions>((set, get) => ({
       },
       gameMode: settings.gameMode,
     });
-  },
-  moveHistory: initialHistory,
-  index: -1,
-  pushHistory: (color, move) =>
-    set((state) => {
-      const newHistory = state.moveHistory
-        .slice(0, state.index + 1) // 未来の要素を削除
-        .concat({ color, move }); // 今回の追加要素を記録
-      return {
-        moveHistory: newHistory,
-        index: newHistory.length - 1,
-      };
-    }),
-  undo: () =>
-    set((state) => {
-      if (!get().canUndo()) {
-        return state;
-      }
-
-      const prevIndex = state.index - 1;
-      return {
-        ...state,
-        state: {
-          ...state.state,
-          turn: state.state.turn - 1,
-          board: apply('back')(
-            state.state.board,
-            state.moveHistory[state.index]
-          ),
-          color: flip(state.state.color),
-        },
-        index: prevIndex,
-      };
-    }),
-  redo: () =>
-    set((state) => {
-      if (!get().canRedo()) {
-        return state;
-      }
-
-      const nextIndex = state.index + 1;
-      return {
-        ...state,
-        state: {
-          ...state.state,
-          turn: state.state.turn + 1,
-          board: apply('forward')(
-            state.state.board,
-            state.moveHistory[nextIndex]
-          ),
-          color: flip(state.state.color),
-        },
-        index: nextIndex,
-      };
-    }),
-  canUndo: () => {
-    return !get().state.isOver && get().index > -1;
-  },
-  canRedo: () => {
-    const nextIndex = get().index + 1;
-    const lastIndex = get().moveHistory.length - 1;
-    return !get().state.isOver && nextIndex <= lastIndex;
   },
   getAnalysis: () => {
     const state = get().state;
