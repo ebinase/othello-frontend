@@ -63,4 +63,18 @@ export class Othello {
       this.board.countStone(COLOR_CODE.BLACK) !== 0
     );
   }
+
+  /**
+   * TODO: Stateの知識を持ってしまっているのでDTOなどの別クラスに切り出す
+   * @returns {Object} Othelloの状態を表すオブジェクト
+   */
+  public toArray() {
+    return {
+      isOver: this.isOver(),
+      isSkipped: this.skipCount > 0,
+      turn: this.turnNumber,
+      board: this.board.toArray(),
+      color: this.color,
+    };
+  }
 }

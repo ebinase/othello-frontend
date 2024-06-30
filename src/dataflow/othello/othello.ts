@@ -1,6 +1,5 @@
 import { BoardData } from '@models/Board/Board';
 import { FieldId } from '../../components/PlayGround/elements/Board/Field';
-import { flip } from '@models/Board/Color';
 import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
 import { Board } from '../../models/Board/Board';
@@ -63,8 +62,6 @@ type clearAction = {
 
 type Action = updateAction | skipAction | clearAction;
 
-export type OthelloDispatcher = React.Dispatch<Action>;
-
 // 初期値
 let initialGame = Othello.initialize();
 
@@ -94,11 +91,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
       return result.when({
         success: (nextGame) => {
           return {
-            isOver: nextGame.isOver(),
-            isSkipped: false,
-            turn: nextGame.turnNumber,
-            board: nextGame.board.toArray(),
-            color: nextGame.color,
+            ...nextGame.toArray(),
             players: state.players,
             isInitialized: true, // プレーを開始したら初期化済みとする
           };
@@ -113,11 +106,7 @@ const othelloReducer = (state: GameState, action: Action): GameState => {
     case 'skip':
       const nextGame = othello.skip();
       return {
-        isOver: nextGame.isOver(),
-        isSkipped: true,
-        turn: nextGame.turnNumber,
-        board: nextGame.board.toArray(),
-        color: nextGame.color,
+        ...nextGame.toArray(),
         players: state.players,
         isInitialized: state.isInitialized,
       };
