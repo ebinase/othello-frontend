@@ -46,11 +46,14 @@ export const othelloReducer = (
     case 'update':
       const result = othello.move(action.fieldId);
       return result.when({
-        success: (nextGame) => {
+        success: (next) => {
           return {
-            ...nextGame.toArray(),
-            // TODO: ひっくり返された石の位置も含むようにする
-            updatedFieldIdList: [action.fieldId],
+            ...next.toArray(),
+            // TODO: flipされたfieldIdと石を置いたfieldIdを別にして返す
+            updatedFieldIdList: [
+              action.fieldId,
+              ...getUpdatedFieldIdList(state.board, next.board.toArray()),
+            ],
           };
         },
         failure: (_) => {
@@ -61,9 +64,9 @@ export const othelloReducer = (
         },
       });
     case 'skip':
-      const nextGame = othello.skip();
+      const next = othello.skip();
       return {
-        ...nextGame.toArray(),
+        ...next.toArray(),
         updatedFieldIdList: [],
       };
     case 'clear':
@@ -72,3 +75,16 @@ export const othelloReducer = (
       return state;
   }
 };
+
+/**
+ * ２つの盤面を比較して、更新されたfieldIdのリストを返す
+ * @param before 
+ * @param after 
+ * @returns 
+ */
+const getUpdatedFieldIdList = (before: BoardData, after: BoardData) =>
+  before.reduce((indexes, element, index) => {
+    return element !== after[index]
+      ? [...indexes, index]
+      : indexes;
+  }, [] as number[]);

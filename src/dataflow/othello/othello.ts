@@ -95,7 +95,6 @@ const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
   gameMode: undefined,
   update: (fieldId: number) => {
-    const stateBefore = get().state;
     set((state) => {
       const updated = othelloReducer(state.state, { type: 'update', fieldId });
       return {
@@ -110,17 +109,6 @@ const useOthello = create<State & Actions>((set, get) => ({
         },
       };
     });
-    const stateAfter = get().state;
-
-    const initialValue = [] as number[];
-    const flipped = stateBefore.board.reduce((indexes, element, index) => {
-      return element !== stateAfter.board[index] && index !== fieldId
-        ? [...indexes, index]
-        : indexes;
-    }, initialValue);
-    if (flipped.length === 0) {
-      return;
-    }
 
     set((state) => ({
       gameMode: state.gameMode ?? GAME_MODE.PVP,
