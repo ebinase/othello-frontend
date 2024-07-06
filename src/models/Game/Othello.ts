@@ -49,6 +49,10 @@ export class Othello {
     );
   }
 
+  public shoudSkip() {
+    return !this.isOver && this.board.selectableFields(this.color).length === 0;
+  }
+
   public isOver() {
     return this.skipCount > 1 || !this.isContinuable();
   }
@@ -75,6 +79,7 @@ export class Othello {
       turn: this.turnNumber,
       board: this.board.toArray(),
       color: this.color,
+      shouldSkip: this.shoudSkip(),
     };
   }
 }

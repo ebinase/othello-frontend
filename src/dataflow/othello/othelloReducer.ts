@@ -10,6 +10,7 @@ export type OthelloState = {
   board: BoardData;
   color: COLOR_CODE;
   updatedFieldIdList: number[];
+  shouldSkip: boolean;
   meta: MetaData;
 };
 
