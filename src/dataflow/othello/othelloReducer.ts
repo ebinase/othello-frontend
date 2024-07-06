@@ -1,6 +1,7 @@
 import { BoardData } from '@models/Board/Board';
 import { COLOR_CODE } from '@models/Board/Color';
 import { Othello } from '@models/Game/Othello';
+import { createMetaData, MetaData } from './metadata';
 
 export type OthelloState = {
   isOver: boolean;
@@ -9,6 +10,7 @@ export type OthelloState = {
   board: BoardData;
   color: COLOR_CODE;
   updatedFieldIdList: number[];
+  meta: MetaData;
 };
 
 type updateAction = {
@@ -27,8 +29,10 @@ type clearAction = {
 type Action = updateAction | skipAction | clearAction;
 
 // 初期値
+const initailOthello: Othello = Othello.initialize();
 export const initialOthelloState: OthelloState = {
-  ...Othello.initialize().toArray(),
+  ...initailOthello.toArray(),
+  meta: createMetaData(initailOthello.board, initailOthello.color),
   updatedFieldIdList: [],
 };
 
@@ -61,6 +65,7 @@ export const othelloReducer = (
               action.fieldId,
               ...getUpdatedFieldIdList(state.board, next.board.toArray()),
             ],
+            meta: createMetaData(next.board, next.color),
           };
         },
         failure: (_) => {
@@ -75,6 +80,7 @@ export const othelloReducer = (
       return {
         ...next.toArray(),
         updatedFieldIdList: [],
+        meta: createMetaData(initailOthello.board, next.color),
       };
     case 'clear':
       return initialOthelloState;
