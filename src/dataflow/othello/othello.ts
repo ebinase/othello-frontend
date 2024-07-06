@@ -2,7 +2,6 @@ import { BoardData } from '@models/Board/Board';
 import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
-import { Board } from '../../models/Board/Board';
 import { COLOR_CODE } from '@models/Board/Color';
 import {
   initialOthelloState,
@@ -84,11 +83,6 @@ type Actions = {
   reset: () => void;
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
-  getAnalysis: () => {
-    white: number;
-    black: number;
-    selectableFields: number[];
-  };
 };
 
 /**
@@ -174,15 +168,6 @@ const useOthello = create<State & Actions>((set, get) => ({
       },
       gameMode: settings.gameMode,
     });
-  },
-  getAnalysis: () => {
-    const state = get().state;
-    const board = Board.fromArray(state.board);
-    return {
-      white: board.countStone(COLOR_CODE.WHITE),
-      black: board.countStone(COLOR_CODE.BLACK),
-      selectableFields: board.selectableFields(state.color),
-    };
   },
 }));
 
