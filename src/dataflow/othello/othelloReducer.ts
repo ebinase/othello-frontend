@@ -69,7 +69,7 @@ export const othelloReducer = (
             meta: createMetaData(next.board, next.color),
           };
         },
-        failure: (_) => {
+        failure: () => {
           return {
             ...state,
             updatedFieldIdList: [],
@@ -77,12 +77,22 @@ export const othelloReducer = (
         },
       });
     case 'skip':
-      const next = othello.skip();
-      return {
-        ...next.toArray(),
-        updatedFieldIdList: [],
-        meta: createMetaData(initailOthello.board, next.color),
-      };
+      const skipResult = othello.skip();
+      return skipResult.when({
+        success: (next) => {
+          return {
+            ...next.toArray(),
+            updatedFieldIdList: [],
+            meta: createMetaData(next.board, next.color),
+          };
+        },
+        failure: () => {
+          return {
+            ...state,
+            updatedFieldIdList: [],
+          };
+        },
+      });
     case 'clear':
       return initialOthelloState;
     default:

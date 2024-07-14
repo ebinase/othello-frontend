@@ -40,13 +40,19 @@ export class Othello {
     });
   }
 
-  public skip() {
-    return new Othello(
-      this.turnNumber + 1,
-      this.board,
-      flip(this.color),
-      this.skipCount + 1
-    );
+  public skip(): Result<Othello, Error> {
+    if (this.shoudSkip()) {
+      return Result.success(
+         new Othello(
+         this.turnNumber + 1,
+         this.board,
+         flip(this.color),
+         this.skipCount + 1
+        )
+      );
+    } else {
+      return Result.failure(new Error('Cannot skip'));
+    }
   }
 
   public shoudSkip() {
