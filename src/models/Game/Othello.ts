@@ -23,8 +23,6 @@ export class Othello {
     return new Othello(turnNumber, Board.fromArray(board), color, skipCount);
   }
 
-
-  // Note: execute(action: Action): Result<Othello, Error> のようなインターフェースにしてもいいかも
   public move(fieldId: number): Result<Othello, Error> {
     if (this.isOver()) {
       return Result.failure(new Error('Game is over'));
@@ -81,7 +79,7 @@ export class Othello {
   public toArray() {
     return {
       isOver: this.isOver(),
-      isSkipped: this.skipCount > 0,
+      skipCount: this.skipCount,
       turn: this.turnNumber,
       board: this.board.toArray(),
       color: this.color,
