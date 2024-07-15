@@ -3,11 +3,9 @@ import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { create } from 'zustand';
 import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
 import { COLOR_CODE } from '@models/Board/Color';
-import {
-  initialOthelloState,
-  othelloReducer,
-  OthelloState,
-} from './othelloReducer';
+import { othelloReducer } from './othelloReducer';
+import { createMetaData, MetaData } from './metadata';
+import { Othello } from '@models/Game/Othello';
 
 type Player = {
   name: string;
@@ -35,6 +33,16 @@ const initBot = (): Player => {
   };
 };
 
+type OthelloState = {
+  isOver: boolean;
+  isSkipped: boolean;
+  turn: number;
+  board: BoardData;
+  color: COLOR_CODE;
+  shouldSkip: boolean;
+  meta: MetaData;
+};
+
 type GameState = OthelloState & {
   error?: {
     hasError: boolean;
@@ -45,8 +53,10 @@ type GameState = OthelloState & {
   isInitialized: boolean;
 };
 
+const initializedOthello = Othello.initialize();
 const initialState: GameState = {
-  ...initialOthelloState,
+  ...initializedOthello.toArray(),
+  meta: createMetaData(initializedOthello.board, initializedOthello.color),
   players: {
     [COLOR_CODE.WHITE]: initPlayer('WHITE'),
     [COLOR_CODE.BLACK]: initPlayer('BLACK'),
@@ -94,14 +104,21 @@ const useOthello = create<State & Actions>((set, get) => ({
   gameMode: undefined,
   update: (fieldId: number) => {
     set((state) => {
-      const updated = othelloReducer(state.state, { type: 'update', fieldId });
+      const current = Othello.reconstruct(
+        state.state.turn,
+        state.state.board,
+        state.state.color,
+        state.state.isSkipped ? 1 : 0
+      );
+      const updated = othelloReducer(current, { type: 'update', fieldId });
       return {
         state: {
-          ...updated,
+          ...updated.toArray(),
+          meta: createMetaData(updated.board, updated.color),
           isInitialized: true, // プレーを開始したら初期化済みとする
           players: state.state.players,
           error:
-            updated.updatedFieldIdList.length === 0  // 一つも返していない場合は失敗扱いする
+            updated.turnNumber === current.turnNumber // ターンが進まなかった場合は失敗
               ? { hasError: true, message: '置けませんでした！' }
               : { hasError: false },
         },
@@ -113,12 +130,27 @@ const useOthello = create<State & Actions>((set, get) => ({
     }));
   },
   skip: () => {
-    set((state) => ({
-      state: {
-        ...state.state,
-        ...othelloReducer(state.state, { type: 'skip' }),
-      },
-    }));
+    set((state) => {
+      const current = Othello.reconstruct(
+        state.state.turn,
+        state.state.board,
+        state.state.color,
+        state.state.isSkipped ? 1 : 0
+      );
+      const updated = othelloReducer(current, { type: 'skip' });
+      return {
+        state: {
+          ...updated.toArray(),
+          meta: createMetaData(updated.board, updated.color),
+          isInitialized: true, // プレーを開始したら初期化済みとする
+          players: state.state.players,
+          error:
+            updated.turnNumber === current.turnNumber // ターンが進まなかった場合は失敗
+              ? { hasError: true, message: 'スキップできませんでした！' }
+              : { hasError: false },
+        },
+      };
+    });
   },
   reset: () =>
     set({
