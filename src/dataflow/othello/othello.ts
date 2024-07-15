@@ -37,6 +37,12 @@ const initBot = (): Player => {
   };
 };
 
+const initialPlayers: Players = {
+  [COLOR_CODE.WHITE]: initPlayer('WHITE'),
+  [COLOR_CODE.BLACK]: initPlayer('BLACK'),
+  active: initPlayer('WHITE'),
+};
+
 type OthelloState = {
   isOver: boolean;
   skipCount: number;
@@ -83,7 +89,7 @@ type GameSettings = PvPSettings | PvESettings;
 
 type State = {
   state: GameState;
-  gameMode: GAME_MODE | undefined;
+  gameMode: GAME_MODE;
   players: Players;
 };
 
@@ -101,13 +107,8 @@ type Actions = {
  */
 const useOthello = create<State & Actions>((set, get) => ({
   state: initialState,
-  gameMode: undefined,
-  players: {
-    // TODO: selectByColor()を実装する
-    [COLOR_CODE.WHITE]: initPlayer('WHITE'),
-    [COLOR_CODE.BLACK]: initPlayer('BLACK'),
-    active: initPlayer('WHITE'),
-  },
+  gameMode: GAME_MODE.PVP, // デフォルトをPVPに設定
+  players: initialPlayers,
   update: (fieldId: number) => {
     set((state) => {
       const current = Othello.reconstruct(
@@ -133,10 +134,6 @@ const useOthello = create<State & Actions>((set, get) => ({
         },
       };
     });
-    // ゲームモードが明示的に設定されなかった場合はPVPとして扱う
-    set((state) => ({
-      gameMode: state.gameMode ?? GAME_MODE.PVP,
-    }));
   },
   skip: () => {
     set((state) => {
@@ -167,7 +164,8 @@ const useOthello = create<State & Actions>((set, get) => ({
   reset: () =>
     set({
       state: initialState,
-      gameMode: undefined,
+      gameMode: GAME_MODE.PVP,
+      players: initialPlayers,
     }),
   activateBot: async () => {
     const state = get().state;
