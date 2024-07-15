@@ -35,7 +35,7 @@ const initBot = (): Player => {
 
 type OthelloState = {
   isOver: boolean;
-  isSkipped: boolean;
+  skipCount: number;
   turn: number;
   board: BoardData;
   color: COLOR_CODE;
@@ -108,7 +108,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         state.state.turn,
         state.state.board,
         state.state.color,
-        state.state.isSkipped ? 1 : 0
+        state.state.skipCount
       );
       const updated = othelloReducer(current, { type: 'update', fieldId });
       return {
@@ -135,7 +135,7 @@ const useOthello = create<State & Actions>((set, get) => ({
         state.state.turn,
         state.state.board,
         state.state.color,
-        state.state.isSkipped ? 1 : 0
+        state.state.skipCount
       );
       const updated = othelloReducer(current, { type: 'skip' });
       return {
@@ -146,7 +146,7 @@ const useOthello = create<State & Actions>((set, get) => ({
           players: state.state.players,
           error:
             updated.turnNumber === current.turnNumber // ターンが進まなかった場合は失敗
-              ? { hasError: true, message: 'スキップできませんでした！' }
+              ? { hasError: true, message: 'このターンはスキップできません！' }
               : { hasError: false },
         },
       };
