@@ -5,14 +5,14 @@ import { COLOR_CODE } from "@models/Board/Color"
 import PlayerBar from "./PlayerBar";
 
 const PlayerInfo: React.FC = (props) => {
-  const { state } = useOthello();
+  const { state, players } = useOthello();
 
   const colorText = state.color === COLOR_CODE.WHITE ? "白" : "黒";
   const theme = state.color === COLOR_CODE.WHITE ? "light" : "dark";
-  const name = state.players[state.color].name;
+  const name = players.active.name;
 
   const data =
-    state.players[state.color].type === "human"
+    players.active.type === "human"
       ? {
           message: colorText + "プレイヤーのターンです",
           status: state.shouldSkip
