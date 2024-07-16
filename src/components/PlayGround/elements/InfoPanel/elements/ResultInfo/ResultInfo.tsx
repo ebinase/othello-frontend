@@ -12,7 +12,7 @@ export const countStone = (board: BoardData, color: COLOR_CODE): number =>
   board.filter((field) => field === color).length;
 
 const ResultInfo: React.FC = () => {
-  const { state, gameMode } = useOthello();
+  const { state, gameMode, players } = useOthello();
 
   const counts = {
     white: countStone(state.board, COLOR_CODE.WHITE),
@@ -54,8 +54,8 @@ const ResultInfo: React.FC = () => {
         {winner === undefined
           ? "DRAW"
           : gameMode === "PVP"
-          ? state.players[winner].name + " WIN!"
-          : state.players[winner].type === "human"
+          ? players[winner].name + " WIN!"
+          : players[winner].type === "human"
           ? "YOU WIN!"
           : "YOU LOSE..."}
       </h2>
