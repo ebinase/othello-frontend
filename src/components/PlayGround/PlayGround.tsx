@@ -4,7 +4,7 @@ import Board from "./elements/Board/Board";
 import BottomPanel from "./elements/ActionPanel/BottomPanel";
 import { useEffect } from "react";
 import InfoPanel from "./elements/InfoPanel/InfoPanel";
-import useOthello from "../../dataflow/othello/othello";
+import useOthello from "../../dataflow/othello/useOthello";
 
 const PlayGround: React.FC = () => {
   const { activateBot } = useOthello();

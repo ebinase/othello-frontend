@@ -1,6 +1,6 @@
 "use client";
 
-import useOthello from "../../../../dataflow/othello/othello";
+import useOthello from "../../../../dataflow/othello/useOthello";
 import PlayerInfo from "./elements/PlayerInfo/PlayerInfo";
 import ResultInfo from "./elements/ResultInfo/ResultInfo";
 import SettingsInfo from "./elements/SettingsInfo/SettingsInfo";

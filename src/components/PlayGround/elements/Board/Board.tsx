@@ -1,4 +1,4 @@
-import useOthello from "../../../../dataflow/othello/othello";
+import useOthello from "../../../../dataflow/othello/useOthello";
 import Field from "./Field";
 
 const Board: React.FC = () => {

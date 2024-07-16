@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useOthello, {
   GAME_MODE,
-} from "../../../../../../dataflow/othello/othello";
+} from "../../../../../../dataflow/othello/useOthello";
 import { COLOR_CODE } from "@models/Board/Color"
 
 const SettingsInfo: React.FC = (props) => {
