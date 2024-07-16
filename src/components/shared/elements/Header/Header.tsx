@@ -1,6 +1,6 @@
 "use client";
 
-import useOthello from "../../../../dataflow/othello/othello";
+import useOthello from "../../../../dataflow/othello/useOthello";
 
 const Header: React.FC = () => {
   const { reset, gameMode } = useOthello();
