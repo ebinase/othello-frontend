@@ -9,17 +9,15 @@ import { COLOR_CODE } from "@models/Board/Color"
 const SettingsInfo: React.FC = (props) => {
   const { initialize } = useOthello();
 
-  const [isPvE, setIsPvE] = useState(false);
-
   const handlePvP = () => {
-    initialize({ gameMode: GAME_MODE.PVP, players: ["Player1", "Player2"] });
+    initialize({ gameMode: GAME_MODE.PVP, players: ["WHITE", "BLACK"] });
   };
 
-  const handlePvE = (name: string, playerColor: COLOR_CODE) => {
+  const handlePvE = () => {
     initialize({
       gameMode: GAME_MODE.PVE,
-      player: name,
-      playerColor: playerColor,
+      player: "YOU",
+      playerColor: COLOR_CODE.WHITE,
     });
   };
 
@@ -29,42 +27,19 @@ const SettingsInfo: React.FC = (props) => {
       <p className="text-xs text-slate-400 h-4">
         ゲームモードを選択してください
       </p>
-      <div className="mt-6 flex flex-col gap-2">
-        {isPvE ? undefined : (
+      <div className="mt-8 flex gap-5">
+        <button
+          className="text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2"
+          onClick={handlePvE}
+        >
+          ひとりで遊ぶ
+        </button>
           <button
-            className="text-slate-700 text-sm font-bold hover:text-slate-400"
+            className="text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2"
             onClick={handlePvP}
           >
-            プレイヤー対戦
+            ふたりで遊ぶ
           </button>
-        )}
-        <button
-          className="text-slate-700 text-sm font-bold hover:text-slate-400"
-          onClick={() => setIsPvE(true)}
-        >
-          ボット対戦
-        </button>
-        {isPvE ? (
-          <>
-            <p className="text-xs text-slate-400 h-4">
-              プレーする順番を選択してください
-            </p>
-            <div className="flex justify-center gap-5">
-              <div
-                className="flex gap-2 items-center"
-                onClick={() => handlePvE("Player1", COLOR_CODE.WHITE)}
-              >
-                <button className="text-sm text-slate-700">先攻</button>
-              </div>
-              <div
-                className="flex gap-2 items-center"
-                onClick={() => handlePvE("Player1", COLOR_CODE.BLACK)}
-              >
-                <button className="text-sm text-slate-700">後攻</button>
-              </div>
-            </div>
-          </>
-        ) : undefined}
       </div>
     </div>
   );

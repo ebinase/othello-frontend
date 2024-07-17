@@ -193,14 +193,8 @@ const useOthello = create<State & Actions>((set, get) => ({
             active: initPlayer(settings.players[0]),
           }
         : {
-            [COLOR_CODE.WHITE]:
-              settings.playerColor === COLOR_CODE.WHITE
-                ? initPlayer(settings.player)
-                : initBot(),
-            [COLOR_CODE.BLACK]:
-              settings.playerColor === COLOR_CODE.BLACK
-                ? initPlayer(settings.player)
-                : initBot(),
+            [COLOR_CODE.WHITE]: initPlayer(settings.player),
+            [COLOR_CODE.BLACK]: initBot(),
             active: initPlayer(settings.player),
           };
 
