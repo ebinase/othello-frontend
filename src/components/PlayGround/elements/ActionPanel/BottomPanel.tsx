@@ -7,7 +7,7 @@ const BottomPanel: React.FC = () => {
     <div
       className="text-center h-full flex flex-col justify-start items-center"
     >
-      <div className="pt-6">
+      <div className="pt-24">
         {state.shouldSkip ? (
           <button
             className="block bg-sky-400 text-slate-50 p-1 w-20 rounded-md"
