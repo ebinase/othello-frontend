@@ -5,7 +5,6 @@ import BottomPanel from "./elements/ActionPanel/BottomPanel";
 import { useEffect } from "react";
 import InfoPanel from "./elements/InfoPanel/InfoPanel";
 import useOthello from "../../dataflow/othello/useOthello";
-import Stone from "./elements/Board/Stone";
 
 const PlayGround: React.FC = () => {
   const { activateBot } = useOthello();
@@ -21,7 +20,7 @@ const PlayGround: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col">
-      <div className="sm:basis-1/3 basis-[20%]">
+      <div className="sm:basis-1/3 basis-[45%]">
         <InfoPanel />
       </div>
       <div className="sm:basis-1/3 flex justify-center">
