@@ -7,15 +7,24 @@ import InfoPanel from "./elements/InfoPanel/InfoPanel";
 import useOthello from "../../dataflow/othello/useOthello";
 
 const PlayGround: React.FC = () => {
-  const { activateBot } = useOthello();
+  const { activateBot, players } = useOthello();
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      activateBot();
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }, 500);
+    if (players.active.type === "bot" && players.active.name !== "Bot Lv.3") {
+      const timeoutId = setTimeout(() => {
+        activateBot();
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }, 500);
+    } else {
+       const timeoutId = setTimeout(() => {
+        activateBot();
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }, 100);
+    }
   });
 
   return (
