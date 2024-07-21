@@ -6,6 +6,7 @@ import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';
 import { createMetaData, MetaData } from './metadata';
 import { Othello } from '@models/Game/Othello';
+import { randomBot } from '@components/shared/hooks/bot/methods/Random';
 
 type Player = {
   name: string;
@@ -29,11 +30,18 @@ const initPlayer = (name: string): Player => {
   };
 };
 
-const initBot = (): Player => {
+const initBot = (botLevel: number): Player => {
+  let think;
+  if (botLevel === 2) {
+    think = async (board: BoardData, color: COLOR_CODE) => MCTS(board, color);
+  } else {
+    think = async (board: BoardData, color: COLOR_CODE) => randomBot(board, color);
+  }
+
   return {
     name: 'Bot Lv.5',
     type: 'bot',
-    think: async (board: BoardData, color: COLOR_CODE) => MCTS(board, color),
+    think
   };
 };
 
@@ -83,6 +91,7 @@ export type PvESettings = {
   gameMode: GAME_MODE.PVE;
   player: string;
   playerColor: COLOR_CODE;
+  botLevel: number;
 };
 
 type GameSettings = PvPSettings | PvESettings;
@@ -194,7 +203,7 @@ const useOthello = create<State & Actions>((set, get) => ({
           }
         : {
             [COLOR_CODE.WHITE]: initPlayer(settings.player),
-            [COLOR_CODE.BLACK]: initBot(),
+            [COLOR_CODE.BLACK]: initBot(settings.botLevel),
             active: initPlayer(settings.player),
           };
 
