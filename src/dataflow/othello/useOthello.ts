@@ -1,12 +1,13 @@
 import { BoardData } from '@models/Board/Board';
 import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { create } from 'zustand';
-import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
 import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';
 import { createMetaData, MetaData } from './metadata';
 import { Othello } from '@models/Game/Othello';
 import { randomBot } from '@components/shared/hooks/bot/methods/Random';
+import { StepBasedMCTS } from '@components/shared/hooks/bot/methods/StepBasedMCTS';
+import { TimeBasedMCTS } from '@components/shared/hooks/bot/methods/TimeBasedMCTS';
 
 type Player = {
   name: string;
@@ -32,16 +33,24 @@ const initPlayer = (name: string): Player => {
 
 const initBot = (botLevel: number): Player => {
   let think;
-  if (botLevel === 2) {
-    think = async (board: BoardData, color: COLOR_CODE) => MCTS(board, color);
+  if (botLevel === 1) {
+    think = async (board: BoardData, color: COLOR_CODE) =>
+      randomBot(board, color);
+  } else if (botLevel === 2) {
+    think = async (board: BoardData, color: COLOR_CODE) =>
+      StepBasedMCTS(board, color);
+  } else if (botLevel === 3) {
+    think = async (board: BoardData, color: COLOR_CODE) =>
+      TimeBasedMCTS(board, color);
   } else {
-    think = async (board: BoardData, color: COLOR_CODE) => randomBot(board, color);
+    think = async (board: BoardData, color: COLOR_CODE) =>
+      randomBot(board, color);
   }
 
   return {
-    name: 'Bot Lv.5',
+    name: 'Bot Lv.' + botLevel,
     type: 'bot',
-    think
+    think,
   };
 };
 

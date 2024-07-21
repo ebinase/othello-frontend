@@ -5,14 +5,16 @@ import { COMPARISON_RESULT } from '@models/Shared/Comparison';
 import { COLOR_CODE } from '@models/Board/Color';
 
 type Options = {
-  maxPlayOut: number;
+  maxTimeOut: number;
 };
 
-export const MCTS = (board: BoardData, color: COLOR_CODE) => {
-  const options: Options = {
-    maxPlayOut: 500,
-  };
-
+export const TimeBasedMCTS = (
+  board: BoardData,
+  color: COLOR_CODE,
+  options: Options = {
+    maxTimeOut: 1000,
+  }
+) => {
   const baseBoard = Board.fromArray(board);
 
   // 選択する候補となるフィールドのリスト
@@ -20,41 +22,52 @@ export const MCTS = (board: BoardData, color: COLOR_CODE) => {
 
   if (selectableFields.length === 0) return null;
 
-  // ひとつのフィールドに対し何回プレイアウトを行うか決定
-  const eachPlayOutCount = Math.floor(
-    options.maxPlayOut / selectableFields.length
-  );
-
-  const start = new Date();
-
   // プレイアウトの結果を評価する
-  const playOutResults = selectableFields.reduce(
-    (acc, field) => {
-      const score = evaluateMove(baseBoard, color, field, eachPlayOutCount);
-      return score > acc.score ? { field, score } : acc;
+  const playOutResults = evaluateMoveInLimitedTime(
+    selectableFields,
+    baseBoard,
+    color,
+    options.maxTimeOut
+  );
+  const bestField = Array.from(playOutResults.entries()).reduce(
+    (acc, [field, { win, total }]) => {
+      const winningRate = win / total;
+      return winningRate > acc.winningRate ? { field, winningRate } : acc;
     },
-    { field: -1, score: -1 }
+    { field: -1, winningRate: -1 }
   );
 
-  console.log(new Date().getTime() - start.getTime() + 'ms');
-  console.log(playOutResults);
+  console.log(Array.from(playOutResults.values()));
+  console.log('試行回数: ' + Array.from(playOutResults.values()).reduce((acc, { total }) => acc + total, 0));
 
-  return playOutResults.field;
+  return bestField.field;
 };
 
-// プレイアウトの結果を評価する
-const evaluateMove = (
+const evaluateMoveInLimitedTime = (
+  selectableFields: number[],
   board: Board,
   color: COLOR_CODE,
-  field: number,
-  playOutCount: number
-) => {
-  let winCount = 0;
-  for (let i = 0; i < playOutCount; i++) {
-    winCount += playOut(board, color, field) ? 1 : 0;
+  maxTimeOut: number
+): Map<number, { win: number; total: number }> => {
+  const startTime = Date.now();
+  let playOutResults: Map<number, { win: number; total: number }> = new Map();
+  let count = 0;
+  while (Date.now() - startTime < maxTimeOut) {
+    count++;
+    selectableFields.forEach((field) => {
+      const result = playOut(board, color, field);
+      const { win, total } = playOutResults.get(field) || { win: 0, total: 0 };
+      playOutResults.set(field, {
+        win: win + (result ? 1 : 0),
+        total: total + 1,
+      });
+    });
+    if (count === 100000) {
+      console.log(count);
+      break;
+    }
   }
-
-  return winCount / playOutCount;
+  return playOutResults;
 };
 
 /**
