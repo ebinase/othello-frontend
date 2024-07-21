@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="h-screen flex flex-col bg-slate-100">
-        <Header />
         <main className="flex-grow">
           <div className="h-full flex justify-between items-center">
             <PlayGround />
