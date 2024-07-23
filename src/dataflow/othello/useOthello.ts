@@ -188,7 +188,6 @@ const useOthello = create<State & Actions>((set, get) => ({
   activateBot: async () => {
     const state = get().state;
     const isBotTurn = get().players[state.color].type === 'bot';
-    const update = get().update;
 
     if (state.isOver || !isBotTurn) {
       return;
@@ -198,9 +197,11 @@ const useOthello = create<State & Actions>((set, get) => ({
     if (think === undefined) throw new Error('Botが登録されていません');
 
     const move = await think(state.board, state.color);
-    if (move === null) return get().skip();
-
-    update(move);
+    if (move !== null) {
+      get().update(move);
+    } else {
+      get().skip();
+    }
   },
   initialize: (settings) => {
     const players: Players =

@@ -40,7 +40,7 @@ export const TimeBasedMCTS = (
   console.log(Array.from(playOutResults.values()));
   console.log('試行回数: ' + Array.from(playOutResults.values()).reduce((acc, { total }) => acc + total, 0));
 
-  return bestField.field;
+  return bestField.field === -1 ? null : bestField.field;
 };
 
 const evaluateMoveInLimitedTime = (

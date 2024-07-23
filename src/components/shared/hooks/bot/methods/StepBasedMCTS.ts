@@ -36,10 +36,8 @@ export const StepBasedMCTS = (board: BoardData, color: COLOR_CODE) => {
     { field: -1, score: -1 }
   );
 
-  console.log(new Date().getTime() - start.getTime() + 'ms');
-  console.log(playOutResults);
 
-  return playOutResults.field;
+  return playOutResults.field === -1 ? null : playOutResults.field;
 };
 
 // プレイアウトの結果を評価する
