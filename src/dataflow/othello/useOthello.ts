@@ -94,7 +94,6 @@ export type PvPSettings = {
 export type PvESettings = {
   gameMode: GAME_MODE.PVE;
   player: string;
-  playerColor: COLOR_CODE;
   botLevel: number;
 };
 
@@ -207,14 +206,8 @@ const useOthello = create<State & Actions>((set, get) => ({
             active: initPlayer(settings.players[0]),
           }
         : {
-            [COLOR_CODE.WHITE]:
-              settings.playerColor === COLOR_CODE.WHITE
-                ? initPlayer(settings.player)
-                : initBot(settings.botLevel),
-            [COLOR_CODE.BLACK]:
-              settings.playerColor === COLOR_CODE.BLACK
-                ? initPlayer(settings.player)
-                : initBot(settings.botLevel),
+            [COLOR_CODE.WHITE]: initPlayer(settings.player),
+            [COLOR_CODE.BLACK]: initBot(settings.botLevel),
             active: initPlayer(settings.player),
           };
 
