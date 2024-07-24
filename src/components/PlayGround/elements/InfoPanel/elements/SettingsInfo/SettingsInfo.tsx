@@ -9,13 +9,13 @@ const SettingsInfo: React.FC = () => {
 
 
   const handlePvP = () => {
-    initialize({ gameMode: GAME_MODE.PVP, players: ["Player1", "Player2"] });
+    initialize({ gameMode: GAME_MODE.PVP, players: ["WHITE", "BLACK"] });
   };
 
   const handlePvE = (botLevel: number) => {
     initialize({
       gameMode: GAME_MODE.PVE,
-      player: "You",
+      player: "PLAYER",
       botLevel,
     });
   };

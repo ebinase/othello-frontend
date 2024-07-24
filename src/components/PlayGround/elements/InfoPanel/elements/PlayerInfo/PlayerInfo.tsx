@@ -4,8 +4,8 @@ import useOthello from "../../../../../../dataflow/othello/useOthello";
 import { COLOR_CODE } from "@models/Board/Color"
 import PlayerBar from "./PlayerBar";
 
-const PlayerInfo: React.FC = (props) => {
-  const { state, players } = useOthello();
+const PlayerInfo: React.FC = () => {
+  const { state, players, gameMode } = useOthello();
 
   const colorText = state.color === COLOR_CODE.WHITE ? "白" : "黒";
   const theme = state.color === COLOR_CODE.WHITE ? "light" : "dark";
@@ -14,14 +14,16 @@ const PlayerInfo: React.FC = (props) => {
   const data =
     players.active.type === "human"
       ? {
-          message: colorText + "プレイヤーのターンです",
+          message: (gameMode === "PVP" ? colorText : "あなた") + "のターンです",
           status: state.shouldSkip
-            ? "置ける場所がありません"
+            ? "置ける場所がありません..."
             : state.error?.message ?? "",
         }
       : {
           message: "相手のターンです",
-          status: "思考中...",
+          status: state.shouldSkip
+            ? "スキップ！"
+            :  "思考中...",
         };
 
   return (
