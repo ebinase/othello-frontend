@@ -1,7 +1,7 @@
 import { BoardData } from '@models/Board/Board';
 import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { create } from 'zustand';
-import { COLOR_CODE } from '@models/Board/Color';
+import { COLOR_CODE, flip } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';
 import { createMetaData, MetaData } from './metadata';
 import { Othello } from '@models/Game/Othello';
@@ -12,6 +12,7 @@ import { TimeBasedMCTS } from '@components/shared/hooks/bot/methods/TimeBasedMCT
 type Player = {
   name: string;
   type: 'human' | 'bot';
+  allowedAction: 'move' | 'skip' | 'wait';
   think:
     | undefined
     | ((board: BoardData, color: COLOR_CODE) => Promise<FieldId | null>);
@@ -28,6 +29,7 @@ const initPlayer = (name: string): Player => {
     name,
     type: 'human',
     think: undefined,
+    allowedAction: 'wait',
   };
 };
 
@@ -51,6 +53,7 @@ const initBot = (botLevel: number): Player => {
     name: 'Bot Lv.' + botLevel,
     type: 'bot',
     think,
+    allowedAction: 'wait',
   };
 };
 
@@ -119,6 +122,32 @@ type Actions = {
   initialize: (settings: GameSettings) => void;
 };
 
+const updatePlayers = (state: State, updated: Othello): Players => {
+  return {
+    ...state.players,
+    [updated.color]: {
+      ...state.players[updated.color],
+      allowedAction: updated.isOver()
+        ? 'wait'
+        : updated.shoudSkip()
+        ? 'skip'
+        : 'move',
+    },
+    [flip(updated.color)]: {
+      ...state.players[flip(updated.color)],
+      allowedAction: 'wait',
+    },
+    active: {
+      ...state.players[updated.color],
+      allowedAction: updated.isOver()
+        ? 'wait'
+        : updated.shoudSkip()
+        ? 'skip'
+        : 'move',
+    },
+  };
+};
+
 /**
  * オセロのゲーム状態管理と更新関数を提供するhooks
  * ゲームルールはothelloReducerに委譲し、状態管理や描画に必要な情報などを扱う
@@ -146,10 +175,8 @@ const useOthello = create<State & Actions>((set, get) => ({
               ? { hasError: true, message: '置けませんでした！' }
               : { hasError: false },
         },
-        players: {
-          ...state.players,
-          active: state.players[updated.color],
-        },
+        // アクティブなプレイヤーのallowedActionを更新、そうでないプレイヤーのallowedActionは'wait'にする
+        players: updatePlayers(state, updated),
       };
     });
   },
@@ -172,10 +199,7 @@ const useOthello = create<State & Actions>((set, get) => ({
               ? { hasError: true, message: 'このターンはスキップできません！' }
               : { hasError: false },
         },
-        players: {
-          ...state.players,
-          active: state.players[updated.color],
-        },
+        players: updatePlayers(state, updated),
       };
     });
   },
