@@ -54,7 +54,7 @@ export class Othello {
   }
 
   public shoudSkip() {
-    return !this.isOver && this.board.selectableFields(this.color).length === 0;
+    return !this.isOver() && this.board.selectableFields(this.color).length === 0;
   }
 
   public isOver() {
