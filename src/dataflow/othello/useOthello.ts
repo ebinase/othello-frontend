@@ -1,7 +1,7 @@
 import { BoardData } from '@models/Board/Board';
 import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { create } from 'zustand';
-import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
+import { StepBasedMCTS } from '../../components/shared/hooks/bot/methods/StepBasedMCTS';
 import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';
 import { createMetaData, MetaData } from './metadata';
@@ -33,7 +33,8 @@ const initBot = (): Player => {
   return {
     name: 'Bot Lv.5',
     type: 'bot',
-    think: async (board: BoardData, color: COLOR_CODE) => MCTS(board, color),
+    think: async (board: BoardData, color: COLOR_CODE) =>
+      StepBasedMCTS(board, color),
   };
 };
 

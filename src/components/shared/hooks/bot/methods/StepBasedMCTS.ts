@@ -8,7 +8,7 @@ type Options = {
   maxPlayOut: number;
 };
 
-export const MCTS = (board: BoardData, color: COLOR_CODE) => {
+export const StepBasedMCTS = (board: BoardData, color: COLOR_CODE) => {
   const options: Options = {
     maxPlayOut: 500,
   };
@@ -39,7 +39,7 @@ export const MCTS = (board: BoardData, color: COLOR_CODE) => {
   console.log(new Date().getTime() - start.getTime() + 'ms');
   console.log(playOutResults);
 
-  return playOutResults.field;
+  return playOutResults.field === -1 ? null : playOutResults.field;
 };
 
 // プレイアウトの結果を評価する
