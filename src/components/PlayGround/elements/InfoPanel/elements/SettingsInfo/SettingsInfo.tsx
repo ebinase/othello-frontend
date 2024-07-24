@@ -20,6 +20,7 @@ const SettingsInfo: React.FC = (props) => {
       gameMode: GAME_MODE.PVE,
       player: name,
       playerColor: playerColor,
+      botLevel: 3,
     });
   };
 
