@@ -7,15 +7,19 @@ import InfoPanel from "./elements/InfoPanel/InfoPanel";
 import useOthello from "../../dataflow/othello/useOthello";
 
 const PlayGround: React.FC = () => {
-  const { activateBot } = useOthello();
+  const { activateBot, players, state } = useOthello();
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      activateBot();
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }, 500);
+     const activePlayer = players.active;
+    // Botが行動可能な状態であればBotを起動
+    if (activePlayer.type === "bot" && !state.shouldSkip) {
+      const timeoutId = setTimeout(() => {
+        activateBot();
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }, players.active.name === "Bot Lv.3" ? 100 : 500);  // Bot Lv.3は思考時間が長いため短めに設定
+    }
   });
 
   return (

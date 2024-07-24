@@ -1,18 +1,20 @@
 import { BoardData } from '@models/Board/Board';
 import { FieldId } from '../../components/PlayGround/elements/Board/Field';
 import { create } from 'zustand';
-import { MCTS } from '../../components/shared/hooks/bot/methods/MCTS';
+import { StepBasedMCTS } from '../../components/shared/hooks/bot/methods/StepBasedMCTS';
 import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';
 import { createMetaData, MetaData } from './metadata';
 import { Othello } from '@models/Game/Othello';
+import { randomBot } from '@components/shared/hooks/bot/methods/Random';
+import { TimeBasedMCTS } from '@components/shared/hooks/bot/methods/TimeBasedMCTS';
 
 type Player = {
   name: string;
   type: 'human' | 'bot';
   think:
     | undefined
-    | ((board: BoardData, color: COLOR_CODE) => Promise<FieldId | null>);
+    | ((board: BoardData, color: COLOR_CODE) => FieldId | null);
 };
 
 type Players = {
@@ -29,11 +31,21 @@ const initPlayer = (name: string): Player => {
   };
 };
 
-const initBot = (): Player => {
+const initBot = (botLevel: number): Player => {
+  let think;
+  if (botLevel === 1) {
+      think = randomBot;
+  } else if (botLevel === 2) {
+      think = StepBasedMCTS;
+  } else if (botLevel === 3) {
+    think = TimeBasedMCTS;
+  } else {
+    think = randomBot;
+  }
   return {
-    name: 'Bot Lv.5',
+    name: 'Bot Lv.' + botLevel,
     type: 'bot',
-    think: async (board: BoardData, color: COLOR_CODE) => MCTS(board, color),
+    think,
   };
 };
 
@@ -82,7 +94,7 @@ export type PvPSettings = {
 export type PvESettings = {
   gameMode: GAME_MODE.PVE;
   player: string;
-  playerColor: COLOR_CODE;
+  botLevel: number;
 };
 
 type GameSettings = PvPSettings | PvESettings;
@@ -170,8 +182,6 @@ const useOthello = create<State & Actions>((set, get) => ({
   activateBot: async () => {
     const state = get().state;
     const isBotTurn = get().players[state.color].type === 'bot';
-    const update = get().update;
-
     if (state.isOver || !isBotTurn) {
       return;
     }
@@ -179,10 +189,13 @@ const useOthello = create<State & Actions>((set, get) => ({
     const think = get().players[state.color].think;
     if (think === undefined) throw new Error('Botが登録されていません');
 
-    const move = await think(state.board, state.color);
-    if (move === null) return get().skip();
+    const move = think(state.board, state.color);
 
-    update(move);
+   if (move !== null) {
+     get().update(move);
+   } else {
+     get().skip();
+   }
   },
   initialize: (settings) => {
     const players: Players =
@@ -193,14 +206,8 @@ const useOthello = create<State & Actions>((set, get) => ({
             active: initPlayer(settings.players[0]),
           }
         : {
-            [COLOR_CODE.WHITE]:
-              settings.playerColor === COLOR_CODE.WHITE
-                ? initPlayer(settings.player)
-                : initBot(),
-            [COLOR_CODE.BLACK]:
-              settings.playerColor === COLOR_CODE.BLACK
-                ? initPlayer(settings.player)
-                : initBot(),
+            [COLOR_CODE.WHITE]: initPlayer(settings.player),
+            [COLOR_CODE.BLACK]: initBot(settings.botLevel),
             active: initPlayer(settings.player),
           };
 
