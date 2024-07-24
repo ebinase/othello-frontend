@@ -8,7 +8,7 @@ import Header from "../src/components/shared/elements/Header/Header";
 const Home: NextPage = () => {
   return (
     <>
-      <div className="h-screen flex flex-col">
+      <div className="h-[100dvh] flex flex-col">
         <Header />
         <main className="flex-grow">
           <div className="h-full flex justify-between items-center">
