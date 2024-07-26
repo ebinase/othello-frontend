@@ -18,7 +18,7 @@ const PlayGround: React.FC = () => {
         return () => {
           clearTimeout(timeoutId);
         };
-      }, players.active.name === "Bot Lv.3" ? 100 : 500);  // Bot Lv.3は思考時間が長いため短めに設定
+      }, players.active.name === "Bot Lv.4" ? 100 : 500);  // Bot Lv.4は思考時間が長いため短めに設定
     }
   });
 
