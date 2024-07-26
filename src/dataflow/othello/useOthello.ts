@@ -8,6 +8,7 @@ import { createMetaData, MetaData } from './metadata';
 import { Othello } from '@models/Game/Othello';
 import { randomBot } from '@components/shared/hooks/bot/methods/Random';
 import { TimeBasedMCTS } from '@components/shared/hooks/bot/methods/TimeBasedMCTS';
+import { WeakStepBasedMCTS } from '@components/shared/hooks/bot/methods/WeakStepBasedMCTS';
 
 type Player = {
   name: string;
@@ -39,6 +40,8 @@ const initBot = (botLevel: number): Player => {
       think = StepBasedMCTS;
   } else if (botLevel === 3) {
     think = TimeBasedMCTS;
+  } else if (botLevel === -1) { 
+    think = WeakStepBasedMCTS;
   } else {
     think = randomBot;
   }
