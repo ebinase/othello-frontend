@@ -1,5 +1,6 @@
 "use client";
 
+import { BotLevel, botLevelList } from "@components/shared/hooks/bot/BotList";
 import useOthello, {
   GAME_MODE,
 } from "../../../../../../dataflow/othello/useOthello";
@@ -12,7 +13,7 @@ const SettingsInfo: React.FC = () => {
     initialize({ gameMode: GAME_MODE.PVP, players: ["WHITE", "BLACK"] });
   };
 
-  const handlePvE = (botLevel: number) => {
+  const handlePvE = (botLevel: BotLevel) => {
     initialize({
       gameMode: GAME_MODE.PVE,
       player: "PLAYER",
@@ -33,30 +34,15 @@ const SettingsInfo: React.FC = () => {
           >
             対人戦
         </button>
-        <button
-          className="shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff] text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2 border-2 border-slate-200 flex gap-2 justify-center flex-shrink-0 basis-36"
-          onClick={() => handlePvE(1)}
-        >
-          Bot Lv.1
-        </button>
-        <button
-          className="shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff] text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2 border-2 border-slate-200 flex gap-2 justify-center flex-shrink-0 basis-36"
-          onClick={() => handlePvE(2)}
-        >
-          Bot Lv.2
-        </button>
-        <button
-          className="shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff] text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2 border-2 border-slate-200 flex gap-2 justify-center flex-shrink-0 basis-36"
-          onClick={() => handlePvE(3)}
-        >
-          Bot Lv.3
-        </button>
-        <button
-          className="shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff] text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2 border-2 border-slate-200 flex gap-2 justify-center flex-shrink-0 basis-36"
-          onClick={() => handlePvE(-1)}
-        >
-          Bot Lv.-1
-        </button>
+        {botLevelList.map((level) => (
+          <button
+            key={level}
+            className="shadow-[5px_5px_5px_#bebebe,-5px_-5px_5px_#ffffff] text-slate-700 text-sm font-bold hover:text-slate-400 rounded-lg px-5 py-2 border-2 border-slate-200 flex gap-2 justify-center flex-shrink-0 basis-36"
+            onClick={() => handlePvE(level)}
+          >
+            Bot Lv.{level}
+          </button>
+        ))}
       </div>
     </div>
   );
