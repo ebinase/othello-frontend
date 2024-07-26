@@ -3,12 +3,13 @@ import { flip } from '@models/Board/Color';
 import { randomBot } from './Random';
 import { COMPARISON_RESULT } from '@models/Shared/Comparison';
 import { COLOR_CODE } from '@models/Board/Color';
+import { BotMethod } from '../BotList';
 
 type Options = {
   maxTimeOut: number;
 };
 
-export const TimeBasedMCTS = (
+export const TimeBasedMCTS: BotMethod = (
   board: BoardData,
   color: COLOR_CODE,
   options: Options = {

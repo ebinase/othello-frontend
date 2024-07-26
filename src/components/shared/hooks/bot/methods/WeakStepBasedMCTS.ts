@@ -9,7 +9,7 @@ type Options = {
   maxPlayOut: number;
 };
 
-export const StepBasedMCTS: BotMethod = (
+export const WeakStepBasedMCTS: BotMethod = (
   board: BoardData,
   color: COLOR_CODE
 ) => {
@@ -76,8 +76,8 @@ const playOut = (
   // まずは指定されたフィールドに石を置く
   const result = baseBoard.update(targetField, myColor);
   return result.when({
-    // 相手の手番からシミュレーション開始し、最終的に自分の色が多かったら勝ち
-    success: (board) => randomWalk(board, flip(myColor), 0) === myColor,
+    // 相手の手番からシミュレーション開始し、最終的に相手の色が多かったら勝ち
+    success: (board) => randomWalk(board, flip(myColor), 0) === flip(myColor),
     // 石を置けなかった場合は負け扱いする(起こり得ない)
     failure: () => false,
   });

@@ -6,8 +6,7 @@ import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';
 import { createMetaData, MetaData } from './metadata';
 import { Othello } from '@models/Game/Othello';
-import { randomBot } from '@components/shared/hooks/bot/methods/Random';
-import { TimeBasedMCTS } from '@components/shared/hooks/bot/methods/TimeBasedMCTS';
+import { BotLevel, resolveBotMethod } from '@components/shared/hooks/bot/BotList';
 
 type Player = {
   name: string;
@@ -31,17 +30,8 @@ const initPlayer = (name: string): Player => {
   };
 };
 
-const initBot = (botLevel: number): Player => {
-  let think;
-  if (botLevel === 1) {
-      think = randomBot;
-  } else if (botLevel === 2) {
-      think = StepBasedMCTS;
-  } else if (botLevel === 3) {
-    think = TimeBasedMCTS;
-  } else {
-    think = randomBot;
-  }
+const initBot = (botLevel: BotLevel): Player => {
+  const think = resolveBotMethod(botLevel);
   return {
     name: 'Bot Lv.' + botLevel,
     type: 'bot',
@@ -94,7 +84,7 @@ export type PvPSettings = {
 export type PvESettings = {
   gameMode: GAME_MODE.PVE;
   player: string;
-  botLevel: number;
+  botLevel: BotLevel;
 };
 
 type GameSettings = PvPSettings | PvESettings;

@@ -1,7 +1,8 @@
 import { Board, BoardData } from '@models/Board/Board';
 import { COLOR_CODE } from '@models/Board/Color';
+import { BotMethod } from '../BotList';
 
-export const randomBot = (
+export const randomBot: BotMethod = (
   board: BoardData,
   color: COLOR_CODE
 ): number | null => {
