@@ -3,12 +3,16 @@ import { flip } from '@models/Board/Color';
 import { randomBot } from './Random';
 import { COMPARISON_RESULT } from '@models/Shared/Comparison';
 import { COLOR_CODE } from '@models/Board/Color';
+import { BotMethod } from '../BotList';
 
 type Options = {
   maxPlayOut: number;
 };
 
-export const WeakStepBasedMCTS = (board: BoardData, color: COLOR_CODE) => {
+export const WeakStepBasedMCTS: BotMethod = (
+  board: BoardData,
+  color: COLOR_CODE
+) => {
   const options: Options = {
     maxPlayOut: 500,
   };
