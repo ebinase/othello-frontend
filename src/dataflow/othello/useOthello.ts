@@ -99,6 +99,7 @@ type Actions = {
   update: (fieldId: number) => void;
   skip: () => void;
   reset: () => void;
+  restart: () => void;
   activateBot: () => void;
   initialize: (settings: GameSettings) => void;
 };
@@ -168,6 +169,20 @@ const useOthello = create<State & Actions>((set, get) => ({
       state: initialState,
       gameMode: GAME_MODE.PVP,
       players: initialPlayers,
+    }),
+  restart: () =>
+    set((state) => {
+      return {
+        state: {
+          ...initialState,
+          isInitialized: true,
+        },
+        gameMode: state.gameMode,
+        players: {
+          ...state.players,
+          active: state.players[COLOR_CODE.WHITE],
+        },
+      };
     }),
   activateBot: async () => {
     const state = get().state;
