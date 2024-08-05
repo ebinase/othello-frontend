@@ -6,12 +6,16 @@ import ResultInfo from "./elements/ResultInfo/ResultInfo";
 import SettingsInfo from "./elements/SettingsInfo/SettingsInfo";
 
 const InfoPanel: React.FC = () => {
-  const { state } = useOthello();
+  const gameStatus = useOthello(state => state.game.status);
 
-  if (!state.isInitialized) {
-    return <SettingsInfo />;
+  switch (gameStatus) {
+    case "not_started":
+      return <SettingsInfo />;
+    case "playing":
+      return <PlayerInfo />;
+    case "finished":
+      return <ResultInfo />;
   }
-  return state.isOver ? <ResultInfo /> : <PlayerInfo />;
 };
 
 export default InfoPanel;
