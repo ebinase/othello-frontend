@@ -237,15 +237,30 @@ const store = create<State & Actions>((set, get) => ({
 
 
 // selectorっぽくカスタムフックを定義
+// TODO: 可読性とパフォーマンスに問題があるためデータフローグラフ系のライブラリを検討する
 const useOthello = () => {
   const atomState = store((state) => state.state);
+  const players = {
+    [COLOR_CODE.WHITE]: {
+      ...store((state) => state.players)[COLOR_CODE.WHITE],
+      score: atomState.meta.board.white.stones,
+      selectable: atomState.meta.board.white.selectable,
+    },
+    [COLOR_CODE.BLACK]: {
+      ...store((state) => state.players)[COLOR_CODE.BLACK],
+      score: atomState.meta.board.black.stones,
+      selectable: atomState.meta.board.black.selectable,
+    },
+  };
   return {
     state: store((state) => state.state),
     game: store((state) => state.game),
     gameMode: store((state) => state.gameMode),
     players: {
-      ...store((state) => state.players),
-      active: store((state) => state.players)[atomState.color],  // 更新後のstateから計算
+      active: players[atomState.color],  // 更新後のstateから計算
+      selectByColor: (color: COLOR_CODE) => players[color],
+      white: players[COLOR_CODE.WHITE],
+      black: players[COLOR_CODE.BLACK],
     },
     update: store((state) => state.update),
     skip: store((state) => state.skip),

@@ -10,8 +10,8 @@ const ResultInfo: React.FC = () => {
   switch (game.result?.type) {
     case "resulted":
       text = gameMode === "PVP"
-        ? players[game.result.winner].name + " WIN!"
-        : players[game.result.winner].type === "human" ? "YOU WIN!" : "YOU LOSE...";
+        ? players.selectByColor(game.result.winner).name + " WIN!"
+        : players.selectByColor(game.result.winner).type === "human" ? "YOU WIN!" : "YOU LOSE...";
       break;
     case "draw":
       text = "DRAW";
@@ -24,7 +24,7 @@ const ResultInfo: React.FC = () => {
         {text}
       </h2>
       <div className="mb-1">
-        <ResultBar counts={{ white: state.meta.board.white.stones, black: state.meta.board.black.stones }} />
+        <ResultBar counts={{ white: players.white.score, black: players.black.score }} />
       </div>
     </div>
   );
