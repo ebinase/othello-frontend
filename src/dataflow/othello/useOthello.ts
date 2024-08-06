@@ -20,7 +20,6 @@ type Player = {
 type Players = {
   [COLOR_CODE.WHITE]: Player;
   [COLOR_CODE.BLACK]: Player;
-  active: Player;
 };
 
 const initPlayer = (name: string): Player => {
@@ -43,7 +42,6 @@ const initBot = (botLevel: BotLevel): Player => {
 const initialPlayers: Players = {
   [COLOR_CODE.WHITE]: initPlayer('WHITE'),
   [COLOR_CODE.BLACK]: initPlayer('BLACK'),
-  active: initPlayer('WHITE'),
 };
 
 type OthelloState = {
@@ -155,7 +153,6 @@ const store = create<State & Actions>((set, get) => ({
               ? { hasError: true, message: '置けませんでした！' }
               : { hasError: false },
         },
-        players: updatePlayers(state.players, updated),
         game: updateGameStatus(updated),
       };
     });
@@ -178,7 +175,6 @@ const store = create<State & Actions>((set, get) => ({
               ? { hasError: true, message: 'このターンはスキップできません！' }
               : { hasError: false },
         },
-        players: updatePlayers(state.players, updated),
         game: updateGameStatus(updated),
       };
     });
@@ -197,10 +193,6 @@ const store = create<State & Actions>((set, get) => ({
           ...initialState,
         },
         gameMode: state.gameMode,
-        players: {
-          ...state.players,
-          active: state.players[COLOR_CODE.WHITE],
-        },
         game: playingGameState,
       };
     }),
@@ -228,12 +220,10 @@ const store = create<State & Actions>((set, get) => ({
         ? {
             [COLOR_CODE.WHITE]: initPlayer(settings.players[0]),
             [COLOR_CODE.BLACK]: initPlayer(settings.players[1]),
-            active: initPlayer(settings.players[0]),
           }
         : {
             [COLOR_CODE.WHITE]: initPlayer(settings.player),
             [COLOR_CODE.BLACK]: initBot(settings.botLevel),
-            active: initPlayer(settings.player),
           };
 
     set({
@@ -248,11 +238,15 @@ const store = create<State & Actions>((set, get) => ({
 
 // selectorっぽくカスタムフックを定義
 const useOthello = () => {
+  const atomState = store((state) => state.state);
   return {
     state: store((state) => state.state),
     game: store((state) => state.game),
     gameMode: store((state) => state.gameMode),
-    players: store((state) => state.players),
+    players: {
+      ...store((state) => state.players),
+      active: store((state) => state.players)[atomState.color],  // 更新後のstateから計算
+    },
     update: store((state) => state.update),
     skip: store((state) => state.skip),
     reset: store((state) => state.reset),
@@ -263,14 +257,6 @@ const useOthello = () => {
 };
 
 export default useOthello;
-
-const updatePlayers = (players: Players, currentGame: Othello): Players => {
-  return {
-    [COLOR_CODE.WHITE]: players[COLOR_CODE.WHITE],
-    [COLOR_CODE.BLACK]: players[COLOR_CODE.BLACK],
-    active: players[currentGame.color],
-  };
-};
 
 const updateGameStatus = (game: Othello): State['game'] => {
   if (game.isOver()) {
