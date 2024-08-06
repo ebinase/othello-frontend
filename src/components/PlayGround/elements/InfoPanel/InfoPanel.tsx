@@ -6,9 +6,9 @@ import ResultInfo from "./elements/ResultInfo/ResultInfo";
 import SettingsInfo from "./elements/SettingsInfo/SettingsInfo";
 
 const InfoPanel: React.FC = () => {
-  const gameStatus = useOthello(state => state.game.status);
+  const { game: gameStatus } = useOthello();
 
-  switch (gameStatus) {
+  switch (gameStatus.status) {
     case "not_started":
       return <SettingsInfo />;
     case "playing":

@@ -132,7 +132,7 @@ type Actions = {
  * オセロのゲーム状態管理と更新関数を提供するhooks
  * ゲームルールはothelloReducerに委譲し、状態管理や描画に必要な情報などを扱う
  */
-const useOthello = create<State & Actions>((set, get) => ({
+const store = create<State & Actions>((set, get) => ({
   state: initialState,
   gameMode: GAME_MODE.PVP, // デフォルトをPVPに設定
   players: initialPlayers,
@@ -244,6 +244,23 @@ const useOthello = create<State & Actions>((set, get) => ({
     });
   },
 }));
+
+
+// selectorっぽくカスタムフックを定義
+const useOthello = () => {
+  return {
+    state: store((state) => state.state),
+    game: store((state) => state.game),
+    gameMode: store((state) => state.gameMode),
+    players: store((state) => state.players),
+    update: store((state) => state.update),
+    skip: store((state) => state.skip),
+    reset: store((state) => state.reset),
+    restart: store((state) => state.restart),
+    activateBot: store((state) => state.activateBot),
+    initialize: store((state) => state.initialize),
+  };
+};
 
 export default useOthello;
 
