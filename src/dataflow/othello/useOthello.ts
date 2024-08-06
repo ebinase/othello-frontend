@@ -155,10 +155,7 @@ const useOthello = create<State & Actions>((set, get) => ({
               ? { hasError: true, message: '置けませんでした！' }
               : { hasError: false },
         },
-        players: {
-          ...state.players,
-          active: state.players[updated.color],
-        },
+        players: updatePlayers(state.players, updated),
         game: updateGameStatus(updated),
       };
     });
@@ -181,10 +178,7 @@ const useOthello = create<State & Actions>((set, get) => ({
               ? { hasError: true, message: 'このターンはスキップできません！' }
               : { hasError: false },
         },
-        players: {
-          ...state.players,
-          active: state.players[updated.color],
-        },
+        players: updatePlayers(state.players, updated),
         game: updateGameStatus(updated),
       };
     });
@@ -252,6 +246,14 @@ const useOthello = create<State & Actions>((set, get) => ({
 }));
 
 export default useOthello;
+
+const updatePlayers = (players: Players, currentGame: Othello): Players => {
+  return {
+    [COLOR_CODE.WHITE]: players[COLOR_CODE.WHITE],
+    [COLOR_CODE.BLACK]: players[COLOR_CODE.BLACK],
+    active: players[currentGame.color],
+  };
+};
 
 const updateGameStatus = (game: Othello): State['game'] => {
   if (game.isOver()) {
