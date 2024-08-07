@@ -20,7 +20,11 @@ const style =
 
 // TODO: メモ化
 const Field: React.FC<Props> = (props) => {
-  const { update } = useOthello();
+  const { players } = useOthello();
+  const update = (fieldId: FieldId) => {
+    players.active.type === "human" && players.active.action.type === "update" && players.active.action.dispatch({ type: "update", fieldId });
+  }
+  
   return props.isSelectable ? (
     <button
       className={style}

@@ -208,11 +208,11 @@ const store = create<State & Actions>((set, get) => ({
 
     const move = think(state.board, state.color);
 
-   if (move !== null) {
-     get().update(move);
-   } else {
-     get().skip();
-   }
+    if (move !== null) {
+      get().update(move);
+    } else {
+      get().skip();
+    }
   },
   initialize: (settings) => {
     const players: Players =
@@ -235,6 +235,18 @@ const store = create<State & Actions>((set, get) => ({
   },
 }));
 
+type PlayerActionType = 'update' | 'skip' | 'wait';
+type PlayerActionPayload =
+  | { type: 'update'; fieldId: number }
+  | { type: 'skip' };
+const dispatch = (payload: PlayerActionPayload) => {
+  switch (payload.type) {
+    case 'update':
+      return store.getState().update(payload.fieldId);
+    case 'skip':
+      return store.getState().skip();
+  }
+};
 
 // selectorっぽくカスタムフックを定義
 // TODO: 可読性とパフォーマンスに問題があるためデータフローグラフ系のライブラリを検討する
@@ -245,11 +257,27 @@ const useOthello = () => {
       ...store((state) => state.players)[COLOR_CODE.WHITE],
       score: atomState.meta.board.white.stones,
       selectable: atomState.meta.board.white.selectable,
+      action: {
+        type: (atomState.color === COLOR_CODE.WHITE
+          ? atomState.shouldSkip
+            ? 'skip'
+            : 'update'
+          : 'wait') as PlayerActionType,
+        dispatch,
+      },
     },
     [COLOR_CODE.BLACK]: {
       ...store((state) => state.players)[COLOR_CODE.BLACK],
       score: atomState.meta.board.black.stones,
       selectable: atomState.meta.board.black.selectable,
+      action: {
+        type: (atomState.color === COLOR_CODE.BLACK
+          ? atomState.shouldSkip
+            ? 'skip'
+            : 'update'
+          : 'wait') as PlayerActionType,
+        dispatch,
+      },
     },
   };
   return {
@@ -257,7 +285,7 @@ const useOthello = () => {
     game: store((state) => state.game),
     gameMode: store((state) => state.gameMode),
     players: {
-      active: players[atomState.color],  // 更新後のstateから計算
+      active: players[atomState.color], // 更新後のstateから計算
       selectByColor: (color: COLOR_CODE) => players[color],
       white: players[COLOR_CODE.WHITE],
       black: players[COLOR_CODE.BLACK],
