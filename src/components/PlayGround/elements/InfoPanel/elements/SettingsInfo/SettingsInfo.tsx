@@ -1,6 +1,6 @@
 "use client";
 
-import { BotLevel, botLevelList } from "@components/shared/hooks/bot/BotList";
+import { BotLevel, botLevelList } from "@models/Bot/BotList";
 import useOthello, {
   GAME_MODE,
 } from "../../../../../../hooks/useOthello";

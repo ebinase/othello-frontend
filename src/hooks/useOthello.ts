@@ -4,10 +4,7 @@ import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from '../models/Game/othelloReducer';
 import { createMetaData, MetaData } from '../util/metadata';
 import { Othello } from '@models/Game/Othello';
-import {
-  BotLevel,
-  resolveBotMethod,
-} from '@components/shared/hooks/bot/BotList';
+import { BotLevel, resolveBotMethod } from '@models/Bot/BotList';
 import { COMPARISON_RESULT } from '@models/Shared/Comparison';
 
 type Player = {
