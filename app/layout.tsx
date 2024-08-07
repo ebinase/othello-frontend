@@ -1,8 +1,9 @@
 import "../src/styles/globals.css";
 
-const siteName= 'オセロ | Othello';
-const description = 'とにかくスッキリしたデザインのオセロのページです。オフライン対戦とCPU対戦モードを搭載。一度読み込めばオフラインでもプレイ可能です! UIにはニューモーフィズムを取り入れ、モダンかつシンプルなデザインの無料ボードゲーム。';
-const url = 'https://othello.ebinas.dev';
+const siteName = "オセロ | Othello";
+const description =
+  "とにかくスッキリしたデザインのオセロのページです。オフライン対戦とCPU対戦モードを搭載。一度読み込めばオフラインでもプレイ可能です! UIにはニューモーフィズムを取り入れ、モダンかつシンプルなデザインの無料ボードゲーム。";
+const url = "https://othello.ebinas.dev";
 
 export const metadata = {
   title: {
@@ -15,8 +16,8 @@ export const metadata = {
     description,
     url,
     siteName,
-    locale: 'ja_JP',
-    type: 'website',
+    locale: "ja_JP",
+    type: "website",
   },
   alternates: {
     canonical: url,

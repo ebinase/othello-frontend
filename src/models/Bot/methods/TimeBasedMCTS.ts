@@ -1,9 +1,9 @@
-import { Board, BoardData } from '@models/Board/Board';
-import { flip } from '@models/Board/Color';
-import { randomBot } from './Random';
-import { COMPARISON_RESULT } from '@models/Shared/Comparison';
-import { COLOR_CODE } from '@models/Board/Color';
-import { BotMethod } from '../BotList';
+import { Board, BoardData } from "@models/Board/Board";
+import { flip } from "@models/Board/Color";
+import { randomBot } from "./Random";
+import { COMPARISON_RESULT } from "@models/Shared/Comparison";
+import { COLOR_CODE } from "@models/Board/Color";
+import { BotMethod } from "../BotList";
 
 type Options = {
   maxTimeOut: number;
@@ -40,7 +40,7 @@ export const TimeBasedMCTS: BotMethod = (
 
   console.log(Array.from(playOutResults.values()));
   console.log(
-    '試行回数: ' +
+    "試行回数: " +
       Array.from(playOutResults.values()).reduce(
         (acc, { total }) => acc + total,
         0

@@ -1,16 +1,16 @@
-import { Othello } from '@models/Game/Othello';
+import { Othello } from "@models/Game/Othello";
 
 type updateAction = {
-  type: 'update';
+  type: "update";
   fieldId: number;
 };
 
 type skipAction = {
-  type: 'skip';
+  type: "skip";
 };
 
 type clearAction = {
-  type: 'clear';
+  type: "clear";
 };
 
 type Action = updateAction | skipAction | clearAction;
@@ -24,19 +24,19 @@ type Action = updateAction | skipAction | clearAction;
  */
 export const othelloReducer = (current: Othello, action: Action): Othello => {
   switch (action.type) {
-    case 'update':
+    case "update":
       const result = current.move(action.fieldId);
       return result.when({
         success: (next) => next,
         failure: () => current,
       });
-    case 'skip':
+    case "skip":
       const skipResult = current.skip();
       return skipResult.when({
         success: (next) => next,
         failure: () => current,
       });
-    case 'clear':
+    case "clear":
       return Othello.initialize();
   }
 };

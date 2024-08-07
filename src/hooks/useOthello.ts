@@ -1,15 +1,15 @@
-import { BoardData, FieldId } from '@models/Board/Board';
-import { create } from 'zustand';
-import { COLOR_CODE } from '@models/Board/Color';
-import { othelloReducer } from '../models/Game/othelloReducer';
-import { createMetaData, MetaData } from '../util/metadata';
-import { Othello } from '@models/Game/Othello';
-import { BotLevel, resolveBotMethod } from '@models/Bot/BotList';
-import { COMPARISON_RESULT } from '@models/Shared/Comparison';
+import { BoardData, FieldId } from "@models/Board/Board";
+import { create } from "zustand";
+import { COLOR_CODE } from "@models/Board/Color";
+import { othelloReducer } from "../models/Game/othelloReducer";
+import { createMetaData, MetaData } from "../util/metadata";
+import { Othello } from "@models/Game/Othello";
+import { BotLevel, resolveBotMethod } from "@models/Bot/BotList";
+import { COMPARISON_RESULT } from "@models/Shared/Comparison";
 
 type Player = {
   name: string;
-  type: 'human' | 'bot';
+  type: "human" | "bot";
   think: undefined | ((board: BoardData, color: COLOR_CODE) => FieldId | null);
 };
 
@@ -22,7 +22,7 @@ type Players = {
 const initPlayer = (name: string): Player => {
   return {
     name,
-    type: 'human',
+    type: "human",
     think: undefined,
   };
 };
@@ -30,16 +30,16 @@ const initPlayer = (name: string): Player => {
 const initBot = (botLevel: BotLevel): Player => {
   const think = resolveBotMethod(botLevel);
   return {
-    name: 'Bot Lv.' + botLevel,
-    type: 'bot',
+    name: "Bot Lv." + botLevel,
+    type: "bot",
     think,
   };
 };
 
 const initialPlayers: Players = {
-  [COLOR_CODE.WHITE]: initPlayer('WHITE'),
-  [COLOR_CODE.BLACK]: initPlayer('BLACK'),
-  active: initPlayer('WHITE'),
+  [COLOR_CODE.WHITE]: initPlayer("WHITE"),
+  [COLOR_CODE.BLACK]: initPlayer("BLACK"),
+  active: initPlayer("WHITE"),
 };
 
 type OthelloState = {
@@ -68,8 +68,8 @@ const initialState: TempState = {
 };
 
 export enum GAME_MODE {
-  PVP = 'PVP',
-  PVE = 'PVE',
+  PVP = "PVP",
+  PVE = "PVE",
 }
 
 export type PvPSettings = {
@@ -86,25 +86,25 @@ export type PvESettings = {
 type GameSettings = PvPSettings | PvESettings;
 
 type GameState = {
-  status: 'not_started' | 'playing' | 'finished';
+  status: "not_started" | "playing" | "finished";
   result:
     | {
-        type: 'resulted';
+        type: "resulted";
         winner: COLOR_CODE;
       }
     | {
-        type: 'draw';
+        type: "draw";
       }
     | undefined;
 };
 
 const initialGameState: GameState = {
-  status: 'not_started',
+  status: "not_started",
   result: undefined,
 };
 
 const playingGameState: GameState = {
-  status: 'playing',
+  status: "playing",
   result: undefined,
 };
 
@@ -141,14 +141,14 @@ const useOthello = create<State & Actions>((set, get) => ({
         state.state.color,
         state.state.skipCount
       );
-      const updated = othelloReducer(current, { type: 'update', fieldId });
+      const updated = othelloReducer(current, { type: "update", fieldId });
       return {
         state: {
           ...updated.toArray(),
           meta: createMetaData(updated.board, updated.color),
           error:
             updated.turnNumber === current.turnNumber // ターンが進まなかった場合は失敗
-              ? { hasError: true, message: '置けませんでした！' }
+              ? { hasError: true, message: "置けませんでした！" }
               : { hasError: false },
         },
         players: {
@@ -167,14 +167,14 @@ const useOthello = create<State & Actions>((set, get) => ({
         state.state.color,
         state.state.skipCount
       );
-      const updated = othelloReducer(current, { type: 'skip' });
+      const updated = othelloReducer(current, { type: "skip" });
       return {
         state: {
           ...updated.toArray(),
           meta: createMetaData(updated.board, updated.color),
           error:
             updated.turnNumber === current.turnNumber // ターンが進まなかった場合は失敗
-              ? { hasError: true, message: 'このターンはスキップできません！' }
+              ? { hasError: true, message: "このターンはスキップできません！" }
               : { hasError: false },
         },
         players: {
@@ -208,13 +208,13 @@ const useOthello = create<State & Actions>((set, get) => ({
     }),
   activateBot: async () => {
     const state = get().state;
-    const isBotTurn = get().players[state.color].type === 'bot';
+    const isBotTurn = get().players[state.color].type === "bot";
     if (state.isOver || !isBotTurn) {
       return;
     }
 
     const think = get().players[state.color].think;
-    if (think === undefined) throw new Error('Botが登録されていません');
+    if (think === undefined) throw new Error("Botが登録されていません");
 
     const move = think(state.board, state.color);
 
@@ -249,16 +249,16 @@ const useOthello = create<State & Actions>((set, get) => ({
 
 export default useOthello;
 
-const updateGameStatus = (game: Othello): State['game'] => {
+const updateGameStatus = (game: Othello): State["game"] => {
   if (game.isOver()) {
     const comparisonResult = game.board.compareToOpponent(COLOR_CODE.WHITE);
     return {
-      status: 'finished',
+      status: "finished",
       result:
         comparisonResult === COMPARISON_RESULT.EQUAL
-          ? { type: 'draw' }
+          ? { type: "draw" }
           : {
-              type: 'resulted',
+              type: "resulted",
               winner:
                 comparisonResult === COMPARISON_RESULT.GREATER
                   ? COLOR_CODE.WHITE

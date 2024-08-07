@@ -1,9 +1,9 @@
-import { Board, BoardData } from '@models/Board/Board';
-import { flip } from '@models/Board/Color';
-import { randomBot } from './Random';
-import { COMPARISON_RESULT } from '@models/Shared/Comparison';
-import { COLOR_CODE } from '@models/Board/Color';
-import { BotMethod } from '../BotList';
+import { Board, BoardData } from "@models/Board/Board";
+import { flip } from "@models/Board/Color";
+import { randomBot } from "./Random";
+import { COMPARISON_RESULT } from "@models/Shared/Comparison";
+import { COLOR_CODE } from "@models/Board/Color";
+import { BotMethod } from "../BotList";
 
 type Options = {
   maxPlayOut: number;
@@ -40,7 +40,7 @@ export const WeakStepBasedMCTS: BotMethod = (
     { field: -1, score: -1 }
   );
 
-  console.log(new Date().getTime() - start.getTime() + 'ms');
+  console.log(new Date().getTime() - start.getTime() + "ms");
   console.log(playOutResults);
 
   return playOutResults.field === -1 ? null : playOutResults.field;
