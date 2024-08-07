@@ -3,12 +3,6 @@ import { COLOR_CODE } from "@models/Board/Color";
 import useOthello from "../../../../dataflow/othello/useOthello";
 import Stone from "./Stone";
 
-
-export const EMPTY_CODE = 0;
-export type EmptyCode = typeof EMPTY_CODE;
-
-export type FieldObject = COLOR_CODE | EmptyCode;
-
 type Props = {
   fieldId: FieldId;
   content: COLOR_CODE;

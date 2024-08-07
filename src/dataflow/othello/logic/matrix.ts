@@ -1,5 +1,4 @@
-import { BoardData } from "@models/Board/Board";
-import { FieldObject } from "../../../components/PlayGround/elements/Board/Field";
+import { BoardData, FieldObject } from "@models/Board/Board";
 
 type Line = FieldObject[];
 type Matrix = Line[];
