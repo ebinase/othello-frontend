@@ -135,12 +135,10 @@ const useOthello = create<State & Actions>((set, get) => ({
   game: initialGameState,
   update: (fieldId: number) => {
     set((state) => {
-      const current = Othello.reconstruct(
-        state.state.turn,
-        state.state.board,
-        state.state.color,
-        state.state.skipCount
-      );
+      const current = Othello.reconstruct({
+        ...state.state,
+        turnNumber: state.state.turn,
+      });
       const updated = othelloReducer(current, { type: "update", fieldId });
       return {
         state: {
@@ -161,12 +159,10 @@ const useOthello = create<State & Actions>((set, get) => ({
   },
   skip: () => {
     set((state) => {
-      const current = Othello.reconstruct(
-        state.state.turn,
-        state.state.board,
-        state.state.color,
-        state.state.skipCount
-      );
+      const current = Othello.reconstruct({
+        ...state.state,
+        turnNumber: state.state.turn,
+      });
       const updated = othelloReducer(current, { type: "skip" });
       return {
         state: {
@@ -174,7 +170,7 @@ const useOthello = create<State & Actions>((set, get) => ({
           meta: createMetaData(updated.board, updated.color),
           error:
             updated.turnNumber === current.turnNumber // ターンが進まなかった場合は失敗
-              ? { hasError: true, message: "このターンはスキップできません！" }
+              ? { hasError: true, message: 'このターンはスキップできません！' }
               : { hasError: false },
         },
         players: {
