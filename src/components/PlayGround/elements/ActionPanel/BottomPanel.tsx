@@ -1,5 +1,5 @@
 import React from "react";
-import useOthello from "../../../../dataflow/othello/useOthello";
+import useOthello from "../../../../hooks/useOthello";
 
 const BottomPanel: React.FC = () => {
   const { state, skip, players, reset, restart } = useOthello();

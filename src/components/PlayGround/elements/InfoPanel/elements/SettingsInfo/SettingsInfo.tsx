@@ -3,7 +3,7 @@
 import { BotLevel, botLevelList } from "@components/shared/hooks/bot/BotList";
 import useOthello, {
   GAME_MODE,
-} from "../../../../../../dataflow/othello/useOthello";
+} from "../../../../../../hooks/useOthello";
 
 const SettingsInfo: React.FC = () => {
   const { initialize } = useOthello();

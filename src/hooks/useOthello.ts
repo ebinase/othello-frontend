@@ -1,8 +1,8 @@
 import { BoardData, FieldId } from '@models/Board/Board';
 import { create } from 'zustand';
 import { COLOR_CODE } from '@models/Board/Color';
-import { othelloReducer } from './othelloReducer';
-import { createMetaData, MetaData } from './metadata';
+import { othelloReducer } from '../models/Game/othelloReducer';
+import { createMetaData, MetaData } from '../util/metadata';
 import { Othello } from '@models/Game/Othello';
 import {
   BotLevel,
@@ -221,11 +221,11 @@ const useOthello = create<State & Actions>((set, get) => ({
 
     const move = think(state.board, state.color);
 
-   if (move !== null) {
-     get().update(move);
-   } else {
-     get().skip();
-   }
+    if (move !== null) {
+      get().update(move);
+    } else {
+      get().skip();
+    }
   },
   initialize: (settings) => {
     const players: Players =

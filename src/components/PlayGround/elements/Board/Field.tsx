@@ -1,6 +1,6 @@
 import { FieldId } from "@models/Board/Board";
 import { COLOR_CODE } from "@models/Board/Color";
-import useOthello from "../../../../dataflow/othello/useOthello";
+import useOthello from "../../../../hooks/useOthello";
 import Stone from "./Stone";
 
 type Props = {

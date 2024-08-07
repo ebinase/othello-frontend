@@ -5,7 +5,7 @@ import {
   getCurrentCoord,
   getLines,
   toMatrix,
-} from '../../dataflow/othello/logic/matrix';
+} from '../../util/matrix';
 import { Result } from '../Shared/Result';
 import { COLOR_CODE } from './Color';
 

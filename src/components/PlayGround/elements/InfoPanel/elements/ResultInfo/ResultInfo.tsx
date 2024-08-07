@@ -1,6 +1,6 @@
 "use client";
 
-import useOthello from "../../../../../../dataflow/othello/useOthello";
+import useOthello from "../../../../../../hooks/useOthello";
 import ResultBar from "./ResultBar";
 
 const ResultInfo: React.FC = () => {

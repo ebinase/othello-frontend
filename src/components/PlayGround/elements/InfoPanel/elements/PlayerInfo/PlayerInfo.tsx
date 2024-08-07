@@ -1,6 +1,6 @@
 "use client";
 
-import useOthello from "../../../../../../dataflow/othello/useOthello";
+import useOthello from "../../../../../../hooks/useOthello";
 import { COLOR_CODE } from "@models/Board/Color"
 import PlayerBar from "./PlayerBar";
 
