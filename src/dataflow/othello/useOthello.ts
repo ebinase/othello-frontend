@@ -1,5 +1,4 @@
-import { BoardData } from '@models/Board/Board';
-import { FieldId } from '../../components/PlayGround/elements/Board/Field';
+import { BoardData, FieldId } from '@models/Board/Board';
 import { create } from 'zustand';
 import { COLOR_CODE } from '@models/Board/Color';
 import { othelloReducer } from './othelloReducer';

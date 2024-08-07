@@ -1,3 +1,4 @@
+import { FieldId } from "@models/Board/Board";
 import { COLOR_CODE } from "@models/Board/Color";
 import useOthello from "../../../../dataflow/othello/useOthello";
 import Stone from "./Stone";
@@ -7,7 +8,6 @@ export const EMPTY_CODE = 0;
 export type EmptyCode = typeof EMPTY_CODE;
 
 export type FieldObject = COLOR_CODE | EmptyCode;
-export type FieldId = number;
 
 type Props = {
   fieldId: FieldId;
