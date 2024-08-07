@@ -1,5 +1,5 @@
-import { Board, FieldId } from '@models/Board/Board';
-import { COLOR_CODE } from '@models/Board/Color';
+import { Board, FieldId } from "@models/Board/Board";
+import { COLOR_CODE } from "@models/Board/Color";
 
 // オセロに関するメタデータを定義する
 // TODO: アクセスしやすさや拡張性を考慮してデータ構造を見直す
@@ -24,7 +24,10 @@ export type MetaData = {
 
 // 盤面のメタデータを生成する
 // TODO: アクティブなプレイヤーの情報の計算はselectorなどに切り出す
-export const createMetaData = (board: Board, activeColor: COLOR_CODE): MetaData => {
+export const createMetaData = (
+  board: Board,
+  activeColor: COLOR_CODE
+): MetaData => {
   const boardMetaData = {
     white: {
       stones: board.countStone(COLOR_CODE.WHITE),
@@ -40,7 +43,7 @@ export const createMetaData = (board: Board, activeColor: COLOR_CODE): MetaData 
     board: boardMetaData,
     active: {
       color: activeColor,
-      ...boardMetaData[activeColor === COLOR_CODE.WHITE ? 'white' : 'black'],
+      ...boardMetaData[activeColor === COLOR_CODE.WHITE ? "white" : "black"],
     },
   };
 };

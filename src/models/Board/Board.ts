@@ -1,13 +1,13 @@
-import { flip } from '@models/Board/Color';
-import { compareNumbers, COMPARISON_RESULT } from '@models/Shared/Comparison';
+import { flip } from "@models/Board/Color";
+import { compareNumbers, COMPARISON_RESULT } from "@models/Shared/Comparison";
 import {
   directions,
   getCurrentCoord,
   getLines,
   toMatrix,
-} from '../../dataflow/othello/logic/matrix';
-import { Result } from '../Shared/Result';
-import { COLOR_CODE } from './Color';
+} from "../../util/matrix";
+import { Result } from "../Shared/Result";
+import { COLOR_CODE } from "./Color";
 
 // Types
 export const EMPTY_CODE = 0;

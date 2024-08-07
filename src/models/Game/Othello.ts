@@ -1,6 +1,6 @@
-import { Board, BoardData } from '@models/Board/Board';
-import { COLOR_CODE, flip } from '@models/Board/Color';
-import { Result } from '@models/Shared/Result';
+import { Board, BoardData } from "@models/Board/Board";
+import { COLOR_CODE, flip } from "@models/Board/Color";
+import { Result } from "@models/Shared/Result";
 
 export class Othello {
   private constructor(
@@ -25,7 +25,7 @@ export class Othello {
 
   public move(fieldId: number): Result<Othello, Error> {
     if (this.isOver()) {
-      return Result.failure(new Error('Game is over'));
+      return Result.failure(new Error("Game is over"));
     }
 
     // 更新
@@ -34,27 +34,29 @@ export class Othello {
         Result.success(
           new Othello(this.turnNumber + 1, newBoard, flip(this.color), 0) // skipCountをリセット
         ),
-      failure: () => Result.failure(new Error('Invalid position')),
+      failure: () => Result.failure(new Error("Invalid position")),
     });
   }
 
   public skip(): Result<Othello, Error> {
     if (this.shoudSkip()) {
       return Result.success(
-         new Othello(
-         this.turnNumber + 1,
-         this.board,
-         flip(this.color),
-         this.skipCount + 1
+        new Othello(
+          this.turnNumber + 1,
+          this.board,
+          flip(this.color),
+          this.skipCount + 1
         )
       );
     } else {
-      return Result.failure(new Error('Cannot skip'));
+      return Result.failure(new Error("Cannot skip"));
     }
   }
 
   public shoudSkip() {
-    return !this.isOver() && this.board.selectableFields(this.color).length === 0;
+    return (
+      !this.isOver() && this.board.selectableFields(this.color).length === 0
+    );
   }
 
   public isOver() {
