@@ -8,8 +8,15 @@ const initial = Othello.initialize().values();
 // 意図しない変更を防ぐため、primitive atomは非公開にしておく
 const othelloAtom = atom<OthelloValues>(initial);
 
-// 公開用 read/write atom
+// 参照用read-only atom
 export const othelloSelector = atom((get) => get(othelloAtom));
+
+// 初期化用write-only atom
+export const othelloInitializer = atom(null, (get, set) => {
+  set(othelloAtom, initial);
+});
+
+// 更新用write-only atom
 export const othelloUpdater = atom(null, (get, set, fieldId: FieldId) => {
   const current = Othello.reconstruct(get(othelloAtom));
   set(
