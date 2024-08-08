@@ -12,19 +12,19 @@ const othelloAtom = atom<OthelloValues>(initial);
 export const othelloSelector = atom((get) => get(othelloAtom));
 
 // 初期化用write-only atom
-export const othelloInitializer = atom(null, (get, set) => {
+export const othelloInitializeExecutor = atom(null, (get, set) => {
   set(othelloAtom, initial);
 });
 
 // 更新用write-only atom
-export const othelloUpdater = atom(null, (get, set, fieldId: FieldId) => {
+export const othelloUpdateExecutor = atom(null, (get, set, fieldId: FieldId) => {
   const current = Othello.reconstruct(get(othelloAtom));
   set(
     othelloAtom,
     othelloReducer(current, { type: "update", fieldId }).values()
   );
 });
-export const othelloSkipper = atom(null, (get, set) => {
+export const othelloSkipExecutor = atom(null, (get, set) => {
   const current = Othello.reconstruct(get(othelloAtom));
   set(othelloAtom, othelloReducer(current, { type: "skip" }).values());
 });
