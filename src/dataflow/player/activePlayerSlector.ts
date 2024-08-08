@@ -4,7 +4,7 @@ import { Othello } from '@models/Game/Othello';
 import { atom } from 'jotai';
 import { analyzedPlayersSlector } from './analyzedPlayersSlector';
 
-export const activePlayersSlector = atom((get) => {
+export const activePlayerSlector = atom((get) => {
   if (get(gameStatusSlector) === "finished") {
     return null;
   }
@@ -14,6 +14,6 @@ export const activePlayersSlector = atom((get) => {
   const game = Othello.reconstruct(get(othelloSelector));
   return {
     ...players[activeColor],
-    action: game.shoudSkip() ? "skip" : "update", // そのターンに実行可能なアクション
+    action: game.shoudSkip() ? "skip" : "update" as "update" | "skip", // そのターンに実行可能なアクション
   }
 });
