@@ -24,8 +24,21 @@ type Players = {
   [COLOR_CODE.BLACK]: Player;
 };
 
+const initialPlayers: Players = {
+  [COLOR_CODE.WHITE]: {
+    name: 'WHITE PLAYER',
+    color: COLOR_CODE.WHITE,
+    type: 'human',
+  },
+  [COLOR_CODE.BLACK]: {
+    name: 'BLACK PLAYER',
+    color: COLOR_CODE.BLACK,
+    type: 'human',
+  },
+};
+
 // 意図しない変更を防ぐため、primitive atomは非公開にしておく
-const playersAtom = atom<Players | null>(null);
+const playersAtom = atom<Players>(initialPlayers);
 
 // 公開用 read/write atom
 export const playersSelector = atom((get) => get(playersAtom));
