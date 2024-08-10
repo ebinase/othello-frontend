@@ -3,8 +3,15 @@ import { Board } from '@models/Board/Board';
 import { COLOR_CODE } from '@models/Board/Color';
 import { atom } from 'jotai';
 
+export type Analysis = {
+  [color in COLOR_CODE]: {
+    stones: number;
+    selectable: number[];
+  };
+};
+
 // 盤面のメタデータを取得するatom
-export const analysisSelector = atom((get) => {
+export const analysisSelector = atom<Analysis>((get) => {
   const board = Board.fromArray(get(othelloSelector).board);
   return {
     [COLOR_CODE.WHITE]: {

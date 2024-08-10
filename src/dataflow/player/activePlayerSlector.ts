@@ -2,9 +2,13 @@ import { gameStatusSlector } from '@dataflow/game/gameStatusSlector';
 import { othelloSelector } from '@dataflow/othelloAtom';
 import { Othello } from '@models/Game/Othello';
 import { atom } from 'jotai';
-import { analyzedPlayersSlector } from './analyzedPlayersSlector';
+import { AnalyzedPlayers, analyzedPlayersSlector } from './analyzedPlayersSlector';
 
-export const activePlayerSlector = atom((get) => {
+type ActivePlayer = AnalyzedPlayers[keyof AnalyzedPlayers] & {
+  action: "update" | "skip";
+} | null;
+
+export const activePlayerSlector = atom<ActivePlayer>((get) => {
   if (get(gameStatusSlector) === "finished") {
     return null;
   }
@@ -14,6 +18,6 @@ export const activePlayerSlector = atom((get) => {
   const game = Othello.reconstruct(get(othelloSelector));
   return {
     ...players[activeColor],
-    action: game.shoudSkip() ? "skip" : "update" as "update" | "skip", // そのターンに実行可能なアクション
+    action: game.shoudSkip() ? "skip" : "update", // そのターンに実行可能なアクション
   }
 });

@@ -1,10 +1,12 @@
-import { analysisSelector } from '@dataflow/board/analysisSlector';
-import { playersSelector } from '@dataflow/playersAtom';
+import { Analysis, analysisSelector } from '@dataflow/board/analysisSlector';
+import { Players, playersSelector } from '@dataflow/playersAtom';
 import { COLOR_CODE } from '@models/Board/Color';
 import { atom } from 'jotai';
 
+export type AnalyzedPlayers = Players & Analysis
+
 // 盤面のメタデータを保持したプレイヤー情報を取得するatom
-export const analyzedPlayersSlector = atom((get) => {
+export const analyzedPlayersSlector = atom<AnalyzedPlayers>((get) => {
   const players = get(playersSelector);
   const analysis = get(analysisSelector);
 

@@ -19,7 +19,7 @@ type Bot = BasePlayer & {
 
 type Player = Human | Bot;
 
-type Players = {
+export type Players = {
   [COLOR_CODE.WHITE]: Player;
   [COLOR_CODE.BLACK]: Player;
 };
