@@ -1,6 +1,6 @@
+import useOthello from "@hooks/useOthelloWithAtom";
 import { FieldId } from "@models/Board/Board";
 import { COLOR_CODE } from "@models/Board/Color";
-import useOthello from "../../../../hooks/useOthello";
 import Stone from "./Stone";
 
 type Props = {
@@ -14,7 +14,14 @@ const style =
 
 // TODO: メモ化
 const Field: React.FC<Props> = (props) => {
-  const { update } = useOthello();
+  const { players } = useOthello();
+  const action = players.active?.action;
+  const update = (fieldId: FieldId) => {
+    // todo: ここの型推論が動くようにする
+    if (action?.type === "update") {
+      action.move(fieldId);
+    }
+  };
   return props.isSelectable ? (
     <button
       className={style}

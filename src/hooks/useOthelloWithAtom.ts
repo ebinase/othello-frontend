@@ -4,7 +4,7 @@ import { othelloSelector, othelloSkipExecutor, othelloUpdateExecutor } from "@da
 import { activePlayerSlector } from "@dataflow/player/activePlayerSlector";
 import { analyzedPlayersSlector } from "@dataflow/player/analyzedPlayersSlector";
 import { COLOR_CODE } from "@models/Board/Color";
-import { useAtomValue, useSetAtom } from "jotai/esm/react";
+import { useAtomValue, useSetAtom } from 'jotai';
 
 const useOthello = () => {
   const othelloValues = useAtomValue(othelloSelector);
