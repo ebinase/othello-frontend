@@ -6,6 +6,8 @@ export type GameStatus = 'not_started' | 'playing' | 'finished';
 
 const gameStatusAtom = atom<GameStatus>('not_started');
 
+export const gameStatusSelector = atom((get) => get(gameStatusAtom));
+
 // ステートマシンを使って状態を遷移させるためのatom
 export const gameStatusUpdateExecutor = atom(null, (get, set, next: GameStatus) => {
   const current = get(gameStatusAtom);
@@ -14,9 +16,9 @@ export const gameStatusUpdateExecutor = atom(null, (get, set, next: GameStatus) 
     return;
   }
   if (isAllowedTransition(current, next)) {
-    set(gameStatusAtom, current);
+    set(gameStatusAtom, next);
   } else {
-    throw new Error(`Invalid transition: ${current} -> ${next}`);
+    throw new Error(`Invalid transition: ${current} -> ${next}`);  // ここにヒットしたらバグがある
   }
 });
 

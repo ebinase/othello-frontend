@@ -1,7 +1,6 @@
 import { gameModeSelector } from '@dataflow/game/gameModeSelector';
 import { gameResultSelector } from '@dataflow/game/gameResultSlector';
-import { gameStatusSlector } from '@dataflow/game/gameStatusSlector';
-import { gameInitializeExecutor, gameRestartExecutor, gameStartExecutor } from '@dataflow/gameStatusAtom';
+import { gameInitializeExecutor, gameRestartExecutor, gameStartExecutor, gameStatusSelector } from '@dataflow/gameStatusAtom';
 import {
   othelloSelector,
   othelloSkipExecutor,
@@ -33,7 +32,7 @@ const useOthello = () => {
   return {
     board: othelloValues.board,
     game: {
-      status: useAtomValue(gameStatusSlector),
+      status: useAtomValue(gameStatusSelector),
       mode: useAtomValue(gameModeSelector),
       result: useAtomValue(gameResultSelector),
       start: (white: Player, black: Player) => {

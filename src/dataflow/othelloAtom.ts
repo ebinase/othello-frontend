@@ -33,5 +33,11 @@ export const othelloUpdateExecutor = atom(null, (get, set, fieldId: FieldId) => 
 export type SkipExecutor = () => void;
 export const othelloSkipExecutor = atom(null, (get, set) => {
   const current = Othello.reconstruct(get(othelloAtom));
-  set(othelloAtom, othelloReducer(current, { type: "skip" }).values());
+  const updated = othelloReducer(current, { type: 'skip' });
+  if (updated.turnNumber > current.turnNumber) {
+    set(othelloAtom, updated.values());
+    set(gameStatusUpdateExecutor, updated.isOver() ? 'finished' : 'playing');
+  } else {
+    // TODO: エラー表示を実装する
+  }
 });
