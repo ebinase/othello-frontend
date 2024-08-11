@@ -1,16 +1,14 @@
 "use client";
 
-import useOthello from "../../../../hooks/useOthello";
+import useOthello from "@hooks/useOthelloWithAtom";
 import PlayerInfo from "./elements/PlayerInfo/PlayerInfo";
 import ResultInfo from "./elements/ResultInfo/ResultInfo";
-import SettingsInfo from "./elements/SettingsInfo/SettingsInfo";
 
 const InfoPanel: React.FC = () => {
-  const gameStatus = useOthello((state) => state.game.status);
+  const gameStatus = useOthello().game.status;
 
+  // TODO: ゲームの初期化処理を適切なタイミングで表示できるようにする
   switch (gameStatus) {
-    case "not_started":
-      return <SettingsInfo />;
     case "playing":
       return <PlayerInfo />;
     case "finished":

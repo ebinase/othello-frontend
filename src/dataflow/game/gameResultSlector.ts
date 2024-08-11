@@ -15,6 +15,10 @@ export const gameResultSelector = atom<GameResult>((get) => {
   const game = Othello.reconstruct(get(othelloSelector));
 
   if (game.isOver()) {
+    if (game.skippedTooMuch()) {
+      return { type: 'draw' };
+    }
+
     switch (game.board.compareToOpponent(COLOR_CODE.WHITE)) {
       case COMPARISON_RESULT.GREATER:
         return {

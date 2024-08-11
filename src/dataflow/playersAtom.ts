@@ -26,12 +26,12 @@ export type Players = {
 
 const initialPlayers: Players = {
   [COLOR_CODE.WHITE]: {
-    name: 'WHITE PLAYER',
+    name: 'WHITE',
     color: COLOR_CODE.WHITE,
     type: 'human',
   },
   [COLOR_CODE.BLACK]: {
-    name: 'BLACK PLAYER',
+    name: 'BLACK',
     color: COLOR_CODE.BLACK,
     type: 'human',
   },

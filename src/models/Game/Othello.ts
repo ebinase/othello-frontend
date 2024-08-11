@@ -67,7 +67,11 @@ export class Othello {
   }
 
   public isOver() {
-    return this.skipCount > 1 || !this.isContinuable();
+    return this.skippedTooMuch() || !this.isContinuable();
+  }
+
+  public skippedTooMuch() {
+    return this.skipCount > 1;
   }
 
   /**

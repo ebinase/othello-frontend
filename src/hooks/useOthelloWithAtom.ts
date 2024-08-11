@@ -1,3 +1,4 @@
+import { gameModeSelector } from '@dataflow/game/gameModeSelector';
 import { gameResultSelector } from '@dataflow/game/gameResultSlector';
 import { gameStatusSlector } from '@dataflow/game/gameStatusSlector';
 import {
@@ -31,6 +32,7 @@ const useOthello = () => {
     board: othelloValues.board,
     game: {
       status: useAtomValue(gameStatusSlector),
+      mode: useAtomValue(gameModeSelector),
       result: useAtomValue(gameResultSelector),
       reset: useCallback(() => {
         gameInitializer();
@@ -41,8 +43,9 @@ const useOthello = () => {
       }, [gameInitializer]),
     },
     players: {
-      white: players[COLOR_CODE.WHITE],
-      black: players[COLOR_CODE.BLACK],
+      ...players,
+      white: players[COLOR_CODE.WHITE], // エイリアス
+      black: players[COLOR_CODE.BLACK], // エイリアス
       active: {
         ...activePlayer,
         action: {
