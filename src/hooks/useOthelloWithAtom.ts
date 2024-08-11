@@ -14,8 +14,9 @@ import {
   activePlayerSlector,
 } from '@dataflow/player/activePlayerSlector';
 import { analyzedPlayersSlector } from '@dataflow/player/analyzedPlayersSlector';
-import { playersInitializeExecutor } from '@dataflow/playersAtom';
+import { buildPlayers, playersInitializeExecutor } from '@dataflow/playersAtom';
 import { COLOR_CODE } from '@models/Board/Color';
+import { Player } from '@models/Player/Player';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useCallback } from 'react';
 
@@ -34,6 +35,10 @@ const useOthello = () => {
       status: useAtomValue(gameStatusSlector),
       mode: useAtomValue(gameModeSelector),
       result: useAtomValue(gameResultSelector),
+      initialize: (white: Player, black: Player) => {
+        gameInitializer();
+        playerInitializer(buildPlayers()(white)(black));
+      },
       reset: useCallback(() => {
         gameInitializer();
         playerInitializer();

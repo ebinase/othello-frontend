@@ -1,21 +1,18 @@
 "use client";
 
+import useOthello from "@hooks/useOthelloWithAtom";
 import { BotLevel, botLevelList } from "@models/Bot/BotList";
-import useOthello, { GAME_MODE } from "../../../../../../hooks/useOthello";
+import { buildBotPlayer, buildHumanPlayer } from "@models/Player/Player";
 
 const SettingsInfo: React.FC = () => {
-  const { initialize } = useOthello();
+  const { game } = useOthello();
 
   const handlePvP = () => {
-    initialize({ gameMode: GAME_MODE.PVP, players: ["WHITE", "BLACK"] });
+    game.initialize(buildHumanPlayer("WHITE"), buildHumanPlayer("BLACK"))
   };
 
   const handlePvE = (botLevel: BotLevel) => {
-    initialize({
-      gameMode: GAME_MODE.PVE,
-      player: "PLAYER",
-      botLevel,
-    });
+    game.initialize(buildHumanPlayer("WHITE"), buildBotPlayer(botLevel))
   };
 
   return (
