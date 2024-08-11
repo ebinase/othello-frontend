@@ -42,6 +42,6 @@ const playersAtom = atom<Players>(initialPlayers);
 
 // 公開用 read/write atom
 export const playersSelector = atom((get) => get(playersAtom));
-export const playersInitializeExecutor = atom(null, (get, set, players: Players) => {
+export const playersInitializeExecutor = atom(null, (get, set, players: Players = initialPlayers) => {
   set(playersAtom, players);
 });
