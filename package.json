@@ -17,6 +17,7 @@
     "next": "^14.2.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "ts-pattern": "^5.2.0",
     "zustand": "^4.3.8"
   },
   "devDependencies": {
@@ -30,6 +31,6 @@
     "postcss": "^8.4.12",
     "prettier": "^2.6.2",
     "tailwindcss": "^3.0.23",
-    "typescript": "4.6.3"
+    "typescript": "^5.5.4"
   }
 }
