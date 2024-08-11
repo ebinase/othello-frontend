@@ -17,6 +17,7 @@ export const othelloInitializeExecutor = atom(null, (get, set) => {
 });
 
 // 更新用write-only atom
+export type UpdateExecutor = (fieldId: FieldId) => void;
 export const othelloUpdateExecutor = atom(null, (get, set, fieldId: FieldId) => {
   const current = Othello.reconstruct(get(othelloAtom));
   set(
@@ -24,6 +25,7 @@ export const othelloUpdateExecutor = atom(null, (get, set, fieldId: FieldId) => 
     othelloReducer(current, { type: "update", fieldId }).values()
   );
 });
+export type SkipExecutor = () => void;
 export const othelloSkipExecutor = atom(null, (get, set) => {
   const current = Othello.reconstruct(get(othelloAtom));
   set(othelloAtom, othelloReducer(current, { type: "skip" }).values());

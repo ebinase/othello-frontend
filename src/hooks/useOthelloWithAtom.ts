@@ -4,8 +4,13 @@ import {
   othelloSelector,
   othelloSkipExecutor,
   othelloUpdateExecutor,
+  type SkipExecutor,
+  type UpdateExecutor,
 } from '@dataflow/othelloAtom';
-import { activePlayerSlector } from '@dataflow/player/activePlayerSlector';
+import {
+  ActivePlayer,
+  activePlayerSlector,
+} from '@dataflow/player/activePlayerSlector';
 import { analyzedPlayersSlector } from '@dataflow/player/analyzedPlayersSlector';
 import { COLOR_CODE } from '@models/Board/Color';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -26,20 +31,32 @@ const useOthello = () => {
     players: {
       white: players[COLOR_CODE.WHITE],
       black: players[COLOR_CODE.BLACK],
-      active: !!activePlayer
-        ? {
-          ...activePlayer,
-          action:
-              activePlayer.action === 'update'
-                ? {
-                    type: activePlayer.action,
-                    update,
-                  }
-                : { type: activePlayer.action, skip },
-          }
-        : null,
+      active: {
+        ...activePlayer,
+        action: {
+          ...resolveAction(activePlayer.action, update, skip),
+        },
+      },
     },
   };
 };
 
 export default useOthello;
+
+const resolveAction = (
+  action: ActivePlayer['action'],
+  update: UpdateExecutor,
+  skip: SkipExecutor
+) => {
+  switch (action) {
+    case 'update':
+      return { type: action, update } as {
+        type: 'update';
+        update: typeof update;
+      };
+    case 'skip':
+      return { type: action, skip } as { type: 'skip'; skip: typeof skip };
+    case 'none':
+      return { type: action } as { type: 'none' };
+  }
+};

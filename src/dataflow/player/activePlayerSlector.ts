@@ -1,23 +1,25 @@
-import { gameStatusSlector } from '@dataflow/game/gameStatusSlector';
+import { GameStatus, gameStatusSlector } from '@dataflow/game/gameStatusSlector';
 import { othelloSelector } from '@dataflow/othelloAtom';
-import { Othello } from '@models/Game/Othello';
 import { atom } from 'jotai';
-import { AnalyzedPlayers, analyzedPlayersSlector } from './analyzedPlayersSlector';
+import { match } from 'ts-pattern';
+import {
+  AnalyzedPlayers,
+  analyzedPlayersSlector,
+} from './analyzedPlayersSlector';
 
-type ActivePlayer = AnalyzedPlayers[keyof AnalyzedPlayers] & {
-  action: "update" | "skip";
-} | null;
+export type ActivePlayer = AnalyzedPlayers[keyof AnalyzedPlayers] & {
+  action: 'update' | 'skip' | 'none';
+};
 
 export const activePlayerSlector = atom<ActivePlayer>((get) => {
-  if (get(gameStatusSlector) === "finished") {
-    return null;
-  }
-
-  const activeColor = get(othelloSelector).color
+  const activeColor = get(othelloSelector).color;
   const players = get(analyzedPlayersSlector);
-  const game = Othello.reconstruct(get(othelloSelector));
+  const gameStatus = get(gameStatusSlector);
   return {
     ...players[activeColor],
-    action: game.shoudSkip() ? "skip" : "update", // そのターンに実行可能なアクション
-  }
+    action: match<GameStatus, ActivePlayer['action']>(gameStatus)
+      .with('playing', () => (players[activeColor].selectable.length === 0 ? 'skip' : 'update'))
+      .with('finished', () => 'none')
+      .exhaustive(),
+  };
 });

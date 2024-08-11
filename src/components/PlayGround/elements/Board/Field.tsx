@@ -15,7 +15,7 @@ const style =
 // TODO: メモ化
 const Field: React.FC<Props> = (props) => {
   const { players } = useOthello();
-  const action = players.active?.action;
+  const action = players.active.action;
   const update = (fieldId: FieldId) => {
     if (action?.type === "update") {
       action.update(fieldId);
