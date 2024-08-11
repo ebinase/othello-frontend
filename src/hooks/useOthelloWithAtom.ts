@@ -1,8 +1,8 @@
 import { gameModeSelector } from '@dataflow/game/gameModeSelector';
 import { gameResultSelector } from '@dataflow/game/gameResultSlector';
 import { gameStatusSlector } from '@dataflow/game/gameStatusSlector';
+import { gameInitializeExecutor, gameRestartExecutor, gameStartExecutor } from '@dataflow/gameStatusAtom';
 import {
-  othelloInitializeExecutor,
   othelloSelector,
   othelloSkipExecutor,
   othelloUpdateExecutor,
@@ -14,7 +14,7 @@ import {
   activePlayerSlector,
 } from '@dataflow/player/activePlayerSlector';
 import { analyzedPlayersSlector } from '@dataflow/player/analyzedPlayersSlector';
-import { buildPlayers, playersInitializeExecutor } from '@dataflow/playersAtom';
+import { buildPlayers } from '@dataflow/playersAtom';
 import { COLOR_CODE } from '@models/Board/Color';
 import { Player } from '@models/Player/Player';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -26,8 +26,9 @@ const useOthello = () => {
   const activePlayer = useAtomValue(activePlayerSlector);
   const update = useSetAtom(othelloUpdateExecutor);
   const skip = useSetAtom(othelloSkipExecutor);
-  const gameInitializer = useSetAtom(othelloInitializeExecutor);
-  const playerInitializer = useSetAtom(playersInitializeExecutor);
+  const initializeGame = useSetAtom(gameInitializeExecutor);
+  const startGame = useSetAtom(gameStartExecutor);
+  const restartGame = useSetAtom(gameRestartExecutor);
 
   return {
     board: othelloValues.board,
@@ -35,17 +36,15 @@ const useOthello = () => {
       status: useAtomValue(gameStatusSlector),
       mode: useAtomValue(gameModeSelector),
       result: useAtomValue(gameResultSelector),
-      initialize: (white: Player, black: Player) => {
-        gameInitializer();
-        playerInitializer(buildPlayers()(white)(black));
+      start: (white: Player, black: Player) => {
+        startGame(buildPlayers()(white)(black));
       },
       reset: useCallback(() => {
-        gameInitializer();
-        playerInitializer();
-      }, [gameInitializer, playerInitializer]),
+        initializeGame();
+      }, [initializeGame]),
       restart: useCallback(() => {
-        gameInitializer();
-      }, [gameInitializer]),
+        restartGame();
+      }, [restartGame]),
     },
     players: {
       ...players,

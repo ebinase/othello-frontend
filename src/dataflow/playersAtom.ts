@@ -25,22 +25,29 @@ const playersAtom = atom<PlayersAtomValue>(initialPlayers);
 
 // 公開用 read/write atom
 export const playersSelector = atom((get) => get(playersAtom));
-export const playersInitializeExecutor = atom(
+export const playersInitializeExecutor = atom(null, (get, set) => {
+  set(playersAtom, initialPlayers);
+});
+
+export const playersUpdateExecutor = atom(
   null,
   (get, set, players: PlayersAtomValue = initialPlayers) => {
     set(playersAtom, players);
   }
 );
 
-export const buildPlayers = () => (white: Player) => (black: Player): PlayersAtomValue => {
-  return {
-    [COLOR_CODE.WHITE]: {
-      ...white,
-      color: COLOR_CODE.WHITE,
-    },
-    [COLOR_CODE.BLACK]: {
-      ...black,
-      color: COLOR_CODE.BLACK,
-    },
+export const buildPlayers =
+  () =>
+  (white: Player) =>
+  (black: Player): PlayersAtomValue => {
+    return {
+      [COLOR_CODE.WHITE]: {
+        ...white,
+        color: COLOR_CODE.WHITE,
+      },
+      [COLOR_CODE.BLACK]: {
+        ...black,
+        color: COLOR_CODE.BLACK,
+      },
+    };
   };
-}

@@ -2,6 +2,7 @@ import { FieldId } from "@models/Board/Board";
 import { Othello, OthelloValues } from "@models/Game/Othello";
 import { othelloReducer } from "@models/Game/othelloReducer";
 import { atom } from "jotai";
+import { gameStatusUpdateExecutor } from "./gameStatusAtom";
 
 const initial = Othello.initialize().values();
 
@@ -20,10 +21,14 @@ export const othelloInitializeExecutor = atom(null, (get, set) => {
 export type UpdateExecutor = (fieldId: FieldId) => void;
 export const othelloUpdateExecutor = atom(null, (get, set, fieldId: FieldId) => {
   const current = Othello.reconstruct(get(othelloAtom));
-  set(
-    othelloAtom,
-    othelloReducer(current, { type: "update", fieldId }).values()
-  );
+  const updated = othelloReducer(current, { type: 'update', fieldId });
+  if (updated.turnNumber > current.turnNumber) {
+    // ターンが進んだ場合のみ更新
+    set(othelloAtom, updated.values());
+    set(gameStatusUpdateExecutor, updated.isOver() ? 'finished' : 'playing');
+  } else {
+    // TODO: エラー表示を実装する
+  }
 });
 export type SkipExecutor = () => void;
 export const othelloSkipExecutor = atom(null, (get, set) => {
