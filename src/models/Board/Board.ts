@@ -31,7 +31,7 @@ export class Board {
   public static initialize(): Board {
     const boardData = [...Array(64)].map((_, index) => {
       if ([27, 36].includes(index)) return COLOR_CODE.WHITE;
-      if ([1, 35].includes(index)) return COLOR_CODE.BLACK;
+      if ([28, 35].includes(index)) return COLOR_CODE.BLACK;
       return EMPTY_CODE;
     });
     return new Board(boardData);
