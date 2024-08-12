@@ -1,20 +1,19 @@
-
 import { othelloSelector } from '@dataflow/othelloAtom';
 import { atom } from 'jotai';
 import { match } from 'ts-pattern';
 import {
   AnalyzedPlayers,
-  analyzedPlayersSlector,
-} from './analyzedPlayersSlector';
+  analyzedPlayersSelector,
+} from './analyzedPlayersSelector';
 import { GameStatus, gameStatusSelector } from '@dataflow/gameStatusAtom';
 
 export type ActivePlayer = AnalyzedPlayers[keyof AnalyzedPlayers] & {
   action: 'update' | 'skip' | 'none';
 };
 
-export const activePlayerSlector = atom<ActivePlayer>((get) => {
+export const activePlayerSelector = atom<ActivePlayer>((get) => {
   const activeColor = get(othelloSelector).color;
-  const players = get(analyzedPlayersSlector);
+  const players = get(analyzedPlayersSelector);
   const gameStatus = get(gameStatusSelector);
   return {
     ...players[activeColor],

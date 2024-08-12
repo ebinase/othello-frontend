@@ -1,6 +1,11 @@
 import { gameModeSelector } from '@dataflow/game/gameModeSelector';
-import { gameResultSelector } from '@dataflow/game/gameResultSlector';
-import { gameInitializeExecutor, gameRestartExecutor, gameStartExecutor, gameStatusSelector } from '@dataflow/gameStatusAtom';
+import { gameResultSelector } from '@dataflow/game/gameResultSelector';
+import {
+  gameInitializeExecutor,
+  gameRestartExecutor,
+  gameStartExecutor,
+  gameStatusSelector,
+} from '@dataflow/gameStatusAtom';
 import { messageSelector, messageUpdateExecutor } from '@dataflow/messageAtom';
 import {
   othelloSelector,
@@ -11,9 +16,9 @@ import {
 } from '@dataflow/othelloAtom';
 import {
   ActivePlayer,
-  activePlayerSlector,
-} from '@dataflow/player/activePlayerSlector';
-import { analyzedPlayersSlector } from '@dataflow/player/analyzedPlayersSlector';
+  activePlayerSelector,
+} from '@dataflow/player/activePlayerSelector';
+import { analyzedPlayersSelector } from '@dataflow/player/analyzedPlayersSelector';
 import { buildPlayers } from '@dataflow/playersAtom';
 import { COLOR_CODE } from '@models/Board/Color';
 import { resolveBotMethod } from '@models/Bot/BotList';
@@ -23,8 +28,8 @@ import { useCallback } from 'react';
 
 const useOthello = () => {
   const othelloValues = useAtomValue(othelloSelector);
-  const players = useAtomValue(analyzedPlayersSlector);
-  const activePlayer = useAtomValue(activePlayerSlector);
+  const players = useAtomValue(analyzedPlayersSelector);
+  const activePlayer = useAtomValue(activePlayerSelector);
   const update = useSetAtom(othelloUpdateExecutor);
   const skip = useSetAtom(othelloSkipExecutor);
   const startGame = useSetAtom(gameStartExecutor);
@@ -35,9 +40,12 @@ const useOthello = () => {
       status: useAtomValue(gameStatusSelector),
       mode: useAtomValue(gameModeSelector),
       result: useAtomValue(gameResultSelector),
-      start: useCallback((white: Player, black: Player) => {
-        startGame(buildPlayers()(white)(black));
-      }, [startGame]),
+      start: useCallback(
+        (white: Player, black: Player) => {
+          startGame(buildPlayers()(white)(black));
+        },
+        [startGame]
+      ),
       reset: useSetAtom(gameInitializeExecutor),
       restart: useSetAtom(gameRestartExecutor),
     },
@@ -55,7 +63,7 @@ const useOthello = () => {
     // Botに限らず、ゲームを進行させるためのメソッド。useEffect内で呼び出すことを想定
     activateGame: useCallback(() => {
       // Botが行動可能な状態であればBotを起動
-      if (activePlayer.type === "bot" && activePlayer.action === "update") {
+      if (activePlayer.type === 'bot' && activePlayer.action === 'update') {
         const method = resolveBotMethod(activePlayer.level);
         const move = method(othelloValues.board, activePlayer.color);
         if (move !== null) {
