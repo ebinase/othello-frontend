@@ -26,9 +26,7 @@ const useOthello = () => {
   const activePlayer = useAtomValue(activePlayerSlector);
   const update = useSetAtom(othelloUpdateExecutor);
   const skip = useSetAtom(othelloSkipExecutor);
-  const initializeGame = useSetAtom(gameInitializeExecutor);
   const startGame = useSetAtom(gameStartExecutor);
-  const restartGame = useSetAtom(gameRestartExecutor);
 
   return {
     board: othelloValues.board,
@@ -36,15 +34,11 @@ const useOthello = () => {
       status: useAtomValue(gameStatusSelector),
       mode: useAtomValue(gameModeSelector),
       result: useAtomValue(gameResultSelector),
-      start: (white: Player, black: Player) => {
+      start: useCallback((white: Player, black: Player) => {
         startGame(buildPlayers()(white)(black));
-      },
-      reset: useCallback(() => {
-        initializeGame();
-      }, [initializeGame]),
-      restart: useCallback(() => {
-        restartGame();
-      }, [restartGame]),
+      }, [startGame]),
+      reset: useSetAtom(gameInitializeExecutor),
+      restart: useSetAtom(gameRestartExecutor),
     },
     players: {
       ...players,
@@ -59,7 +53,7 @@ const useOthello = () => {
     },
     // Botに限らず、ゲームを進行させるためのメソッド。useEffect内で呼び出すことを想定
     activateGame: useCallback(() => {
-    // Botが行動可能な状態であればBotを起動
+      // Botが行動可能な状態であればBotを起動
       if (activePlayer.type === "bot" && activePlayer.action === "update") {
         const method = resolveBotMethod(activePlayer.level);
         const move = method(othelloValues.board, activePlayer.color);
@@ -69,7 +63,7 @@ const useOthello = () => {
           skip();
         }
       }
-    }, [activePlayer, othelloValues, update, skip]),
+    }, [activePlayer, othelloValues.board, update, skip]),
   };
 };
 
