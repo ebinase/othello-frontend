@@ -1,7 +1,7 @@
-import { Analysis, analysisSelector } from '@dataflow/board/analysisSelector';
-import { PlayersAtomValue, playersSelector } from '@dataflow/playersAtom';
-import { COLOR_CODE } from '@models/Board/Color';
-import { atom } from 'jotai';
+import { Analysis, analysisSelector } from "@dataflow/board/analysisSelector";
+import { PlayersAtomValue, playersSelector } from "@dataflow/playersAtom";
+import { COLOR_CODE } from "@models/Board/Color";
+import { atom } from "jotai";
 
 export type AnalyzedPlayers = PlayersAtomValue & Analysis;
 

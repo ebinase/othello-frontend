@@ -10,15 +10,12 @@ const PlayGround: React.FC = () => {
   const { activateGame, players } = useOthello();
 
   useEffect(() => {
-    const timeoutId = setTimeout(
-      () => {
-        activateGame();
-        return () => {
-          clearTimeout(timeoutId);
-        };
-      },
-      500
-    );
+    const timeoutId = setTimeout(() => {
+      activateGame();
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, 500);
   });
 
   return (

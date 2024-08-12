@@ -8,11 +8,11 @@ const SettingsInfo: React.FC = () => {
   const { game } = useOthello();
 
   const handlePvP = () => {
-    game.start(buildHumanPlayer("WHITE"), buildHumanPlayer("BLACK"))
+    game.start(buildHumanPlayer("WHITE"), buildHumanPlayer("BLACK"));
   };
 
   const handlePvE = (botLevel: BotLevel) => {
-    game.start(buildHumanPlayer("WHITE"), buildBotPlayer(botLevel))
+    game.start(buildHumanPlayer("WHITE"), buildBotPlayer(botLevel));
   };
 
   return (

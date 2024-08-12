@@ -1,6 +1,6 @@
-import { COLOR_CODE } from '@models/Board/Color';
-import { Player } from '@models/Player/Player';
-import { atom } from 'jotai';
+import { COLOR_CODE } from "@models/Board/Color";
+import { Player } from "@models/Player/Player";
+import { atom } from "jotai";
 
 export type PlayersAtomValue = {
   [COLOR_CODE.WHITE]: Player & { color: COLOR_CODE };
@@ -9,14 +9,14 @@ export type PlayersAtomValue = {
 
 const initialPlayers: PlayersAtomValue = {
   [COLOR_CODE.WHITE]: {
-    name: 'WHITE',
+    name: "WHITE",
     color: COLOR_CODE.WHITE,
-    type: 'human',
+    type: "human",
   },
   [COLOR_CODE.BLACK]: {
-    name: 'BLACK',
+    name: "BLACK",
     color: COLOR_CODE.BLACK,
-    type: 'human',
+    type: "human",
   },
 };
 

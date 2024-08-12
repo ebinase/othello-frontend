@@ -1,6 +1,6 @@
-import { atom } from 'jotai';
+import { atom } from "jotai";
 
-const messageAtom = atom<string>('');
+const messageAtom = atom<string>("");
 
 export const messageSelector = atom((get) => get(messageAtom));
 

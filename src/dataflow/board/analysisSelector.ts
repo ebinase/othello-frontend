@@ -1,7 +1,7 @@
-import { othelloSelector } from '@dataflow/othelloAtom';
-import { Board } from '@models/Board/Board';
-import { COLOR_CODE } from '@models/Board/Color';
-import { atom } from 'jotai';
+import { othelloSelector } from "@dataflow/othelloAtom";
+import { Board } from "@models/Board/Board";
+import { COLOR_CODE } from "@models/Board/Color";
+import { atom } from "jotai";
 
 export type Analysis = {
   [color in COLOR_CODE]: {

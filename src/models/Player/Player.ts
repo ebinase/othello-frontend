@@ -3,15 +3,15 @@ import { resolve } from "path";
 
 type BasePlayer = {
   name: string;
-  type: 'human' | 'bot';
+  type: "human" | "bot";
 };
 
 type Human = BasePlayer & {
-  type: 'human';
+  type: "human";
 };
 
 type Bot = BasePlayer & {
-  type: 'bot';
+  type: "bot";
   level: BotLevel;
 };
 
@@ -21,7 +21,7 @@ export type Player = Human | Bot;
 export const buildHumanPlayer = (name: string): Human => {
   return {
     name,
-    type: 'human'
+    type: "human",
   };
 };
 
@@ -29,7 +29,7 @@ export const buildHumanPlayer = (name: string): Human => {
 export const buildBotPlayer = (level: BotLevel): Bot => {
   return {
     name: resolveBotName(level),
-    type: 'bot',
-    level
+    type: "bot",
+    level,
   };
 };

@@ -22,17 +22,11 @@ const Field: React.FC<Props> = (props) => {
     }
   };
   return props.isSelectable ? (
-    <button
-      className={style}
-      onClick={() => update(props.fieldId)}
-    >
+    <button className={style} onClick={() => update(props.fieldId)}>
       {props.content ? <Stone color={props.content} /> : null}
     </button>
   ) : (
-    <div
-      className={style}
-      onClick={() => showMessage("置けませんでした！")}
-    >
+    <div className={style} onClick={() => showMessage("置けませんでした！")}>
       {props.content ? <Stone color={props.content} /> : null}
     </div>
   );

@@ -8,10 +8,10 @@ import { WeakStepBasedMCTS } from "./methods/WeakStepBasedMCTS";
 export type BotMethod = (board: BoardData, color: COLOR_CODE) => number | null;
 
 const BOT_LIST: Record<number, [string, BotMethod]> = {
-  1: ['Bot Lv.1', WeakStepBasedMCTS],
-  2: ['Bot Lv.2', randomBot],
-  3: ['Bot Lv.3', StepBasedMCTS],
-  4: ['Bot Lv.4', TimeBasedMCTS],
+  1: ["Bot Lv.1", WeakStepBasedMCTS],
+  2: ["Bot Lv.2", randomBot],
+  3: ["Bot Lv.3", StepBasedMCTS],
+  4: ["Bot Lv.4", TimeBasedMCTS],
 } as const;
 
 // FIXME: keyof typeof BOT_LISTではnumberになってしまうため手動で定義している

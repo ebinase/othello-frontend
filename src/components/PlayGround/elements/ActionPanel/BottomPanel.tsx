@@ -4,7 +4,8 @@ import React from "react";
 const BottomPanel: React.FC = () => {
   const { players, game } = useOthello();
   const activePlayer = players.active;
-  const skip = activePlayer.action.type === "skip" ? activePlayer.action.skip : () => {};
+  const skip =
+    activePlayer.action.type === "skip" ? activePlayer.action.skip : () => {};
   return (
     <div className="text-center h-full flex justify-center items-center">
       {activePlayer.action.type === "skip" && (

@@ -14,14 +14,17 @@ const PlayerInfo: React.FC = () => {
   const data =
     players.active.type === "human"
       ? {
-          message: (game.mode === "PVP" ? colorText : "あなた") + "のターンです",
-          status: activePlayer.action.type === "skip"
-            ? "置ける場所がありません..."
-            : message,
+          message:
+            (game.mode === "PVP" ? colorText : "あなた") + "のターンです",
+          status:
+            activePlayer.action.type === "skip"
+              ? "置ける場所がありません..."
+              : message,
         }
       : {
           message: "相手のターンです",
-          status: activePlayer.action.type === "skip" ? "スキップ！" : "思考中...",
+          status:
+            activePlayer.action.type === "skip" ? "スキップ！" : "思考中...",
         };
 
   return (

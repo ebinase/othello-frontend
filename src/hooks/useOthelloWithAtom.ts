@@ -1,30 +1,30 @@
-import { gameModeSelector } from '@dataflow/game/gameModeSelector';
-import { gameResultSelector } from '@dataflow/game/gameResultSelector';
+import { gameModeSelector } from "@dataflow/game/gameModeSelector";
+import { gameResultSelector } from "@dataflow/game/gameResultSelector";
 import {
   gameInitializeExecutor,
   gameRestartExecutor,
   gameStartExecutor,
   gameStatusSelector,
-} from '@dataflow/gameStatusAtom';
-import { messageSelector, messageUpdateExecutor } from '@dataflow/messageAtom';
+} from "@dataflow/gameStatusAtom";
+import { messageSelector, messageUpdateExecutor } from "@dataflow/messageAtom";
 import {
   othelloSelector,
   othelloSkipExecutor,
   othelloUpdateExecutor,
   type SkipExecutor,
   type UpdateExecutor,
-} from '@dataflow/othelloAtom';
+} from "@dataflow/othelloAtom";
 import {
   ActivePlayer,
   activePlayerSelector,
-} from '@dataflow/player/activePlayerSelector';
-import { analyzedPlayersSelector } from '@dataflow/player/analyzedPlayersSelector';
-import { buildPlayers } from '@dataflow/playersAtom';
-import { COLOR_CODE } from '@models/Board/Color';
-import { resolveBotMethod } from '@models/Bot/BotList';
-import { Player } from '@models/Player/Player';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useCallback } from 'react';
+} from "@dataflow/player/activePlayerSelector";
+import { analyzedPlayersSelector } from "@dataflow/player/analyzedPlayersSelector";
+import { buildPlayers } from "@dataflow/playersAtom";
+import { COLOR_CODE } from "@models/Board/Color";
+import { resolveBotMethod } from "@models/Bot/BotList";
+import { Player } from "@models/Player/Player";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useCallback } from "react";
 
 const useOthello = () => {
   const othelloValues = useAtomValue(othelloSelector);
@@ -63,7 +63,7 @@ const useOthello = () => {
     // Botに限らず、ゲームを進行させるためのメソッド。useEffect内で呼び出すことを想定
     activateGame: useCallback(() => {
       // Botが行動可能な状態であればBotを起動
-      if (activePlayer.type === 'bot' && activePlayer.action === 'update') {
+      if (activePlayer.type === "bot" && activePlayer.action === "update") {
         const method = resolveBotMethod(activePlayer.level);
         const move = method(othelloValues.board, activePlayer.color);
         if (move !== null) {
@@ -82,19 +82,19 @@ const useOthello = () => {
 export default useOthello;
 
 const resolveAction = (
-  action: ActivePlayer['action'],
+  action: ActivePlayer["action"],
   update: UpdateExecutor,
   skip: SkipExecutor
 ) => {
   switch (action) {
-    case 'update':
+    case "update":
       return { type: action, update } as {
-        type: 'update';
+        type: "update";
         update: typeof update;
       };
-    case 'skip':
-      return { type: action, skip } as { type: 'skip'; skip: typeof skip };
-    case 'none':
-      return { type: action } as { type: 'none' };
+    case "skip":
+      return { type: action, skip } as { type: "skip"; skip: typeof skip };
+    case "none":
+      return { type: action } as { type: "none" };
   }
 };

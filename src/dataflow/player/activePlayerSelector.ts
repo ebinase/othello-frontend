@@ -1,14 +1,14 @@
-import { othelloSelector } from '@dataflow/othelloAtom';
-import { atom } from 'jotai';
-import { match } from 'ts-pattern';
+import { othelloSelector } from "@dataflow/othelloAtom";
+import { atom } from "jotai";
+import { match } from "ts-pattern";
 import {
   AnalyzedPlayers,
   analyzedPlayersSelector,
-} from './analyzedPlayersSelector';
-import { GameStatus, gameStatusSelector } from '@dataflow/gameStatusAtom';
+} from "./analyzedPlayersSelector";
+import { GameStatus, gameStatusSelector } from "@dataflow/gameStatusAtom";
 
 export type ActivePlayer = AnalyzedPlayers[keyof AnalyzedPlayers] & {
-  action: 'update' | 'skip' | 'none';
+  action: "update" | "skip" | "none";
 };
 
 export const activePlayerSelector = atom<ActivePlayer>((get) => {
@@ -17,12 +17,12 @@ export const activePlayerSelector = atom<ActivePlayer>((get) => {
   const gameStatus = get(gameStatusSelector);
   return {
     ...players[activeColor],
-    action: match<GameStatus, ActivePlayer['action']>(gameStatus)
-      .with('not_started', () => 'none')
-      .with('playing', () =>
-        players[activeColor].selectable.length === 0 ? 'skip' : 'update'
+    action: match<GameStatus, ActivePlayer["action"]>(gameStatus)
+      .with("not_started", () => "none")
+      .with("playing", () =>
+        players[activeColor].selectable.length === 0 ? "skip" : "update"
       )
-      .with('finished', () => 'none')
+      .with("finished", () => "none")
       .exhaustive(),
   };
 });
