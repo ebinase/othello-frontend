@@ -9,7 +9,6 @@ import SettingsInfo from "./elements/SettingsInfo/SettingsInfo";
 const InfoPanel: React.FC = () => {
   const { game } = useOthello();
 
-  // TODO: ゲームの初期化処理を適切なタイミングで表示できるようにする
   return match(game.status)
     .with("not_started", () => <SettingsInfo />)
     .with("playing", () => <PlayerInfo />)

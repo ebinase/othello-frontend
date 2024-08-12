@@ -93,20 +93,4 @@ export class Othello {
       skipCount: this.skipCount,
     };
   }
-
-  /**
-   * TODO: Stateの知識を持ってしまっているのでDTOなどの別クラスに切り出す
-   * @returns {Object} Othelloの状態を表すオブジェクト
-   * @deprecated
-   */
-  public toArray() {
-    return {
-      isOver: this.isOver(),
-      skipCount: this.skipCount,
-      turn: this.turnNumber,
-      board: this.board.toArray(),
-      color: this.color,
-      shouldSkip: this.shoudSkip(),
-    };
-  }
 }

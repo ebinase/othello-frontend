@@ -57,7 +57,7 @@ export const gameRestartExecutor = atom(null, (get, set) => {
   set(playersUpdateExecutor, players);
 });
 
-/// 状態遷移定義(TODO: 必要に応じてXStateを利用する)
+/// 状態遷移定義(必要に応じてXStateを利用する)
 const isAllowedTransition = (from: GameStatus, to: GameStatus) => {
   const allowed = gameStatusMachine(from);
   return allowed.includes(to);
