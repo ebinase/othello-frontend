@@ -15,6 +15,7 @@ import {
 import { analyzedPlayersSlector } from '@dataflow/player/analyzedPlayersSlector';
 import { buildPlayers } from '@dataflow/playersAtom';
 import { COLOR_CODE } from '@models/Board/Color';
+import { resolveBotMethod } from '@models/Bot/BotList';
 import { Player } from '@models/Player/Player';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useCallback } from 'react';
@@ -56,6 +57,19 @@ const useOthello = () => {
         },
       },
     },
+    // Botに限らず、ゲームを進行させるためのメソッド。useEffect内で呼び出すことを想定
+    activateGame: useCallback(() => {
+    // Botが行動可能な状態であればBotを起動
+      if (activePlayer.type === "bot" && activePlayer.action === "update") {
+        const method = resolveBotMethod(activePlayer.level);
+        const move = method(othelloValues.board, activePlayer.color);
+        if (move !== null) {
+          update(move);
+        } else {
+          skip();
+        }
+      }
+    }, [activePlayer, othelloValues, update, skip]),
   };
 };
 
