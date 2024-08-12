@@ -14,7 +14,7 @@ const style =
 
 // TODO: メモ化
 const Field: React.FC<Props> = (props) => {
-  const { players } = useOthello();
+  const { players, showMessage } = useOthello();
   const action = players.active.action;
   const update = (fieldId: FieldId) => {
     if (action?.type === "update") {
@@ -24,14 +24,14 @@ const Field: React.FC<Props> = (props) => {
   return props.isSelectable ? (
     <button
       className={style}
-      onClick={!props.content ? () => update(props.fieldId) : undefined}
+      onClick={() => update(props.fieldId)}
     >
       {props.content ? <Stone color={props.content} /> : null}
     </button>
   ) : (
     <div
       className={style}
-      onClick={!props.content ? () => update(props.fieldId) : undefined}
+      onClick={() => showMessage("置けませんでした！")}
     >
       {props.content ? <Stone color={props.content} /> : null}
     </div>

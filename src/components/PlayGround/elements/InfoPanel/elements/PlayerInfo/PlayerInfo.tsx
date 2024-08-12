@@ -5,7 +5,7 @@ import PlayerBar from "./PlayerBar";
 import useOthello from "@hooks/useOthelloWithAtom";
 
 const PlayerInfo: React.FC = () => {
-  const { players, game } = useOthello();
+  const { players, game, message } = useOthello();
 
   const activePlayer = players.active;
   const colorText = activePlayer.color === COLOR_CODE.WHITE ? "白" : "黒";
@@ -17,7 +17,7 @@ const PlayerInfo: React.FC = () => {
           message: (game.mode === "PVP" ? colorText : "あなた") + "のターンです",
           status: activePlayer.action.type === "skip"
             ? "置ける場所がありません..."
-            : "", // TODO: メッセージを表示可能にする
+            : message,
         }
       : {
           message: "相手のターンです",

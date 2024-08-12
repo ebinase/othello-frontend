@@ -1,6 +1,7 @@
 import { gameModeSelector } from '@dataflow/game/gameModeSelector';
 import { gameResultSelector } from '@dataflow/game/gameResultSlector';
 import { gameInitializeExecutor, gameRestartExecutor, gameStartExecutor, gameStatusSelector } from '@dataflow/gameStatusAtom';
+import { messageSelector, messageUpdateExecutor } from '@dataflow/messageAtom';
 import {
   othelloSelector,
   othelloSkipExecutor,
@@ -64,6 +65,9 @@ const useOthello = () => {
         }
       }
     }, [activePlayer, othelloValues.board, update, skip]),
+    // そのターン中のみ有効なメッセージを表示
+    showMessage: useSetAtom(messageUpdateExecutor),
+    message: useAtomValue(messageSelector),
   };
 };
 

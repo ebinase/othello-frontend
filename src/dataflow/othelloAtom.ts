@@ -3,6 +3,7 @@ import { Othello, OthelloValues } from "@models/Game/Othello";
 import { othelloReducer } from "@models/Game/othelloReducer";
 import { atom } from "jotai";
 import { gameStatusUpdateExecutor } from "./gameStatusAtom";
+import { messageUpdateExecutor } from "./messageAtom";
 
 const initial = Othello.initialize().values();
 
@@ -26,8 +27,9 @@ export const othelloUpdateExecutor = atom(null, (get, set, fieldId: FieldId) => 
     // ターンが進んだ場合のみ更新
     set(othelloAtom, updated.values());
     set(gameStatusUpdateExecutor, updated.isOver() ? 'finished' : 'playing');
+    set(messageUpdateExecutor, ''); // メッセージをクリア
   } else {
-    // TODO: エラー表示を実装する
+    set(messageUpdateExecutor, '置けませんでした！');
   }
 });
 export type SkipExecutor = () => void;
@@ -37,7 +39,8 @@ export const othelloSkipExecutor = atom(null, (get, set) => {
   if (updated.turnNumber > current.turnNumber) {
     set(othelloAtom, updated.values());
     set(gameStatusUpdateExecutor, updated.isOver() ? 'finished' : 'playing');
+    set(messageUpdateExecutor, ''); // メッセージをクリア
   } else {
-    // TODO: エラー表示を実装する
+    set(messageUpdateExecutor, 'このターンはスキップできません！');
   }
 });
