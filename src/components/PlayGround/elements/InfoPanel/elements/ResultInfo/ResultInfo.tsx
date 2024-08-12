@@ -1,23 +1,25 @@
 "use client";
 
-import useOthello from "../../../../../../hooks/useOthello";
+import useOthello from "@hooks/useOthelloWithAtom";
 import ResultBar from "./ResultBar";
 
 const ResultInfo: React.FC = () => {
-  const { game, gameMode, players, state } = useOthello();
+  const { game, players } = useOthello();
 
   let text = "";
   switch (game.result?.type) {
     case "resulted":
       text =
-        gameMode === "PVP"
-          ? players[game.result.winner].name + " WIN!"
-          : players[game.result.winner].type === "human"
+        game.mode === "PVP"
+          ? players[game.result.color].name + " WIN!"
+          : players[game.result.color].type === "human"
           ? "YOU WIN!"
           : "YOU LOSE...";
       break;
     case "draw":
       text = "DRAW";
+      break;
+    default:
       break;
   }
 
@@ -27,8 +29,8 @@ const ResultInfo: React.FC = () => {
       <div className="mb-1">
         <ResultBar
           counts={{
-            white: state.meta.board.white.stones,
-            black: state.meta.board.black.stones,
+            white: players.white.stones,
+            black: players.black.stones,
           }}
         />
       </div>

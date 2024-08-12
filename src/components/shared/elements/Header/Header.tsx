@@ -1,13 +1,13 @@
 "use client";
 
-import useOthello from "../../../../hooks/useOthello";
+import useOthello from "@hooks/useOthelloWithAtom";
 
 const Header: React.FC = () => {
-  const { reset, gameMode } = useOthello();
+  const { game } = useOthello();
 
   const handleNewGame = () => {
     if (confirm("プレイ中のゲーム情報が失われます。よろしいですか？")) {
-      reset();
+      game.reset();
     }
   };
 
@@ -21,10 +21,10 @@ const Header: React.FC = () => {
           <div
             className={
               "w-fit text-xs text-slate-400 rounded-sm px-2 py-0.5 " +
-              (!!gameMode ? "border border-slate-400" : "")
+              "border border-slate-400"
             }
           >
-            {gameMode === undefined ? "" : gameMode === "PVP" ? "PVP" : "BOT"}
+            {game.mode === "PVP" ? "PVP" : "BOT"}
           </div>
         </div>
         <div className="basis-1/5 flex justify-center"></div>

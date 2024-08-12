@@ -1,21 +1,19 @@
 "use client";
 
-import useOthello from "../../../../hooks/useOthello";
+import useOthello from "@hooks/useOthelloWithAtom";
 import PlayerInfo from "./elements/PlayerInfo/PlayerInfo";
 import ResultInfo from "./elements/ResultInfo/ResultInfo";
+import { match } from "ts-pattern";
 import SettingsInfo from "./elements/SettingsInfo/SettingsInfo";
 
 const InfoPanel: React.FC = () => {
-  const gameStatus = useOthello((state) => state.game.status);
+  const { game } = useOthello();
 
-  switch (gameStatus) {
-    case "not_started":
-      return <SettingsInfo />;
-    case "playing":
-      return <PlayerInfo />;
-    case "finished":
-      return <ResultInfo />;
-  }
+  return match(game.status)
+    .with("not_started", () => <SettingsInfo />)
+    .with("playing", () => <PlayerInfo />)
+    .with("finished", () => <ResultInfo />)
+    .exhaustive();
 };
 
 export default InfoPanel;

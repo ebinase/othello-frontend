@@ -2,6 +2,13 @@ import { Board, BoardData } from "@models/Board/Board";
 import { COLOR_CODE, flip } from "@models/Board/Color";
 import { Result } from "@models/Shared/Result";
 
+export type OthelloValues = {
+  turnNumber: number;
+  board: BoardData;
+  color: COLOR_CODE;
+  skipCount: number;
+};
+
 export class Othello {
   private constructor(
     public readonly turnNumber: number,
@@ -14,13 +21,13 @@ export class Othello {
     return new Othello(1, Board.initialize(), COLOR_CODE.WHITE, 0);
   }
 
-  public static reconstruct(
-    turnNumber: number,
-    board: BoardData,
-    color: COLOR_CODE,
-    skipCount: number
-  ): Othello {
-    return new Othello(turnNumber, Board.fromArray(board), color, skipCount);
+  public static reconstruct(values: OthelloValues): Othello {
+    return new Othello(
+      values.turnNumber,
+      Board.fromArray(values.board),
+      values.color,
+      values.skipCount
+    );
   }
 
   public move(fieldId: number): Result<Othello, Error> {
@@ -60,7 +67,11 @@ export class Othello {
   }
 
   public isOver() {
-    return this.skipCount > 1 || !this.isContinuable();
+    return this.skippedTooMuch() || !this.isContinuable();
+  }
+
+  public skippedTooMuch() {
+    return this.skipCount > 1;
   }
 
   /**
@@ -74,18 +85,12 @@ export class Othello {
     );
   }
 
-  /**
-   * TODO: Stateの知識を持ってしまっているのでDTOなどの別クラスに切り出す
-   * @returns {Object} Othelloの状態を表すオブジェクト
-   */
-  public toArray() {
+  public values() {
     return {
-      isOver: this.isOver(),
-      skipCount: this.skipCount,
-      turn: this.turnNumber,
+      turnNumber: this.turnNumber,
       board: this.board.toArray(),
       color: this.color,
-      shouldSkip: this.shoudSkip(),
+      skipCount: this.skipCount,
     };
   }
 }
