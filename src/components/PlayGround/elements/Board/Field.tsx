@@ -14,8 +14,8 @@ type Props = {
 const style =
   "bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center box-content";
 
-// TODO: メモ化
-const Field: React.FC<Props> = memo((props) => {
+// eslintに怒られるため名前付き関数に変更している
+const Field: React.FC<Props> = memo(function field(props) {
   return props.isSelectable ? (
     <button className={style} onClick={() => !!props.update && props.update(props.fieldId)}>
       {props.content ? <Stone color={props.content} /> : null}
