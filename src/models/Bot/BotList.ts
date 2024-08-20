@@ -5,7 +5,6 @@ import { StepBasedMCTS } from "./methods/StepBasedMCTS";
 import { TimeBasedMCTS } from "./methods/TimeBasedMCTS";
 import { WeakStepBasedMCTS } from "./methods/WeakStepBasedMCTS";
 
-
 // FIXME: keyof typeof BOT_LISTではnumberになってしまうため手動で定義している
 export type BotLevel = 1 | 2 | 3 | 4;
 export type BotMethod = (board: BoardData, color: COLOR_CODE) => number | null;
@@ -23,9 +22,10 @@ export const BOT_CONFIG: BotConfig = [
   { level: 4, name: "つよい", method: TimeBasedMCTS },
 ] as const;
 
-
 export const botLevelList: BotLevel[] = BOT_CONFIG.map((bot) => bot.level);
 
-const findBot = (level: BotLevel) => BOT_CONFIG.find((bot) => bot.level === level) ?? BOT_CONFIG[0];
+const findBot = (level: BotLevel) =>
+  BOT_CONFIG.find((bot) => bot.level === level) ?? BOT_CONFIG[0];
 export const resolveBotName = (botLevel: BotLevel) => findBot(botLevel).name;
-export const resolveBotMethod = (botLevel: BotLevel) => findBot(botLevel).method;
+export const resolveBotMethod = (botLevel: BotLevel) =>
+  findBot(botLevel).method;

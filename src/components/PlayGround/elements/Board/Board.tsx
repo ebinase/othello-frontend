@@ -6,12 +6,15 @@ import { useCallback } from "react";
 const Board: React.FC = () => {
   const { players, board, showMessage } = useOthello();
   const selectableFields = players.active.selectable;
-  const update = useCallback((fieldId: FieldId) => {
-    const action = players.active.action;
-    if (action?.type === "update") {
-      action.update(fieldId);
-    }
-  }, [players.active]);
+  const update = useCallback(
+    (fieldId: FieldId) => {
+      const action = players.active.action;
+      if (action?.type === "update") {
+        action.update(fieldId);
+      }
+    },
+    [players.active]
+  );
 
   return (
     <>

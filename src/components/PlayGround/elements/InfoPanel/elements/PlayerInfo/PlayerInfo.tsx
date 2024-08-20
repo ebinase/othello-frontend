@@ -39,12 +39,12 @@ const PlayerInfo: React.FC = () => {
           <div className="w-full flex justify-center gap-2">
             {players.active.type === "human" ? (
               <>
-                  <PlayerIcon theme={iconTheme} />
-                </>
+                <PlayerIcon theme={iconTheme} />
+              </>
             ) : (
-                <>
-                  <BotIcon theme={iconTheme} />
-                </>
+              <>
+                <BotIcon theme={iconTheme} />
+              </>
             )}
             {players.active.name}
           </div>
