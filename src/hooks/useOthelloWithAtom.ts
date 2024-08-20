@@ -21,8 +21,12 @@ import {
 import { analyzedPlayersSelector } from "@dataflow/player/analyzedPlayersSelector";
 import { buildPlayers } from "@dataflow/playersAtom";
 import { COLOR_CODE } from "@models/Board/Color";
-import { resolveBotMethod } from "@models/Bot/BotList";
-import { Player } from "@models/Player/Player";
+import { BOT_CONFIG, resolveBotMethod } from "@models/Bot/BotList";
+import {
+  buildBotPlayer,
+  buildHumanPlayer,
+  Player,
+} from "@models/Player/Player";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback } from "react";
 
@@ -76,6 +80,13 @@ const useOthello = () => {
     // そのターン中のみ有効なメッセージを表示
     showMessage: useSetAtom(messageUpdateExecutor),
     message: useAtomValue(messageSelector),
+    assets: {
+      bot: {
+        list: BOT_CONFIG,
+        buildHumanPlayer,
+        buildBotPlayer,
+      },
+    },
   };
 };
 

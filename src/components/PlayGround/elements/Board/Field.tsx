@@ -17,11 +17,17 @@ const style =
 // eslintに怒られるため名前付き関数に変更している
 const Field: React.FC<Props> = memo(function field(props) {
   return props.isSelectable ? (
-    <button className={style} onClick={() => !!props.update && props.update(props.fieldId)}>
+    <button
+      className={style}
+      onClick={() => !!props.update && props.update(props.fieldId)}
+    >
       {props.content ? <Stone color={props.content} /> : null}
     </button>
   ) : (
-    <div className={style} onClick={() => props.showMessage("置けませんでした！")}>
+    <div
+      className={style}
+      onClick={() => props.showMessage("置けませんでした！")}
+    >
       {props.content ? <Stone color={props.content} /> : null}
     </div>
   );

@@ -1,5 +1,4 @@
 import { BotLevel, resolveBotName } from "@models/Bot/BotList";
-import { resolve } from "path";
 
 type BasePlayer = {
   name: string;
