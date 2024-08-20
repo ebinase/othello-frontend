@@ -21,8 +21,8 @@ import {
 import { analyzedPlayersSelector } from "@dataflow/player/analyzedPlayersSelector";
 import { buildPlayers } from "@dataflow/playersAtom";
 import { COLOR_CODE } from "@models/Board/Color";
-import { resolveBotMethod } from "@models/Bot/BotList";
-import { Player } from "@models/Player/Player";
+import { BOT_CONFIG, resolveBotMethod } from "@models/Bot/BotList";
+import { buildBotPlayer, buildHumanPlayer, Player } from "@models/Player/Player";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback } from "react";
 
@@ -63,7 +63,7 @@ const useOthello = () => {
     // Botに限らず、ゲームを進行させるためのメソッド。useEffect内で呼び出すことを想定
     activateGame: useCallback(() => {
       // Botが行動可能な状態であればBotを起動
-      if (activePlayer.type === "bot" && activePlayer.action === "update") {
+      if (activePlayer.type === 'bot' && activePlayer.action === 'update') {
         const method = resolveBotMethod(activePlayer.level);
         const move = method(othelloValues.board, activePlayer.color);
         if (move !== null) {
@@ -76,6 +76,13 @@ const useOthello = () => {
     // そのターン中のみ有効なメッセージを表示
     showMessage: useSetAtom(messageUpdateExecutor),
     message: useAtomValue(messageSelector),
+    assets: {
+      bot: {
+        list: BOT_CONFIG,
+        buildHumanPlayer,
+        buildBotPlayer,
+      },
+    },
   };
 };
 
