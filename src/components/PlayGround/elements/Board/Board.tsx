@@ -26,6 +26,7 @@ const Board: React.FC = () => {
               fieldId={index}
               content={content}
               isSelectable={selectableFields.includes(index)}
+              currentColor={players.active.color}
               update={selectableFields.includes(index) ? update : undefined}
               showMessage={showMessage}
             />
