@@ -1,4 +1,5 @@
 import "../src/styles/globals.css";
+import { Analytics } from '@vercel/analytics/react';
 
 const siteName = "オセロ | Othello";
 const description =
@@ -32,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>{children}</body>
+      <Analytics />
     </html>
   );
 }

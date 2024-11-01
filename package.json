@@ -13,6 +13,7 @@
     "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.3.2",
     "jotai": "^2.9.2",
     "next": "^14.2.4",
     "react": "^18.3.1",
