@@ -22,14 +22,15 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Requirements
-* Node.js 20.17.0 or later locally and in the deployment environment
-* npm 11.20.0 (the supported range is 11.20.0 or later within npm 11)
+* Node.js 22.x locally and in the deployment environment
+* npm 11.19.1 or later within npm 11 is recommended for local dependency updates
 * Safari 16.4+, Chrome 111+, or Firefox 128+ (Tailwind CSS 4)
 
 Dependency installation scripts are disabled by `.npmrc`. Newly resolved packages
 must be at least seven days old to reduce exposure to compromised new releases.
-Use the supported npm version so this setting is enforced, and use `npm ci` to
-install the versions recorded in `package-lock.json`.
+Use the recommended npm version locally so the release-age setting is enforced.
+Deployments can use the platform-provided npm version. Use `npm ci` to install the
+versions recorded in `package-lock.json`.
 
 ## 📁 Assets
 Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a>
