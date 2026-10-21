@@ -12,7 +12,7 @@ type Props = {
 };
 
 const style =
-  "bg-slate-200 rounded-sm shadow-x2s flex items-center justify-center box-content";
+  "bg-slate-200 rounded-xs shadow-x2s flex items-center justify-center box-content";
 
 // eslintに怒られるため名前付き関数に変更している
 const Field: React.FC<Props> = memo(function field(props) {

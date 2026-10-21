@@ -27,7 +27,7 @@ const PlayGround: React.FC = () => {
       <div className="sm:basis-1/3 flex justify-center">
         <Board />
       </div>
-      <div className="sm:basis-1/3 flex-grow">
+      <div className="sm:basis-1/3 grow">
         <BottomPanel />
       </div>
     </div>
