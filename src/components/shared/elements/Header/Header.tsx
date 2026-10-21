@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           </h1>
           <div
             className={
-              "w-fit text-xs text-slate-400 rounded-sm px-2 py-0.5 " +
+              "w-fit text-xs text-slate-400 rounded-xs px-2 py-0.5 " +
               "border border-slate-400"
             }
           >
