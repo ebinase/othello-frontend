@@ -1,5 +1,3 @@
-"use client";
-
 import Board from "./elements/Board/Board";
 import BottomPanel from "./elements/ActionPanel/BottomPanel";
 import { useEffect } from "react";
@@ -7,16 +5,14 @@ import InfoPanel from "./elements/InfoPanel/InfoPanel";
 import useOthello from "@hooks/useOthelloWithAtom";
 
 const PlayGround: React.FC = () => {
-  const { activateGame, players } = useOthello();
+  const { activateGame } = useOthello();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       activateGame();
-      return () => {
-        clearTimeout(timeoutId);
-      };
     }, 500);
-  });
+    return () => clearTimeout(timeoutId);
+  }, [activateGame]);
 
   return (
     <div className="h-full w-full flex flex-col">

@@ -1,5 +1,5 @@
 # Othello
-Simple and clean Othello(Reversi) app developed with Next.js & Jotai.
+Simple and clean Othello(Reversi) app built with React, Vite, TypeScript, and Jotai.
 
 You can play here ▶️ https://othello.ebinas.dev/
 
@@ -31,6 +31,20 @@ must be at least seven days old to reduce exposure to compromised new releases.
 Use the recommended npm version locally so the release-age setting is enforced.
 Deployments can use the platform-provided npm version. Use `npm ci` to install the
 versions recorded in `package-lock.json`.
+
+## Build and deployment
+
+- `npm run lint`: check source syntax and React Hooks rules.
+- `npm run build`: type-check and build the static site into `dist/`.
+- `npm run preview`: preview the production build locally.
+
+Vercel uses the Vite framework, `npm run build`, and the `dist/` output directory
+as configured in `vercel.json`. Keep the existing project and domain, and check a
+Preview Deployment before releasing.
+
+Site metadata is in `index.html`; the favicon, social image, robots, and sitemap
+are served from `public/`. Gameplay runs in the browser. Offline reloading via a
+Service Worker is not included.
 
 ## 📁 Assets
 Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a>
