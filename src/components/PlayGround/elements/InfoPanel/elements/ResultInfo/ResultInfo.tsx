@@ -1,5 +1,3 @@
-"use client";
-
 import useOthello from "@hooks/useOthelloWithAtom";
 import ResultBar from "./ResultBar";
 

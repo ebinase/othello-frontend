@@ -1,5 +1,3 @@
-"use client";
-
 import useOthello from "@hooks/useOthelloWithAtom";
 
 const Header: React.FC = () => {

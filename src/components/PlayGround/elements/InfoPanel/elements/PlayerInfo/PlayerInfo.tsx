@@ -1,5 +1,3 @@
-"use client";
-
 import { COLOR_CODE } from "@models/Board/Color";
 import PlayerBar from "./PlayerBar";
 import useOthello from "@hooks/useOthelloWithAtom";

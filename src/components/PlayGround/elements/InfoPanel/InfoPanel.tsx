@@ -1,5 +1,3 @@
-"use client";
-
 import useOthello from "@hooks/useOthelloWithAtom";
 import PlayerInfo from "./elements/PlayerInfo/PlayerInfo";
 import ResultInfo from "./elements/ResultInfo/ResultInfo";

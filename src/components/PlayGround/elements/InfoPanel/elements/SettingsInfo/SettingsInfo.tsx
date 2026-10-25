@@ -1,5 +1,3 @@
-"use client";
-
 import BotIcon from "@components/shared/elements/Icon/BotIcon";
 import PlayersIcon from "@components/shared/elements/Icon/PlayersIcon";
 import useOthello from "@hooks/useOthelloWithAtom";
